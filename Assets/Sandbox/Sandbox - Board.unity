@@ -13569,6 +13569,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c719c6d11ad0146d6bea987a3b70cbd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  turn: 0
+  compTurnWait: 1
+  turnWaitTimer: 0
+  hunterTile: {fileID: 0}
+  animalTile: {fileID: 0}
+  foodTile: {fileID: 0}
 --- !u!4 &1894036753
 Transform:
   m_ObjectHideFlags: 0

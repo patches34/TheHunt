@@ -44,9 +44,10 @@ public class TileButton : MonoBehaviour
 		//	Check if if its the player's turn
 		if(GameManager.Instance.turn == TurnState.Player)
 		{
-			if((state & (TileState.Food | TileState.None)) == (TileState.None | TileState.Food))
+			if(state == TileState.None)
+				//if((state & (TileState.Food | TileState.None)) == (TileState.None | TileState.Food))
 			{
-				Debug.Log("Can do something");
+				GameManager.Instance.PlayerWent();
 			}
 		}
 	}

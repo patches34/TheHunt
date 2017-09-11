@@ -13,7 +13,9 @@ public enum TurnState
 
 public class GameManager : Singleton<GameManager>
 {
-	public TurnState turn {get; private set;}
+	public TurnState turn;// {get; private set;}
+	public float compTurnWait;
+	public float turnWaitTimer;
 
 	public TileButton hunterTile, animalTile, foodTile;
 
@@ -28,5 +30,34 @@ public class GameManager : Singleton<GameManager>
 	void Start()
 	{
 		BoardManager.Instance.CreateBoard();
+	}
+
+	void Update()
+	{
+		if(turn != TurnState.Player)
+		{
+			turnWaitTimer += Time.deltaTime;
+
+			if(turnWaitTimer >= compTurnWait)
+			{
+				turnWaitTimer = 0;
+
+				switch(turn)
+				{
+				case TurnState.Animal:
+					turn = TurnState.Player;
+					break;
+				case TurnState.Hunter:
+					turn = TurnState.Animal;
+					break;
+				}
+			}
+		}
+	}
+
+	public void PlayerWent()
+	{
+		Debug.Log("Player went");
+		turn = TurnState.Hunter;
 	}
 }
