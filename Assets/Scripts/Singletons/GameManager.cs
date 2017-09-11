@@ -22,4 +22,9 @@ public class GameManager : Singleton<GameManager>
 		// guarantee this will be always a singleton only - can't use the constructor!
 	}
 	#endregion
+
+	void Start()
+	{
+		BoardManager.Instance.CreateBoard();
+	}
 }
