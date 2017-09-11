@@ -6,25 +6,21 @@ using UnityEngine.UI;
 public enum TileState
 {
 	None = 0,
-	Blocked = 1,
-	Food = 2,
-	Animal = 4,
-	Hunter = 8
+	Hunter,
+	Animal,
+	Food,
+	Blocked,
 }
 
+[RequireComponent (typeof(Animator))]
 public class TileButton : MonoBehaviour
 {
 	[SerializeField]
-	Image blockedIcon;
-	[SerializeField]
-	Image foodIcon;
-	[SerializeField]
-	Image animalIcon;
-	[SerializeField]
-	Image hunterIcon;
+	TileState state;
 
 	[SerializeField]
-	TileState state;
+	Animator anim;
+	const string k_State = "State";
 
 	// Use this for initialization
 	void Start ()
@@ -32,11 +28,6 @@ public class TileButton : MonoBehaviour
 		foreach(Transform child in gameObject.transform)
 		{
 			child.gameObject.SetActive(false);
-		}
-
-		if((state & TileState.Food) == TileState.Food)
-		{
-			foodIcon.gameObject.SetActive(true);
 		}
 	}
 	
@@ -56,5 +47,17 @@ public class TileButton : MonoBehaviour
 				Debug.Log("Can do something");
 			}
 		}
+	}
+
+	public void SetState(TileState newState)
+	{
+		state = newState;
+
+		anim.SetInteger(k_State, (int)newState);
+	}
+
+	public TileState GetState()
+	{
+		return state;
 	}
 }

@@ -49,5 +49,33 @@ public class BoardManager : Singleton<BoardManager>
 
 			tiles.Add(rowTiles);
 		}
+
+		TileButton randomTile = GetRandomTile();
+		randomTile.SetState(TileState.Animal);
+
+		int i = 0;
+		do
+		{
+			++i;
+			randomTile= GetRandomTile();
+		}while(randomTile.GetState() != TileState.None);
+		randomTile.SetState(TileState.Hunter);
+
+		do
+		{
+			++i;
+			randomTile= GetRandomTile();
+		}while(randomTile.GetState() != TileState.None);
+		randomTile.SetState(TileState.Food);
+
+		Debug.Log(i);
+	}
+
+	TileButton GetRandomTile()
+	{
+		int y = Random.Range(0, boardHeight);
+		int x = Random.Range(0, boardWidth - (y % 2));
+
+		return tiles[y][x];
 	}
 }
