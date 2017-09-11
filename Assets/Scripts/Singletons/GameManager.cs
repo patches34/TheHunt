@@ -15,6 +15,8 @@ public class GameManager : Singleton<GameManager>
 {
 	public TurnState turn {get; private set;}
 
+	public TileButton hunterTile, animalTile, foodTile;
+
 	#region Initialization
 	// Use this for initialization
 	protected GameManager()

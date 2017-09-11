@@ -22,6 +22,8 @@ public class TileButton : MonoBehaviour
 	Animator anim;
 	const string k_State = "State";
 
+	public Vector2 point;
+
 	// Use this for initialization
 	void Start ()
 	{

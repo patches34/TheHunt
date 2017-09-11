@@ -21,6 +21,7 @@ public class BoardManager : Singleton<BoardManager>
 
 	public void CreateBoard()
 	{
+		#region Generate tiles
 		tiles = new List<List<TileButton>>();
 
 		for(int row = 0; row < boardHeight; ++row)
@@ -44,31 +45,36 @@ public class BoardManager : Singleton<BoardManager>
 
 				newTile.GetComponent<RectTransform>().anchoredPosition = pos;
 
-				rowTiles.Add(newTile.GetComponent<TileButton>());
+				TileButton tile = newTile.GetComponent<TileButton>();
+				//	Set tile coordinate position
+				tile.point = new Vector2(column - row / 2, row);
+
+				rowTiles.Add(tile);
 			}
 
 			tiles.Add(rowTiles);
 		}
+		#endregion
 
+		#region Place starting pieces
 		TileButton randomTile = GetRandomTile();
 		randomTile.SetState(TileState.Animal);
+		GameManager.Instance.animalTile = randomTile;
 
-		int i = 0;
 		do
 		{
-			++i;
 			randomTile= GetRandomTile();
 		}while(randomTile.GetState() != TileState.None);
 		randomTile.SetState(TileState.Hunter);
+		GameManager.Instance.hunterTile = randomTile;
 
 		do
 		{
-			++i;
 			randomTile= GetRandomTile();
 		}while(randomTile.GetState() != TileState.None);
 		randomTile.SetState(TileState.Food);
-
-		Debug.Log(i);
+		GameManager.Instance.foodTile = randomTile;
+		#endregion
 	}
 
 	TileButton GetRandomTile()
