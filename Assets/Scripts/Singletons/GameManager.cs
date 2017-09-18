@@ -4,7 +4,7 @@ using UnityEngine.Analytics;
 using System.Collections;
 
 
-public enum TurnState
+public enum TurnActor
 {
 	Player,
 	Hunter,
@@ -13,11 +13,13 @@ public enum TurnState
 
 public class GameManager : Singleton<GameManager>
 {
-	public TurnState turn;// {get; private set;}
+	public TurnActor turn;// {get; private set;}
 	public float compTurnWait;
 	public float turnWaitTimer;
 
-	public TileButton hunterTile, animalTile, foodTile;
+	public Tile foodTile;
+
+	public PathFinder animalActor, hunterActor;
 
 	#region Initialization
 	// Use this for initialization
@@ -30,11 +32,14 @@ public class GameManager : Singleton<GameManager>
 	void Start()
 	{
 		BoardManager.Instance.CreateBoard();
+
+		animalActor.gameObject.SetActive(true);
+		hunterActor.gameObject.SetActive(true);
 	}
 
 	void Update()
 	{
-		if(turn != TurnState.Player)
+		if(turn != TurnActor.Player)
 		{
 			turnWaitTimer += Time.deltaTime;
 
@@ -44,11 +49,11 @@ public class GameManager : Singleton<GameManager>
 
 				switch(turn)
 				{
-				case TurnState.Animal:
-					turn = TurnState.Player;
+				case TurnActor.Animal:
+					turn = TurnActor.Player;
 					break;
-				case TurnState.Hunter:
-					turn = TurnState.Animal;
+				case TurnActor.Hunter:
+					turn = TurnActor.Animal;
 					break;
 				}
 			}
@@ -58,6 +63,6 @@ public class GameManager : Singleton<GameManager>
 	public void PlayerWent()
 	{
 		Debug.Log("Player went");
-		turn = TurnState.Hunter;
+		turn = TurnActor.Hunter;
 	}
 }

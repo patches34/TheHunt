@@ -6,12 +6,13 @@ using System.Collections;
 public class BoardManager : Singleton<BoardManager>
 {
 	[SerializeField]
-	int boardWidth, boardHeight, tileSize, tileSpacing;
+	Point boardSize;
+	public int tileSize, tileSpacing;
 
 	[SerializeField]
 	GameObject tilePrefab;
 
-	List<List<TileButton>> tiles;
+	Dictionary<Point, TileButton> tiles;
 
 	// Use this for initialization
 	protected BoardManager()
@@ -22,66 +23,76 @@ public class BoardManager : Singleton<BoardManager>
 	public void CreateBoard()
 	{
 		#region Generate tiles
-		tiles = new List<List<TileButton>>();
+		tiles = new Dictionary<Point, TileButton>();
 
-		for(int row = 0; row < boardHeight; ++row)
+		for(int row = 0; row < boardSize.Y; ++row)
 		{
-			List<TileButton> rowTiles = new List<TileButton>();
-
-			for(int column = 0; column < boardWidth - (row % 2); ++column)
+			for(int column = 0; column < boardSize.X - (row % 2); ++column)
 			{
-				Vector3 pos = Vector3.zero;
-				if(row % 2 == 0)
-				{
-					pos.x = column * (tileSize + tileSpacing) + (tileSize / 2f);
-				}
-				else
-				{
-					pos.x = column * (tileSize + tileSpacing) + (tileSize / 2f) + ((tileSize + tileSpacing) / 2f);
-				}
-				pos.y = row * tileSize + (tileSize / 2f);
-
 				GameObject newTile = Instantiate(tilePrefab, transform);
+				newTile.transform.SetAsFirstSibling();
 
-				newTile.GetComponent<RectTransform>().anchoredPosition = pos;
-
-				TileButton tile = newTile.GetComponent<TileButton>();
+				TileButton tileBtn = newTile.GetComponent<TileButton>();
 				//	Set tile coordinate position
-				tile.point = new Vector2(column - row / 2, row);
+				tileBtn.tile = new Tile(column - row / 2, row);
+				newTile.GetComponent<RectTransform>().anchoredPosition = TileCoordToScreenSpace(tileBtn.tile.Location);
 
-				rowTiles.Add(tile);
+				tiles.Add(tileBtn.tile.Location, tileBtn);
 			}
-
-			tiles.Add(rowTiles);
 		}
 		#endregion
 
-		#region Place starting pieces
+		foreach(TileButton t in tiles.Values)
+		{
+			t.tile.FindNeighbours(tiles, boardSize, true);
+		}
+
+		/*#region Place starting pieces
 		TileButton randomTile = GetRandomTile();
-		randomTile.SetState(TileState.Animal);
-		GameManager.Instance.animalTile = randomTile;
-
-		do
-		{
-			randomTile= GetRandomTile();
-		}while(randomTile.GetState() != TileState.None);
-		randomTile.SetState(TileState.Hunter);
-		GameManager.Instance.hunterTile = randomTile;
-
-		do
-		{
-			randomTile= GetRandomTile();
-		}while(randomTile.GetState() != TileState.None);
+		randomTile.SetIsPassible(false);
 		randomTile.SetState(TileState.Food);
-		GameManager.Instance.foodTile = randomTile;
-		#endregion
+		GameManager.Instance.foodTile = randomTile.tile;
+
+		do
+		{
+			randomTile= GetRandomTile();
+		}while(randomTile.GetState() != TileState.None);
+		randomTile.SetIsPassible(false);
+		GameManager.Instance.animalActor.MoveToCoord(randomTile.tile.Location, false);
+
+		do
+		{
+			randomTile= GetRandomTile();
+		}while(randomTile.GetState() != TileState.None);
+		randomTile.SetIsPassible(false);
+		GameManager.Instance.hunterActor.MoveToCoord(randomTile.tile.Location, false);
+		#endregion*/
 	}
 
 	TileButton GetRandomTile()
 	{
-		int y = Random.Range(0, boardHeight);
-		int x = Random.Range(0, boardWidth - (y % 2));
+		int y = Random.Range(0, boardSize.Y);
+		int x = Random.Range(0, boardSize.X);
+		x -= y % 2;
 
-		return tiles[y][x];
+		Debug.LogFormat("X: {0}\tY: {1}", x, y);
+		return tiles[new Point(x, y)];
+	}
+
+	public Vector2 TileCoordToScreenSpace(Point tileCoord)
+	{
+		Vector2 screenPosition = Vector2.zero;
+
+		//	X
+		screenPosition.x = (tileCoord.X + tileCoord.Y / 2) * (tileSize + tileSpacing) + (tileSize / 2f);
+		if(tileCoord.Y % 2 != 0)
+		{
+			screenPosition.x += (tileSize + tileSpacing) / 2f;
+		}
+
+		//	Y
+		screenPosition.y = tileCoord.Y * tileSize + (tileSize / 2f);
+
+		return screenPosition;
 	}
 }

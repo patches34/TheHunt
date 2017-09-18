@@ -79,6 +79,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 0
   anim: {fileID: 95944735741182052}
+  btn: {fileID: 114858745769517410}
+  coord:
+    X: 0
+    Y: 0
 --- !u!114 &114168743332066548
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -227,7 +231,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 80, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224638010068201510
 RectTransform:
