@@ -68,26 +68,33 @@ public class PathFinder : MonoBehaviour
 
 	public void TakeTurn()
 	{
-		timer = 0;
-
-		movePath = FindPath();
-
-		if(movePath == null)
+		if(currentTile.Location != goalTile.Location)
 		{
-			Debug.LogFormat("No Path for {0}", GameManager.Instance.Turn);
-		}
-		else if(movePath.TotalCost <= 0)
-		{
-			Debug.LogFormat("{0} at goal", GameManager.Instance.Turn);
+			timer = 0;
+
+			movePath = FindPath();
+
+			if(movePath == null)
+			{
+				Debug.LogFormat("No Path for {0}", GameManager.Instance.Turn);
+			}
+			else if(movePath.TotalCost <= 0)
+			{
+				Debug.LogFormat("{0} at goal", GameManager.Instance.Turn);
+			}
+			else
+			{
+				nextTile = movePath.ElementAt((int)movePath.TotalCost - 1);
+
+				lerpStart = BoardManager.Instance.TileCoordToScreenSpace(currentTile.Location);
+				lerpEnd = BoardManager.Instance.TileCoordToScreenSpace(nextTile.Location);
+
+				timer = 0;
+			}
 		}
 		else
 		{
-			nextTile = movePath.ElementAt((int)movePath.TotalCost - 1);
-
-			lerpStart = BoardManager.Instance.TileCoordToScreenSpace(currentTile.Location);
-			lerpEnd = BoardManager.Instance.TileCoordToScreenSpace(nextTile.Location);
-
-			timer = 0;
+			GameManager.Instance.PlayerWent();
 		}
 	}
 
