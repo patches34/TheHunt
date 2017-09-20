@@ -56,7 +56,7 @@ public class TileButton : MonoBehaviour
 	public void Click()
 	{
 		//	Check if if its the player's turn
-		if(GameManager.Instance.turn == TurnActor.Player)
+		if(GameManager.Instance.IsActorTurn(TurnActor.Player))
 		{
 			GameManager.Instance.PlayerWent();
 		}

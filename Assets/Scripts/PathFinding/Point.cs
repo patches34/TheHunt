@@ -17,8 +17,18 @@ public struct Point
         return String.Format("({0}, {1})", X, Y);
     }
 
-	public Vector2 ToVector2()
+	public static bool operator ==(Point a, Point b)
 	{
-		return new Vector2(X, Y);
+		return a.X == b.X && a.Y == b.Y;
+	}
+
+	public static bool operator !=(Point a, Point b)
+	{
+		return a.X != b.X || a.Y != b.Y;
+	}
+
+	public static implicit operator Vector2(Point p)
+	{
+		return new Vector2(p.X, p.Y);
 	}
 }

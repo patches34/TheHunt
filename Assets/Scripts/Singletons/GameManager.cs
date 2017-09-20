@@ -6,6 +6,7 @@ using System.Collections;
 
 public enum TurnActor
 {
+	None,
 	Player,
 	Hunter,
 	Animal
@@ -13,8 +14,21 @@ public enum TurnActor
 
 public class GameManager : Singleton<GameManager>
 {
-	public TurnActor turn;// {get; private set;}
-	public bool isWaiting = true;
+	[SerializeField]
+	TurnActor turn;
+	public TurnActor Turn
+	{
+		get
+		{
+			return this.turn;
+		}
+		private set
+		{
+			this.turn = value;
+		}
+	}
+
+	public bool isWaiting = true, isRunning = false;
 	public float compTurnWait;
 	public float turnWaitTimer;
 
@@ -32,6 +46,7 @@ public class GameManager : Singleton<GameManager>
 
 	void Start()
 	{
+		turn = TurnActor.Player;
 		isWaiting = true;
 
 		BoardManager.Instance.CreateBoard();
@@ -53,6 +68,8 @@ public class GameManager : Singleton<GameManager>
 
 		animalActor.gameObject.SetActive(true);
 		hunterActor.gameObject.SetActive(true);
+
+		isRunning = true;
 	}
 
 	void Update()
@@ -78,5 +95,26 @@ public class GameManager : Singleton<GameManager>
 		}
 
 		isWaiting = false;
+	}
+
+	public void GoalReached(TurnActor actor = TurnActor.None)
+	{
+		if(turn == TurnActor.Hunter || actor == TurnActor.Hunter)
+		{
+			Debug.LogError("Game Over\nHunter Won");
+			isRunning = false;
+		}
+	}
+
+	public bool IsActorTurn(TurnActor actor)
+	{
+		if(isRunning)
+		{
+			return turn == actor;
+		}
+		else
+		{
+			return false;
+		}
 	}
 }

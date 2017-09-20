@@ -34,7 +34,7 @@ public class PathFinder : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-		if(GameManager.Instance.turn == actor)
+		if(GameManager.Instance.IsActorTurn(actor))
 		{
 			if(timer < 0)
 			{
@@ -51,14 +51,16 @@ public class PathFinder : MonoBehaviour
 				{
 					currentTile = nextTile;
 
+					timer = -1;
+
 					if(movePath.TotalCost == 1)
 					{
-						Debug.LogErrorFormat("{0} reached goal", GameManager.Instance.turn);
+						GameManager.Instance.GoalReached();
 					}
-
-					GameManager.Instance.PlayerWent();
-
-					timer = -1;
+					else
+					{
+						GameManager.Instance.PlayerWent();
+					}
 				}
 			}
 		}
@@ -72,11 +74,11 @@ public class PathFinder : MonoBehaviour
 
 		if(movePath == null)
 		{
-			Debug.LogErrorFormat("No Path for {0}", GameManager.Instance.turn);
+			Debug.LogFormat("No Path for {0}", GameManager.Instance.Turn);
 		}
 		else if(movePath.TotalCost <= 0)
 		{
-			Debug.LogErrorFormat("{0} at goal", GameManager.Instance.turn);
+			Debug.LogFormat("{0} at goal", GameManager.Instance.Turn);
 		}
 		else
 		{
@@ -150,5 +152,10 @@ public class PathFinder : MonoBehaviour
 	public void SetGoalTile(Tile newGoal)
 	{
 		goalTile = newGoal;
+
+		if(goalTile.Location == currentTile.Location)
+		{
+			GameManager.Instance.GoalReached(TurnActor.Hunter);
+		}
 	}
 }
