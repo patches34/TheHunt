@@ -13579,7 +13579,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   turn: 0
-  isWaiting: 1
+  isWaiting: 0
+  isRunning: 0
   compTurnWait: 1
   turnWaitTimer: 0
   foodTile:
@@ -13587,7 +13588,6 @@ MonoBehaviour:
       X: 0
       Y: 0
     Passable: 0
-    NeighboursTiles: []
   animalActor: {fileID: 1935166312}
   hunterActor: {fileID: 28757865}
 --- !u!4 &1894036753
@@ -13951,6 +13951,11 @@ Prefab:
     - target: {fileID: 1687605708402164, guid: 36edba3f3ea97454e8412bcfdee8f420, type: 2}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114154363137624042, guid: 36edba3f3ea97454e8412bcfdee8f420,
+        type: 2}
+      propertyPath: actor
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 36edba3f3ea97454e8412bcfdee8f420, type: 2}
@@ -15388,6 +15393,11 @@ Prefab:
     - target: {fileID: 1307601402661810, guid: 36c8e39fe113e4a599678281d9ee2e5a, type: 2}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114688559407286014, guid: 36c8e39fe113e4a599678281d9ee2e5a,
+        type: 2}
+      propertyPath: actor
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 36c8e39fe113e4a599678281d9ee2e5a, type: 2}
