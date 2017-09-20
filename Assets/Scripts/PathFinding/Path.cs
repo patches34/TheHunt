@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
+[Serializable]
 public class Path<Node>: IEnumerable<Node>
 {
     public Node LastStep { get; private set; }

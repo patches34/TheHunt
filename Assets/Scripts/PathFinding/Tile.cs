@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using UnityEngine;
 
+[Serializable]
 public class Tile: GridObject, IHasNeighbours<Tile>
 {
     public bool Passable;
@@ -41,7 +42,10 @@ public class Tile: GridObject, IHasNeighbours<Tile>
                 neighbourY >= 0 &&
 				neighbourY < BoardSize.Y)
 			{
-				neighbours.Add(Board[new Point(neighbourX, neighbourY)].tile);
+				if(Board.ContainsKey(new Point(neighbourX, neighbourY)))
+				{
+					neighbours.Add(Board[new Point(neighbourX, neighbourY)].tile);
+				}
 			}
         }
 

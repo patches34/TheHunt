@@ -1,5 +1,6 @@
 using System;
 
+[Serializable]
 public abstract class GridObject
 {
     public Point Location;

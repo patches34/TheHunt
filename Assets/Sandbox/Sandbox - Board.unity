@@ -13579,8 +13579,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   turn: 0
+  isWaiting: 1
   compTurnWait: 1
   turnWaitTimer: 0
+  foodTile:
+    Location:
+      X: 0
+      Y: 0
+    Passable: 0
+    NeighboursTiles: []
   animalActor: {fileID: 1935166312}
   hunterActor: {fileID: 28757865}
 --- !u!4 &1894036753

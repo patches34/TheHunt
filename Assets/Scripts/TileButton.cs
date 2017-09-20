@@ -39,10 +39,18 @@ public class TileButton : MonoBehaviour
 
 	public Tile tile;
 
+	[SerializeField]
+	Text label;
+
 	// Use this for initialization
 	void Start ()
 	{
 		coord = tile.Location;
+
+		if(label != null)
+		{
+			label.text = coord.ToString();
+		}
 	}
 
 	public void Click()
@@ -66,10 +74,8 @@ public class TileButton : MonoBehaviour
 		return state;
 	}
 
-	public void SetIsPassible(bool value)
+	public void SetIsInteractable(bool value)
 	{
-		tile.Passable = value;
-
 		btn.interactable = value;
 	}
 }

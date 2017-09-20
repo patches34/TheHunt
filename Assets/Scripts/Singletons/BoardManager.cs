@@ -46,37 +46,20 @@ public class BoardManager : Singleton<BoardManager>
 		{
 			t.tile.FindNeighbours(tiles, boardSize, true);
 		}
-
-		/*#region Place starting pieces
-		TileButton randomTile = GetRandomTile();
-		randomTile.SetIsPassible(false);
-		randomTile.SetState(TileState.Food);
-		GameManager.Instance.foodTile = randomTile.tile;
-
-		do
-		{
-			randomTile= GetRandomTile();
-		}while(randomTile.GetState() != TileState.None);
-		randomTile.SetIsPassible(false);
-		GameManager.Instance.animalActor.MoveToCoord(randomTile.tile.Location, false);
-
-		do
-		{
-			randomTile= GetRandomTile();
-		}while(randomTile.GetState() != TileState.None);
-		randomTile.SetIsPassible(false);
-		GameManager.Instance.hunterActor.MoveToCoord(randomTile.tile.Location, false);
-		#endregion*/
 	}
 
-	TileButton GetRandomTile()
+	public TileButton GetRandomTile()
 	{
-		int y = Random.Range(0, boardSize.Y);
-		int x = Random.Range(0, boardSize.X);
-		x -= y % 2;
+		Point randoPoint = new Point();
 
-		Debug.LogFormat("X: {0}\tY: {1}", x, y);
-		return tiles[new Point(x, y)];
+		do
+		{
+			randoPoint.Y = Random.Range(0, boardSize.Y);
+			randoPoint.X = Random.Range(0, boardSize.X - (randoPoint.Y % 2));
+			randoPoint.X -= (randoPoint.Y / 2);
+		}while(!tiles[randoPoint].tile.Passable);
+
+		return tiles[randoPoint];
 	}
 
 	public Vector2 TileCoordToScreenSpace(Point tileCoord)

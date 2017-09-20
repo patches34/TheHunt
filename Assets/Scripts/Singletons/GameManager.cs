@@ -14,6 +14,7 @@ public enum TurnActor
 public class GameManager : Singleton<GameManager>
 {
 	public TurnActor turn;// {get; private set;}
+	public bool isWaiting = true;
 	public float compTurnWait;
 	public float turnWaitTimer;
 
@@ -31,7 +32,24 @@ public class GameManager : Singleton<GameManager>
 
 	void Start()
 	{
+		isWaiting = true;
+
 		BoardManager.Instance.CreateBoard();
+
+		#region Place starting pieces
+		TileButton randomTile = BoardManager.Instance.GetRandomTile();
+		randomTile.SetIsInteractable(false);
+		randomTile.SetState(TileState.Food);
+		foodTile = randomTile.tile;
+
+		randomTile= BoardManager.Instance.GetRandomTile();
+		randomTile.SetIsInteractable(false);
+		animalActor.Init(randomTile.tile, foodTile);
+
+		randomTile= BoardManager.Instance.GetRandomTile();
+		randomTile.SetIsInteractable(false);
+		hunterActor.Init(randomTile.tile, animalActor.GetTile());
+		#endregion
 
 		animalActor.gameObject.SetActive(true);
 		hunterActor.gameObject.SetActive(true);
@@ -39,30 +57,26 @@ public class GameManager : Singleton<GameManager>
 
 	void Update()
 	{
-		if(turn != TurnActor.Player)
-		{
-			turnWaitTimer += Time.deltaTime;
-
-			if(turnWaitTimer >= compTurnWait)
-			{
-				turnWaitTimer = 0;
-
-				switch(turn)
-				{
-				case TurnActor.Animal:
-					turn = TurnActor.Player;
-					break;
-				case TurnActor.Hunter:
-					turn = TurnActor.Animal;
-					break;
-				}
-			}
-		}
+		
 	}
 
 	public void PlayerWent()
 	{
-		Debug.Log("Player went");
-		turn = TurnActor.Hunter;
+		switch(turn)
+		{
+		case TurnActor.Player:
+			turn = TurnActor.Hunter;
+			break;
+		case TurnActor.Hunter:
+			turn = TurnActor.Animal;
+			break;
+		case TurnActor.Animal:
+			hunterActor.SetGoalTile(animalActor.GetTile());
+
+			turn = TurnActor.Player;
+			break;
+		}
+
+		isWaiting = false;
 	}
 }
