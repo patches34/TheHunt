@@ -58,6 +58,10 @@ public class TileButton : MonoBehaviour
 		//	Check if if its the player's turn
 		if(GameManager.Instance.IsActorTurn(TurnActor.Player))
 		{
+			SetState(TileState.Blocked);
+
+			tile.Passable = false;
+
 			GameManager.Instance.PlayerWent();
 		}
 	}
@@ -67,6 +71,8 @@ public class TileButton : MonoBehaviour
 		State = newState;
 
 		anim.SetInteger(k_State, (int)newState);
+
+		SetIsInteractable(newState == TileState.None);
 	}
 
 	public TileState GetState()
