@@ -29,6 +29,20 @@ public class PathFinder : MonoBehaviour
 		goalTile = goal;
 
 		timer = -1;
+
+		gameObject.SetActive(true);
+	}
+
+	public void Reset()
+	{
+		timer = -1;
+
+		goalTile = null;
+
+		BoardManager.Instance.SetTileInteractable(currentTile.Location, true);
+		currentTile = null;
+
+		gameObject.SetActive(false);
 	}
 	
 	// Update is called once per frame
