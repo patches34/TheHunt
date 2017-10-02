@@ -79,6 +79,7 @@ public class PathFinder : MonoBehaviour
 			if(movePath == null)
 			{
 				Debug.LogFormat("No Path for {0}", GameManager.Instance.Turn);
+				GameManager.Instance.GoalBlocked(actor);
 			}
 			else if(movePath.TotalCost <= 0)
 			{

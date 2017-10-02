@@ -101,8 +101,20 @@ public class GameManager : Singleton<GameManager>
 	{
 		if(turn == TurnActor.Hunter || actor == TurnActor.Hunter)
 		{
-			Debug.LogError("Game Over\nHunter Won");
-			isRunning = false;
+			GameOver(false);
+		}
+	}
+
+	public void GoalBlocked(TurnActor actor)
+	{
+		switch(actor)
+		{
+		case TurnActor.Animal:
+			GameOver(false);
+			break;
+		case TurnActor.Hunter:
+			GameOver(true);
+			break;
 		}
 	}
 
@@ -116,5 +128,20 @@ public class GameManager : Singleton<GameManager>
 		{
 			return false;
 		}
+	}
+
+	void GameOver(bool didPlayerWin)
+	{
+		if(didPlayerWin)
+		{
+			Debug.Log("Player Won!");
+		}
+		else
+		{
+			Debug.Log("Player lost");
+		}
+
+		isRunning = false;
+		turn = TurnActor.None;
 	}
 }
