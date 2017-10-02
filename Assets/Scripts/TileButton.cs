@@ -60,6 +60,8 @@ public class TileButton : MonoBehaviour
 		{
 			SetState(TileState.Blocked);
 
+			tile.Passable = false;
+
 			GameManager.Instance.PlayerWent();
 		}
 	}
