@@ -49,6 +49,8 @@ public class PathFinder : MonoBehaviour
 
 				if(timer >= moveLerpTime)
 				{
+					BoardManager.Instance.SetTileInteractable(currentTile.Location, true);
+
 					currentTile = nextTile;
 
 					timer = -1;
@@ -85,6 +87,8 @@ public class PathFinder : MonoBehaviour
 			else
 			{
 				nextTile = movePath.ElementAt((int)movePath.TotalCost - 1);
+
+				BoardManager.Instance.SetTileInteractable(nextTile.Location, false);
 
 				lerpStart = BoardManager.Instance.TileCoordToScreenSpace(currentTile.Location);
 				lerpEnd = BoardManager.Instance.TileCoordToScreenSpace(nextTile.Location);

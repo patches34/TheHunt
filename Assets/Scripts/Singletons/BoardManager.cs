@@ -78,4 +78,9 @@ public class BoardManager : Singleton<BoardManager>
 
 		return screenPosition;
 	}
+
+	public void SetTileInteractable(Point tileCoord, bool isInteractable)
+	{
+		tiles[tileCoord].SetIsInteractable(isInteractable);
+	}
 }
