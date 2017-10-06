@@ -213,7 +213,7 @@ PlayerSettings:
   AndroidTargetDevice: 0
   AndroidSplashScreenScale: 0
   androidSplashScreen: {fileID: 0}
-  AndroidKeystoreName: patches.keystore
+  AndroidKeystoreName: cbg.keystore
   AndroidKeyaliasName: hunt
   AndroidTVCompatibility: 1
   AndroidIsGame: 1
