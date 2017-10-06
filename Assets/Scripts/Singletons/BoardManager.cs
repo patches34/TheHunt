@@ -48,6 +48,14 @@ public class BoardManager : Singleton<BoardManager>
 		}
 	}
 
+	public void Reset()
+	{
+		foreach(TileButton t in tiles.Values)
+		{
+			t.SetState(TileState.None);
+		}
+	}
+
 	public TileButton GetRandomTile()
 	{
 		Point randoPoint = new Point();

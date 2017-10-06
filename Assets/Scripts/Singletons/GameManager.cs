@@ -32,7 +32,7 @@ public class GameManager : Singleton<GameManager>
 	public float compTurnWait;
 	public float turnWaitTimer;
 
-	public Tile foodTile;
+	public TileButton foodTile;
 
 	public PathFinder animalActor, hunterActor;
 
@@ -46,30 +46,34 @@ public class GameManager : Singleton<GameManager>
 
 	void Start()
 	{
+		BoardManager.Instance.CreateBoard();
+
+		StartGame();
+	}
+
+	void StartGame()
+	{
 		turn = TurnActor.Player;
 		isWaiting = true;
 
-		BoardManager.Instance.CreateBoard();
+		SetupBoard();
 
-		#region Place starting pieces
+		isRunning = true;
+	}
+
+	void SetupBoard()
+	{
+		foodTile = BoardManager.Instance.GetRandomTile();
+		foodTile.SetIsInteractable(false);
+		foodTile.SetState(TileState.Food);
+
 		TileButton randomTile = BoardManager.Instance.GetRandomTile();
 		randomTile.SetIsInteractable(false);
-		randomTile.SetState(TileState.Food);
-		foodTile = randomTile.tile;
-
-		randomTile= BoardManager.Instance.GetRandomTile();
-		randomTile.SetIsInteractable(false);
-		animalActor.Init(randomTile.tile, foodTile);
+		animalActor.Init(randomTile.tile, foodTile.tile);
 
 		randomTile= BoardManager.Instance.GetRandomTile();
 		randomTile.SetIsInteractable(false);
 		hunterActor.Init(randomTile.tile, animalActor.GetTile());
-		#endregion
-
-		animalActor.gameObject.SetActive(true);
-		hunterActor.gameObject.SetActive(true);
-
-		isRunning = true;
 	}
 
 	void Update()
@@ -143,5 +147,21 @@ public class GameManager : Singleton<GameManager>
 
 		isRunning = false;
 		turn = TurnActor.None;
+	}
+
+	public void Restart()
+	{
+		BoardManager.Instance.Reset();
+
+		foodTile.SetState(TileState.None);
+
+		animalActor.Reset();
+		hunterActor.Reset();
+
+		turn = TurnActor.None;
+
+		isRunning = false;
+
+		StartGame();
 	}
 }
