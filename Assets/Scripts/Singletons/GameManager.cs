@@ -32,6 +32,8 @@ public class GameManager : Singleton<GameManager>
 	public float compTurnWait;
 	public float turnWaitTimer;
 
+	public TurnActor GameOverState { get; private set; }
+
 	public TileButton foodTile;
 
 	public PathFinder animalActor, hunterActor;
@@ -138,19 +140,24 @@ public class GameManager : Singleton<GameManager>
 	{
 		if(didPlayerWin)
 		{
-			Debug.Log("Player Won!");
+			GameOverState = TurnActor.Player;
 		}
 		else
 		{
-			Debug.Log("Player lost");
+			GameOverState = turn;
 		}
+
 
 		isRunning = false;
 		turn = TurnActor.None;
+
+		MenuManager.Instance.ShowMenu(MenuTypes.GameOver);
 	}
 
 	public void Restart()
 	{
+		GameOverState = TurnActor.None;
+
 		BoardManager.Instance.Reset();
 
 		foodTile.SetState(TileState.None);
