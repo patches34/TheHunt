@@ -60,8 +60,6 @@ public class TileButton : MonoBehaviour
 		{
 			SetState(TileState.Blocked);
 
-			tile.Passable = false;
-
 			GameManager.Instance.PlayerWent();
 		}
 	}
@@ -73,6 +71,8 @@ public class TileButton : MonoBehaviour
 		anim.SetInteger(k_State, (int)newState);
 
 		SetIsInteractable(newState == TileState.None);
+
+		tile.Passable = newState != TileState.Blocked;
 	}
 
 	public TileState GetState()
