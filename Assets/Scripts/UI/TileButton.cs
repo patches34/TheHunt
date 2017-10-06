@@ -82,6 +82,9 @@ public class TileButton : MonoBehaviour
 
 	public void SetIsInteractable(bool value)
 	{
-		btn.interactable = value;
+		if(state != TileState.Food)
+		{
+			btn.interactable = value;
+		}
 	}
 }
