@@ -11,6 +11,16 @@ public enum MenuTypes
 
 public class MenuManager : Singleton<MenuManager>
 {
+	[SerializeField]
+	RectTransform canvasRectTransform;
+	public Rect CanvasRect
+	{
+		get
+		{
+			return canvasRectTransform.rect;
+		}
+	}
+
 	Dictionary<MenuTypes, UIMenu> menus = new Dictionary<MenuTypes, UIMenu>();
 
 	#region Initialization

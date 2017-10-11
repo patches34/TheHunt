@@ -25,13 +25,14 @@ public class BoardManager : Singleton<BoardManager>
 
 	public void CreateBoard()
 	{
+		#region Resize game board
 		Vector2 boardRect = new Vector2();
-		boardRect.x = (tileSize * boardSize.X + tileSpacing * boardSize.X - 1) / 2f;
+		boardRect.x = ((tileSize + tileSpacing) * boardSize.X - tileSpacing) / 2f;
 		boardRect.y = (tileSize * boardSize.Y) / 2f;
 
 		rect.offsetMax = boardRect;
 		rect.offsetMin = -boardRect;
-
+		#endregion
 
 		#region Generate tiles
 		tiles = new Dictionary<Point, TileButton>();
