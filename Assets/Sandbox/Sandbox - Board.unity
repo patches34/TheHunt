@@ -482,6 +482,7 @@ MonoBehaviour:
   tileSize: 100
   tileSpacing: 10
   tilePrefab: {fileID: 1313877467187986, guid: 8170f1fd781884ed38dae4cd93517250, type: 2}
+  rect: {fileID: 1327174336}
 --- !u!114 &1327174338
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -501,7 +502,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -914,22 +915,22 @@ Prefab:
     - target: {fileID: 224700074368305652, guid: 36edba3f3ea97454e8412bcfdee8f420,
         type: 2}
       propertyPath: m_AnchorMin.x
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224700074368305652, guid: 36edba3f3ea97454e8412bcfdee8f420,
         type: 2}
       propertyPath: m_AnchorMin.y
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224700074368305652, guid: 36edba3f3ea97454e8412bcfdee8f420,
         type: 2}
       propertyPath: m_AnchorMax.x
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224700074368305652, guid: 36edba3f3ea97454e8412bcfdee8f420,
         type: 2}
       propertyPath: m_AnchorMax.y
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224700074368305652, guid: 36edba3f3ea97454e8412bcfdee8f420,
         type: 2}
@@ -1191,22 +1192,22 @@ Prefab:
     - target: {fileID: 224737944682561980, guid: 36c8e39fe113e4a599678281d9ee2e5a,
         type: 2}
       propertyPath: m_AnchorMin.x
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224737944682561980, guid: 36c8e39fe113e4a599678281d9ee2e5a,
         type: 2}
       propertyPath: m_AnchorMin.y
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224737944682561980, guid: 36c8e39fe113e4a599678281d9ee2e5a,
         type: 2}
       propertyPath: m_AnchorMax.x
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224737944682561980, guid: 36c8e39fe113e4a599678281d9ee2e5a,
         type: 2}
       propertyPath: m_AnchorMax.y
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224737944682561980, guid: 36c8e39fe113e4a599678281d9ee2e5a,
         type: 2}

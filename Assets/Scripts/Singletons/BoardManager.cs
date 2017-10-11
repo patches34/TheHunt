@@ -14,6 +14,9 @@ public class BoardManager : Singleton<BoardManager>
 
 	Dictionary<Point, TileButton> tiles;
 
+	[SerializeField]
+	RectTransform rect;
+
 	// Use this for initialization
 	protected BoardManager()
 	{
@@ -22,6 +25,8 @@ public class BoardManager : Singleton<BoardManager>
 
 	public void CreateBoard()
 	{
+		rect.offsetMax = new Vector2(tileSize * boardSize.X + tileSpacing * boardSize.X - 1, tileSize * boardSize.Y);
+
 		#region Generate tiles
 		tiles = new Dictionary<Point, TileButton>();
 
