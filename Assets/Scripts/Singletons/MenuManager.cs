@@ -6,7 +6,8 @@ using System.Collections;
 public enum MenuTypes
 {
 	None,
-	GameOver
+	GameOver,
+	Pause
 }
 
 public class MenuManager : Singleton<MenuManager>
@@ -46,6 +47,10 @@ public class MenuManager : Singleton<MenuManager>
 		
 	}
 
+	public void ShowMenu(int type)
+	{
+		ShowMenu((MenuTypes)type);
+	}
 	public void ShowMenu(MenuTypes type)
 	{
 		menus[type].SetVisible(true);
