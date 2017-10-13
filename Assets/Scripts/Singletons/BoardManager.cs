@@ -22,9 +22,6 @@ public class BoardManager : Singleton<BoardManager>
 
 	Dictionary<Point, TileButton> tiles;
 
-	[SerializeField]
-	RectTransform rect;
-
 	// Use this for initialization
 	protected BoardManager()
 	{
@@ -38,8 +35,7 @@ public class BoardManager : Singleton<BoardManager>
 		boardRect.x = ((tileSize + tileSpacing) * boardSize.X - tileSpacing) / 2f;
 		boardRect.y = (tileSize * boardSize.Y) / 2f;
 
-		rect.offsetMax = boardRect;
-		rect.offsetMin = -boardRect;
+		MenuManager.Instance.ResizeGameBoard(boardRect);
 		#endregion
 
 		#region Generate tiles
