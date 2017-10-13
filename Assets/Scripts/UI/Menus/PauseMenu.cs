@@ -6,16 +6,18 @@ using UnityEngine.UI;
 public class PauseMenu : UIMenu
 {
 	[SerializeField]
-	Slider widthSlider, heightSlider;
+	Slider widthSlider, heightSlider, zoomSpeedSlider;
 
 	[SerializeField]
-	Text widthLabel, heightLabel;
+	Text widthLabel, heightLabel, zoomSpeedLabel;
 
 	// Use this for initialization
 	void OnEnable()
 	{
 		widthSlider.value = BoardManager.Instance.BoardSize.X;
 		heightSlider.value = BoardManager.Instance.BoardSize.Y;
+
+		zoomSpeedSlider.value = MenuManager.Instance.zoomSpeed;
 	}
 	
 	// Update is called once per frame
@@ -36,5 +38,12 @@ public class PauseMenu : UIMenu
 		BoardManager.Instance.SetBoardSize(height:(int)value);
 
 		heightLabel.text = value.ToString();
+	}
+
+	public void SetZoomSpeed(float value)
+	{
+		MenuManager.Instance.zoomSpeed = value;
+
+		zoomSpeedLabel.text = value.ToString("F4");
 	}
 }

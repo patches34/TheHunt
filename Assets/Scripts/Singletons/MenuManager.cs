@@ -30,6 +30,11 @@ public class MenuManager : Singleton<MenuManager>
 	[SerializeField]
 	RectTransform boardRect;
 
+	[SerializeField]
+	public float zoomSpeed;
+	[SerializeField]
+	float zoonMin, zoomMax;
+
 	#region Initialization
 	// Use this for initialization
 	protected MenuManager()
@@ -50,7 +55,48 @@ public class MenuManager : Singleton<MenuManager>
 
 	void Update()
 	{
-		
+		debugLabel.text = string.Format("Touches = {0}", Input.touchCount);
+
+		if(Input.touchCount >= 2)
+		{
+			// Store both touches.
+			Touch touchZero = Input.GetTouch(0);
+			Touch touchOne = Input.GetTouch(1);
+
+			// Find the position in the previous frame of each touch.
+			Vector2 touchZeroPrevPos = touchZero.position - touchZero.deltaPosition;
+			Vector2 touchOnePrevPos = touchOne.position - touchOne.deltaPosition;
+
+			// Find the magnitude of the vector (the distance) between the touches in each frame.
+			float prevTouchDeltaMag = (touchZeroPrevPos - touchOnePrevPos).magnitude;
+			float touchDeltaMag = (touchZero.position - touchOne.position).magnitude;
+
+			// Find the difference in the distances between each frame.
+			float deltaMagnitudeDiff = prevTouchDeltaMag - touchDeltaMag;
+
+			Vector3 rectScale = boardRect.localScale;
+			rectScale.x += deltaMagnitudeDiff * zoomSpeed;
+			if(rectScale.x > zoomMax)
+			{
+				rectScale.x = zoomMax;
+			}
+			else if(rectScale.x < zoonMin)
+			{
+				rectScale.x = zoonMin;
+			}
+
+			rectScale.y += deltaMagnitudeDiff * zoomSpeed;
+			if(rectScale.y > zoomMax)
+			{
+				rectScale.y = zoomMax;
+			}
+			else if(rectScale.y < zoonMin)
+			{
+				rectScale.y = zoonMin;
+			}
+
+			boardRect.localScale = rectScale;
+		}
 	}
 
 	public void ShowMenu(int type)
@@ -64,9 +110,12 @@ public class MenuManager : Singleton<MenuManager>
 
 	public void ResizeGameBoard(Vector2 boardSize)
 	{
-		debugLabel.text = boardSize.ToString();
-
 		boardRect.offsetMax = boardSize;
 		boardRect.offsetMin = -boardSize;
+	}
+
+	public void SetZoomSpeed(float value)
+	{
+		zoomSpeed = value;
 	}
 }
