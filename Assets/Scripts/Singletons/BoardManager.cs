@@ -7,6 +7,14 @@ public class BoardManager : Singleton<BoardManager>
 {
 	[SerializeField]
 	Point boardSize;
+	public Point BoardSize
+	{
+		get
+		{
+			return boardSize;
+		}
+	}
+
 	public int tileSize, tileSpacing;
 
 	[SerializeField]
@@ -68,6 +76,14 @@ public class BoardManager : Singleton<BoardManager>
 		}
 	}
 
+	public void DestoryBoard()
+	{
+		foreach(TileButton t in tiles.Values)
+		{
+			Destroy(t.gameObject);
+		}
+	}
+
 	public TileButton GetRandomTile()
 	{
 		Point randoPoint = new Point();
@@ -102,5 +118,18 @@ public class BoardManager : Singleton<BoardManager>
 	public void SetTileInteractable(Point tileCoord, bool isInteractable)
 	{
 		tiles[tileCoord].SetIsInteractable(isInteractable);
+	}
+
+	public void SetBoardSize(int width = 0, int height = 0)
+	{
+		if(width > 0)
+		{
+			boardSize.X = width;
+		}
+
+		if(height > 0)
+		{
+			boardSize.Y = height;
+		}
 	}
 }

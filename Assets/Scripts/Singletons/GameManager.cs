@@ -171,4 +171,11 @@ public class GameManager : Singleton<GameManager>
 
 		StartGame();
 	}
+
+	public void Rebuild()
+	{
+		BoardManager.Instance.DestoryBoard();
+
+		Start();
+	}
 }
