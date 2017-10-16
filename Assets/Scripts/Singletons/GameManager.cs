@@ -65,15 +65,19 @@ public class GameManager : Singleton<GameManager>
 
 	void SetupBoard()
 	{
+		List<Point> actorTiles = new List<Point>();
+
 		foodTile = BoardManager.Instance.GetRandomTile();
 		foodTile.SetIsInteractable(false);
 		foodTile.SetState(TileState.Food);
+		actorTiles.Add(foodTile.tile.Location);
 
-		TileButton randomTile = BoardManager.Instance.GetRandomTile();
+		TileButton randomTile = BoardManager.Instance.GetRandomTile(actorTiles);
 		randomTile.SetIsInteractable(false);
 		animalActor.Init(randomTile.tile, foodTile.tile);
+		actorTiles.Add(randomTile.tile.Location);
 
-		randomTile= BoardManager.Instance.GetRandomTile();
+		randomTile= BoardManager.Instance.GetRandomTile(actorTiles);
 		randomTile.SetIsInteractable(false);
 		hunterActor.Init(randomTile.tile, animalActor.GetTile());
 	}

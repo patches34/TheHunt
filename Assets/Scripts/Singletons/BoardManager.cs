@@ -80,7 +80,7 @@ public class BoardManager : Singleton<BoardManager>
 		}
 	}
 
-	public TileButton GetRandomTile()
+	public TileButton GetRandomTile(List<Point> usedTiles = null)
 	{
 		Point randoPoint = new Point();
 
@@ -89,7 +89,15 @@ public class BoardManager : Singleton<BoardManager>
 			randoPoint.Y = Random.Range(0, boardSize.Y);
 			randoPoint.X = Random.Range(0, boardSize.X - (randoPoint.Y % 2));
 			randoPoint.X -= (randoPoint.Y / 2);
-		}while(!tiles[randoPoint].tile.Passable);
+
+			if(tiles[randoPoint].tile.Passable)
+			{
+				if(usedTiles == null || !usedTiles.Contains(randoPoint))
+				{
+					break;
+				}
+			}
+		}while(true);
 
 		return tiles[randoPoint];
 	}
