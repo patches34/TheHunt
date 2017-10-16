@@ -8,7 +8,8 @@ public enum MenuTypes
 {
 	None,
 	GameOver,
-	Pause
+	Pause,
+	Info
 }
 
 public class MenuManager : Singleton<MenuManager>
