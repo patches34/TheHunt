@@ -40,8 +40,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3602ae6e709134408b500b4e9136b3de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentCoord: {x: 0, y: 0}
-  goalCoord: {x: 0, y: 0}
+  currentTile:
+    Location:
+      X: 0
+      Y: 0
+    Passable: 0
+  goalTile:
+    Location:
+      X: 0
+      Y: 0
+    Passable: 0
+  nextTile:
+    Location:
+      X: 0
+      Y: 0
+    Passable: 0
   moveLerpTime: 0.5
   timer: 0
   rectTrans: {fileID: 224700074368305652}
@@ -95,5 +108,5 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 60, y: 60}
+  m_SizeDelta: {x: 40, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}

@@ -318,7 +318,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Pause
+  m_Text: Options
 --- !u!222 &112103801
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1964,7 +1964,7 @@ GameObject:
   - component: {fileID: 947322582}
   - component: {fileID: 947322581}
   m_Layer: 5
-  m_Name: Pause - Panel
+  m_Name: Options - Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2144,7 +2144,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 219633966}
   m_Direction: 0
   m_MinValue: 4
-  m_MaxValue: 10
+  m_MaxValue: 20
   m_WholeNumbers: 1
   m_Value: 4
   m_OnValueChanged:
@@ -2837,7 +2837,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1000, y: 1000}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1327174337
 MonoBehaviour:
@@ -2851,10 +2851,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boardSize:
-    X: 4
-    Y: 7
-  tileSize: 80
-  tileSpacing: 10
+    X: 6
+    Y: 10
+  tileSize: 60
+  tileSpacing: 12
   tilePrefab: {fileID: 1313877467187986, guid: 8170f1fd781884ed38dae4cd93517250, type: 2}
 --- !u!114 &1327174338
 MonoBehaviour:
@@ -3077,9 +3077,9 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1783319700}
   m_Direction: 0
   m_MinValue: 4
-  m_MaxValue: 10
+  m_MaxValue: 20
   m_WholeNumbers: 1
-  m_Value: 10
+  m_Value: 4
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
@@ -3227,7 +3227,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 10917, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -4041,7 +4041,7 @@ GameObject:
   - component: {fileID: 1781784567}
   - component: {fileID: 1781784566}
   m_Layer: 5
-  m_Name: Pause - Button
+  m_Name: Options - Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4375,7 +4375,7 @@ GameObject:
   - component: {fileID: 1883270894}
   - component: {fileID: 1883270893}
   m_Layer: 5
-  m_Name: Scroll View
+  m_Name: Board - Scroll View
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4703,16 +4703,6 @@ Prefab:
         type: 2}
       propertyPath: m_AnchoredPosition.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224700074368305652, guid: 36edba3f3ea97454e8412bcfdee8f420,
-        type: 2}
-      propertyPath: m_SizeDelta.x
-      value: 60
-      objectReference: {fileID: 0}
-    - target: {fileID: 224700074368305652, guid: 36edba3f3ea97454e8412bcfdee8f420,
-        type: 2}
-      propertyPath: m_SizeDelta.y
-      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 224700074368305652, guid: 36edba3f3ea97454e8412bcfdee8f420,
         type: 2}
@@ -5151,16 +5141,6 @@ Prefab:
         type: 2}
       propertyPath: m_AnchoredPosition.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224737944682561980, guid: 36c8e39fe113e4a599678281d9ee2e5a,
-        type: 2}
-      propertyPath: m_SizeDelta.x
-      value: 60
-      objectReference: {fileID: 0}
-    - target: {fileID: 224737944682561980, guid: 36c8e39fe113e4a599678281d9ee2e5a,
-        type: 2}
-      propertyPath: m_SizeDelta.y
-      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 224737944682561980, guid: 36c8e39fe113e4a599678281d9ee2e5a,
         type: 2}
