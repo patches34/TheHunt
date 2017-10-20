@@ -85,6 +85,15 @@ public class TileButton : MonoBehaviour
 		if(state != TileState.Food)
 		{
 			btn.interactable = value;
+
+			if(state == TileState.Blocked && GameManager.Instance.HideBlockedTiles)
+			{
+				gameObject.SetActive(false);
+			}
+			else
+			{
+				gameObject.SetActive(true);
+			}
 		}
 	}
 }
