@@ -11,6 +11,9 @@ public class PauseMenu : UIMenu
 	[SerializeField]
 	Text widthLabel, heightLabel, zoomSpeedLabel;
 
+	[SerializeField]
+	Toggle hideBlockedToggle;
+
 	// Use this for initialization
 	void OnEnable()
 	{
@@ -18,6 +21,8 @@ public class PauseMenu : UIMenu
 		heightSlider.value = BoardManager.Instance.BoardSize.Y;
 
 		zoomSpeedSlider.value = MenuManager.Instance.zoomSpeed;
+
+		hideBlockedToggle.isOn = GameManager.Instance.HideBlockedTiles;
 	}
 	
 	// Update is called once per frame
@@ -45,5 +50,10 @@ public class PauseMenu : UIMenu
 		MenuManager.Instance.zoomSpeed = value;
 
 		zoomSpeedLabel.text = value.ToString("F4");
+	}
+
+	public void SetHideBlockedTiles(bool value)
+	{
+		GameManager.Instance.HideBlockedTiles = value;
 	}
 }

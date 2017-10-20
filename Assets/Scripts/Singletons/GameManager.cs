@@ -38,6 +38,8 @@ public class GameManager : Singleton<GameManager>
 
 	public PathFinder animalActor, hunterActor;
 
+	public bool HideBlockedTiles;
+
 	#region Initialization
 	// Use this for initialization
 	protected GameManager()
