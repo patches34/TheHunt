@@ -40,6 +40,9 @@ public class GameManager : Singleton<GameManager>
 
 	public bool HideBlockedTiles;
 
+	[Range (1, 10)]
+	public int actorMinDistance;
+
 	#region Initialization
 	// Use this for initialization
 	protected GameManager()
@@ -74,12 +77,12 @@ public class GameManager : Singleton<GameManager>
 		foodTile.SetState(TileState.Food);
 		actorTiles.Add(foodTile.tile.Location);
 
-		TileButton randomTile = BoardManager.Instance.GetRandomTile(actorTiles);
+		TileButton randomTile = BoardManager.Instance.GetRandomTile(actorTiles, actorMinDistance);
 		randomTile.SetIsInteractable(false);
 		animalActor.Init(randomTile.tile, foodTile.tile);
 		actorTiles.Add(randomTile.tile.Location);
 
-		randomTile= BoardManager.Instance.GetRandomTile(actorTiles);
+		randomTile= BoardManager.Instance.GetRandomTile(actorTiles, actorMinDistance);
 		randomTile.SetIsInteractable(false);
 		hunterActor.Init(randomTile.tile, animalActor.GetTile());
 	}

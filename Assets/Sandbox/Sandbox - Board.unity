@@ -3126,6 +3126,7 @@ MonoBehaviour:
   boardSize:
     X: 6
     Y: 10
+    Z: 0
   tileSize: 60
   tileSpacing: 12
   tilePrefab: {fileID: 1313877467187986, guid: 8170f1fd781884ed38dae4cd93517250, type: 2}
@@ -4862,6 +4863,7 @@ MonoBehaviour:
   animalActor: {fileID: 1935166312}
   hunterActor: {fileID: 28757865}
   HideBlockedTiles: 0
+  actorMinDistance: 2
 --- !u!4 &1894036753
 Transform:
   m_ObjectHideFlags: 0
