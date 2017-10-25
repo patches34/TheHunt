@@ -4864,6 +4864,7 @@ MonoBehaviour:
   hunterActor: {fileID: 28757865}
   HideBlockedTiles: 0
   actorMinDistance: 2
+  randomBlockedTiles: 0
 --- !u!4 &1894036753
 Transform:
   m_ObjectHideFlags: 0
