@@ -15,6 +15,9 @@ public class BoardManager : Singleton<BoardManager>
 		}
 	}
 
+    public int spawnPoints, spawnDistance;
+    Dictionary<int, List<Point>> spawnGroups;
+
 	public int tileSize, tileSpacing;
 
 	[SerializeField]
@@ -54,17 +57,31 @@ public class BoardManager : Singleton<BoardManager>
 				newTile.GetComponent<RectTransform>().anchoredPosition = TileCoordToScreenSpace(tileBtn.tile.Location);
 
 				tiles.Add(tileBtn.tile.Location, tileBtn);
+
+                newTile.SetActive(false);
 			}
 		}
-		#endregion
+        #endregion
 
-		foreach(TileButton t in tiles.Values)
+        #region Set neighbours
+        foreach (TileButton t in tiles.Values)
 		{
 			t.tile.FindNeighbours(tiles, boardSize, true);
 		}
-	}
+        #endregion
 
-	public void Reset()
+        #region Select spawn points
+        List<Point> spawns = new List<Point>();
+        for(int i = 0; i < spawnPoints; ++i)
+        {
+            Point spawn = GetRandomBoardPoint(spawns, spawnDistance);
+
+            //spawnGroups.Add(i, {spawn});
+        }
+        #endregion
+    }
+
+    public void Reset()
 	{
 		foreach(TileButton t in tiles.Values)
 		{
@@ -120,6 +137,48 @@ public class BoardManager : Singleton<BoardManager>
 
 		return tiles[randoPoint];
 	}
+
+    Point GetRandomBoardPoint(List<Point> usedTiles = null, int minDistance = 1)
+    {
+        Point randoPoint = new Point();
+        int maxTries = 10, tries = 0;
+
+        do
+        {
+            ++tries;
+            randoPoint.Y = Random.Range(0, boardSize.Y);
+            randoPoint.X = Random.Range(0, boardSize.X - (randoPoint.Y % 2));
+            randoPoint.X -= (randoPoint.Y / 2);
+            randoPoint.Z = -(randoPoint.X + randoPoint.Y);
+
+            if (tiles[randoPoint].tile.Passable)
+            {
+                if (usedTiles == null)
+                {
+                    break;
+                }
+                else
+                {
+                    bool flag = true;
+                    foreach (Point p in usedTiles)
+                    {
+                        if (randoPoint.Distance(p) <= minDistance)
+                        {
+                            flag = false;
+                            break;
+                        }
+                    }
+
+                    if (flag)
+                    {
+                        break;
+                    }
+                }
+            }
+        } while (tries <= maxTries);
+
+        return randoPoint;
+    }
 
 	public Vector2 TileCoordToScreenSpace(Point tileCoord)
 	{
