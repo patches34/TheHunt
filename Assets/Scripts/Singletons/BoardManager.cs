@@ -71,12 +71,16 @@ public class BoardManager : Singleton<BoardManager>
         #endregion
 
         #region Select spawn points
+		spawnGroups = new Dictionary<int, List<Point>>();
         List<Point> spawns = new List<Point>();
         for(int i = 0; i < spawnPoints; ++i)
         {
             Point spawn = GetRandomBoardPoint(spawns, spawnDistance);
 
-            //spawnGroups.Add(i, {spawn});
+			tiles[spawn].gameObject.SetActive(true);
+			spawns.Add(spawn);
+
+			spawnGroups.Add(i, new List<Point> {spawn});
         }
         #endregion
     }
@@ -176,6 +180,9 @@ public class BoardManager : Singleton<BoardManager>
                 }
             }
         } while (tries <= maxTries);
+
+		if(tries >= maxTries)
+			Debug.LogWarning("GetRandomBoardPoint hit max tries");
 
         return randoPoint;
     }

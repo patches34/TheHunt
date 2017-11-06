@@ -64,7 +64,7 @@ public class GameManager : Singleton<GameManager>
 		turn = TurnActor.Player;
 		isWaiting = true;
 
-		SetupBoard();
+		//SetupBoard();
 
 		isRunning = true;
 	}

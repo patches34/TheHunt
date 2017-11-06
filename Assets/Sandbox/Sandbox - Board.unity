@@ -937,7 +937,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 273.89142, y: 0}
+  m_AnchoredPosition: {x: 273.83237, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &410804231
@@ -3127,8 +3127,8 @@ MonoBehaviour:
     X: 6
     Y: 10
     Z: 0
-  spawnPoints: 6
-  spawnDistance: 5
+  spawnPoints: 3
+  spawnDistance: 2
   tileSize: 60
   tileSpacing: 12
   tilePrefab: {fileID: 1313877467187986, guid: 8170f1fd781884ed38dae4cd93517250, type: 2}
