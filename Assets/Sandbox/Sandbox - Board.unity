@@ -3124,9 +3124,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boardSize:
-    X: 6
-    Y: 10
+    X: 10
+    Y: 20
     Z: 0
+  spawnPoints: 3
+  spawnDistance: 5
   tileSize: 60
   tileSpacing: 12
   tilePrefab: {fileID: 1313877467187986, guid: 8170f1fd781884ed38dae4cd93517250, type: 2}
@@ -3575,7 +3577,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1565349651}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine.Analytics;
 using System.Collections;
+using System.Diagnostics;
 
 public class BoardManager : Singleton<BoardManager>
 {
@@ -14,6 +15,9 @@ public class BoardManager : Singleton<BoardManager>
 			return boardSize;
 		}
 	}
+
+    public int spawnPoints, spawnDistance;
+    Dictionary<int, List<Point>> spawnGroups;
 
 	public int tileSize, tileSpacing;
 
@@ -30,12 +34,18 @@ public class BoardManager : Singleton<BoardManager>
 
 	public void CreateBoard()
 	{
+		Stopwatch timer = new Stopwatch();
+		long boardTime, generateTime, neighboursTime, selectTime;
+
+		timer.Start();
+
 		#region Resize game board
 		Vector2 boardRect = new Vector2();
 		boardRect.x = ((tileSize + tileSpacing) * boardSize.X - tileSpacing) / 2f;
 		boardRect.y = (tileSize * boardSize.Y) / 2f;
 
 		MenuManager.Instance.ResizeGameBoard(boardRect);
+		boardTime = timer.ElapsedMilliseconds;
 		#endregion
 
 		#region Generate tiles
@@ -54,17 +64,86 @@ public class BoardManager : Singleton<BoardManager>
 				newTile.GetComponent<RectTransform>().anchoredPosition = TileCoordToScreenSpace(tileBtn.tile.Location);
 
 				tiles.Add(tileBtn.tile.Location, tileBtn);
+
+                newTile.SetActive(false);
 			}
 		}
-		#endregion
+		generateTime = timer.ElapsedMilliseconds;
+        #endregion
 
-		foreach(TileButton t in tiles.Values)
+        #region Set neighbours
+        foreach (TileButton t in tiles.Values)
 		{
 			t.tile.FindNeighbours(tiles, boardSize, true);
 		}
-	}
+		neighboursTime = timer.ElapsedMilliseconds;
+        #endregion
 
-	public void Reset()
+        #region Select spawn points
+		spawnGroups = new Dictionary<int, List<Point>>();
+        List<Point> spawns = new List<Point>();
+		List<int> activeSpawns = new List<int>();
+        for(int i = 0; i < spawnPoints; ++i)
+        {
+            Point spawn = GetRandomBoardPoint(spawns, spawnDistance);
+
+			tiles[spawn].gameObject.SetActive(true);
+			spawns.Add(spawn);
+
+			spawnGroups.Add(i, new List<Point> {spawn});
+			activeSpawns.Add(i);
+        }
+		selectTime = timer.ElapsedMilliseconds;
+        #endregion
+
+		#region Spread from spawns
+		//	each spawn group grows until it hits another group
+		int currentSpawnIndex = 0;
+		List<int> doneSpawnGroups = new List<int>();
+		do
+		{
+			if(!doneSpawnGroups.Contains(currentSpawnIndex))
+			{
+				//	Pick random tile from group
+				int tileIndex = Random.Range(0, spawnGroups[currentSpawnIndex].Count);
+				Point randomTile = spawnGroups[currentSpawnIndex][tileIndex];
+
+				//	Pick random neighbor tile
+				Point neighbour = tiles[randomTile].tile.GetRandomNeighbour();
+
+				tiles[neighbour].gameObject.SetActive(true);
+				spawnGroups[currentSpawnIndex].Add(neighbour);
+
+				//	Check if hit another spawn group
+				for(int i = 0; i < spawnGroups.Count; ++i)
+				{
+					if(i == currentSpawnIndex)
+						continue;
+					else if(spawnGroups[i].Contains(neighbour))
+					{
+						doneSpawnGroups.Add(currentSpawnIndex);
+					}
+				}
+			}
+
+			//	Move to next spawn group
+			++currentSpawnIndex;
+			//	Check if have to reset the index counter
+			if(currentSpawnIndex >= activeSpawns.Count)
+			{
+				currentSpawnIndex = 0;
+			}
+		}while(doneSpawnGroups.Count < spawnGroups.Count);
+		#endregion
+
+		timer.Stop();
+
+		UnityEngine.Debug.LogFormat("Total Time: {0:F}\nSpread Time: {1:F}", 
+			timer.ElapsedMilliseconds / 1000f, 
+			(timer.ElapsedMilliseconds - selectTime) / 1000f);
+    }
+
+    public void Reset()
 	{
 		foreach(TileButton t in tiles.Values)
 		{
@@ -120,6 +199,51 @@ public class BoardManager : Singleton<BoardManager>
 
 		return tiles[randoPoint];
 	}
+
+    Point GetRandomBoardPoint(List<Point> usedTiles = null, int minDistance = 1)
+    {
+        Point randoPoint = new Point();
+        int maxTries = 10, tries = 0;
+
+        do
+        {
+            ++tries;
+            randoPoint.Y = Random.Range(0, boardSize.Y);
+            randoPoint.X = Random.Range(0, boardSize.X - (randoPoint.Y % 2));
+            randoPoint.X -= (randoPoint.Y / 2);
+            randoPoint.Z = -(randoPoint.X + randoPoint.Y);
+
+            if (tiles[randoPoint].tile.Passable)
+            {
+                if (usedTiles == null)
+                {
+                    break;
+                }
+                else
+                {
+                    bool flag = true;
+                    foreach (Point p in usedTiles)
+                    {
+                        if (randoPoint.Distance(p) <= minDistance)
+                        {
+                            flag = false;
+                            break;
+                        }
+                    }
+
+                    if (flag)
+                    {
+                        break;
+                    }
+                }
+            }
+        } while (tries <= maxTries);
+
+		if(tries >= maxTries)
+			UnityEngine.Debug.LogWarning("GetRandomBoardPoint hit max tries");
+
+        return randoPoint;
+    }
 
 	public Vector2 TileCoordToScreenSpace(Point tileCoord)
 	{

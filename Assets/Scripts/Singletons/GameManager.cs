@@ -64,7 +64,7 @@ public class GameManager : Singleton<GameManager>
 		turn = TurnActor.Player;
 		isWaiting = true;
 
-		SetupBoard();
+		//SetupBoard();
 
 		isRunning = true;
 	}
@@ -182,12 +182,12 @@ public class GameManager : Singleton<GameManager>
 	{
 		GameOverState = TurnActor.None;
 
-		BoardManager.Instance.Reset();
+		Rebuild();
 
-		foodTile.SetState(TileState.None);
+		//foodTile.SetState(TileState.None);
 
-		animalActor.Reset();
-		hunterActor.Reset();
+		//animalActor.Reset();
+		//hunterActor.Reset();
 
 		turn = TurnActor.None;
 
