@@ -26,6 +26,8 @@ public class BoardManager : Singleton<BoardManager>
 
 	Dictionary<Point, TileButton> tiles;
 
+	List<Point> actorePoints;
+
 	// Use this for initialization
 	protected BoardManager()
 	{
@@ -88,6 +90,8 @@ public class BoardManager : Singleton<BoardManager>
             Point spawn = GetRandomBoardPoint(spawns, spawnDistance);
 
 			tiles[spawn].gameObject.SetActive(true);
+			tiles[spawn].tile.Passable = true;
+
 			spawns.Add(spawn);
 
 			spawnGroups.Add(i, new List<Point> {spawn});
@@ -112,6 +116,7 @@ public class BoardManager : Singleton<BoardManager>
 				Point neighbour = tiles[randomTile].tile.GetRandomNeighbour();
 
 				tiles[neighbour].gameObject.SetActive(true);
+				tiles[neighbour].tile.Passable = true;
 				spawnGroups[currentSpawnIndex].Add(neighbour);
 
 				//	Check if hit another spawn group
@@ -141,6 +146,8 @@ public class BoardManager : Singleton<BoardManager>
 		UnityEngine.Debug.LogFormat("Total Time: {0:F}\nSpread Time: {1:F}", 
 			timer.ElapsedMilliseconds / 1000f, 
 			(timer.ElapsedMilliseconds - selectTime) / 1000f);
+
+		actorePoints = new List<Point> {spawnGroups[0][0], spawnGroups[1][0], spawnGroups[2][0]};
     }
 
     public void Reset()
@@ -157,47 +164,6 @@ public class BoardManager : Singleton<BoardManager>
 		{
 			Destroy(t.gameObject);
 		}
-	}
-
-	public TileButton GetRandomTile(List<Point> usedTiles = null, int minDistance = 1)
-	{
-		Point randoPoint = new Point();
-
-		do
-		{
-			randoPoint.Y = Random.Range(0, boardSize.Y);
-			randoPoint.X = Random.Range(0, boardSize.X - (randoPoint.Y % 2));
-			randoPoint.X -= (randoPoint.Y / 2);
-			randoPoint.Z = -(randoPoint.X + randoPoint.Y);
-
-			if(tiles[randoPoint].tile.Passable)
-			{
-				if(usedTiles == null)
-				{
-					break;
-				}
-				else
-				{
-					bool flag = true;
-					foreach(Point p in usedTiles)
-					{
-						if(randoPoint.Distance(p) <= minDistance)
-						{
-							flag = false;
-							break;
-						}
-						//Debug.LogFormat("P1 {0}\tP2 {1}\nDistance = {2}", randoPoint, p, randoPoint.Distance(p));
-					}
-
-					if(flag)
-					{
-						break;
-					}
-				}
-			}
-		}while(true);
-
-		return tiles[randoPoint];
 	}
 
     Point GetRandomBoardPoint(List<Point> usedTiles = null, int minDistance = 1)
@@ -278,5 +244,10 @@ public class BoardManager : Singleton<BoardManager>
 		{
 			boardSize.Y = height;
 		}
+	}
+
+	public TileButton GetActorTileButton(int index)
+	{
+		return tiles[spawnGroups[index][0]];
 	}
 }

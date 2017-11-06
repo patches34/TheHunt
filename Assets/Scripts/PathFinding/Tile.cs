@@ -11,7 +11,7 @@ public class Tile: GridObject, IHasNeighbours<Tile>
     public Tile(int x, int y)
         : base(x, y)
     {
-        Passable = true;
+		Passable = false;
     }
 
     public IEnumerable<Tile> AllNeighbours { get; set; }

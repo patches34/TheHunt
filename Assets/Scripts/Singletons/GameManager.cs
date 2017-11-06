@@ -64,7 +64,7 @@ public class GameManager : Singleton<GameManager>
 		turn = TurnActor.Player;
 		isWaiting = true;
 
-		//SetupBoard();
+		SetupBoard();
 
 		isRunning = true;
 	}
@@ -73,33 +73,20 @@ public class GameManager : Singleton<GameManager>
 	{
 		List<Point> actorTiles = new List<Point>();
 
-		foodTile = BoardManager.Instance.GetRandomTile();
+		foodTile = BoardManager.Instance.GetActorTileButton(0);;
 		foodTile.SetIsInteractable(false);
 		foodTile.SetState(TileState.Food);
 		actorTiles.Add(foodTile.tile.Location);
 
-		TileButton randomTile = BoardManager.Instance.GetRandomTile(actorTiles, actorMinDistance);
+		TileButton randomTile = BoardManager.Instance.GetActorTileButton(1);
 		randomTile.SetIsInteractable(false);
 		animalActor.Init(randomTile.tile, foodTile.tile);
 		actorTiles.Add(randomTile.tile.Location);
 
-		randomTile= BoardManager.Instance.GetRandomTile(actorTiles, actorMinDistance);
+		randomTile = BoardManager.Instance.GetActorTileButton(2);
 		randomTile.SetIsInteractable(false);
 		hunterActor.Init(randomTile.tile, animalActor.GetTile());
 		actorTiles.Add(randomTile.tile.Location);
-
-		for(int i = 0; i < randomBlockedTiles; ++i)
-		{
-			randomTile = BoardManager.Instance.GetRandomTile(actorTiles);
-			randomTile.SetState(TileState.Blocked);
-
-			if(animalActor.FindPath() == null || hunterActor.FindPath() == null)
-			{
-				randomTile.SetState(TileState.None);
-
-				--i;
-			}
-		}
 	}
 
 	void Update()
@@ -184,10 +171,10 @@ public class GameManager : Singleton<GameManager>
 
 		Rebuild();
 
-		//foodTile.SetState(TileState.None);
+		foodTile.SetState(TileState.None);
 
-		//animalActor.Reset();
-		//hunterActor.Reset();
+		animalActor.Reset();
+		hunterActor.Reset();
 
 		turn = TurnActor.None;
 
