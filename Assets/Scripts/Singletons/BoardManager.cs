@@ -4,6 +4,12 @@ using UnityEngine.Analytics;
 using System.Collections;
 using System.Diagnostics;
 
+public enum BoardSetupMethods
+{
+    BASIC,
+    SPREAD_POINT
+}
+
 public class BoardManager : Singleton<BoardManager>
 {
 	[SerializeField]
@@ -25,6 +31,8 @@ public class BoardManager : Singleton<BoardManager>
 	GameObject tilePrefab;
 
 	Dictionary<Point, TileButton> tiles;
+
+    public BoardSetupMethods boardSetupMethod;
 
 	// Use this for initialization
 	protected BoardManager()

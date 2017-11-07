@@ -1,28 +1,36 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
+using System;
+using System.Collections.Generic;
 
 public class PauseMenu : UIMenu
 {
 	[SerializeField]
-	Slider widthSlider, heightSlider, zoomSpeedSlider;
+	Slider zoomSpeedSlider;
 
-	[SerializeField]
-	Text widthLabel, heightLabel, zoomSpeedLabel;
+    [SerializeField]
+    InputField widthInput, heightInput;
 
-	[SerializeField]
-	Toggle hideBlockedToggle;
+    [SerializeField]
+	Text zoomSpeedLabel;
+
+    [SerializeField]
+    List<RectTransform> boardSetupPanels;
 
 	// Use this for initialization
 	void OnEnable()
 	{
-		widthSlider.value = BoardManager.Instance.BoardSize.X;
-		heightSlider.value = BoardManager.Instance.BoardSize.Y;
+		widthInput.text = BoardManager.Instance.BoardSize.X.ToString();
+		heightInput.text = BoardManager.Instance.BoardSize.Y.ToString();
 
 		zoomSpeedSlider.value = MenuManager.Instance.zoomSpeed;
 
-		hideBlockedToggle.isOn = GameManager.Instance.HideBlockedTiles;
+        foreach(RectTransform p in boardSetupPanels)
+        {
+            p.gameObject.SetActive(false);
+        }
+
+        boardSetupPanels[(int)BoardManager.Instance.boardSetupMethod].gameObject.SetActive(true);
 	}
 	
 	// Update is called once per frame
@@ -31,19 +39,19 @@ public class PauseMenu : UIMenu
 		
 	}
 
-	public void SetBoardWidth(float value)
+	public void SetBoardWidth(string value)
 	{
-		BoardManager.Instance.SetBoardSize(width:(int)value);
+		BoardManager.Instance.SetBoardSize(width:Convert.ToInt32(value));
 
-		widthLabel.text = value.ToString();
+		widthInput.text = BoardManager.Instance.BoardSize.X.ToString();
 	}
 
-	public void SetBoardHeight(float value)
+	public void SetBoardHeight(string value)
 	{
-		BoardManager.Instance.SetBoardSize(height:(int)value);
+		BoardManager.Instance.SetBoardSize(height: Convert.ToInt32(value));
 
-		heightLabel.text = value.ToString();
-	}
+        heightInput.text = BoardManager.Instance.BoardSize.Y.ToString();
+    }
 
 	public void SetZoomSpeed(float value)
 	{
@@ -52,8 +60,12 @@ public class PauseMenu : UIMenu
 		zoomSpeedLabel.text = value.ToString("F4");
 	}
 
-	public void SetHideBlockedTiles(bool value)
-	{
-		GameManager.Instance.HideBlockedTiles = value;
-	}
+    public void OnBoardSetupValueChange(int value)
+    {
+        boardSetupPanels[(int)BoardManager.Instance.boardSetupMethod].gameObject.SetActive(false);
+
+        BoardManager.Instance.boardSetupMethod = (BoardSetupMethods)value;
+
+        boardSetupPanels[value].gameObject.SetActive(true);
+    }
 }

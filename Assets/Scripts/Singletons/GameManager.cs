@@ -38,8 +38,6 @@ public class GameManager : Singleton<GameManager>
 
 	public PathFinder animalActor, hunterActor;
 
-	public bool HideBlockedTiles;
-
 	public int actorMinDistance;
 
 	public int randomBlockedTiles;
