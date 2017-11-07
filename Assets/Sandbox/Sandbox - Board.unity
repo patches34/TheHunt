@@ -3085,6 +3085,7 @@ MonoBehaviour:
   widthInput: {fileID: 1814644057}
   heightInput: {fileID: 171313780}
   zoomSpeedLabel: {fileID: 202685287}
+  boardSetupmethodDropdown: {fileID: 1315527747}
   boardSetupPanels:
   - {fileID: 260495221}
   - {fileID: 805604287}
@@ -3448,7 +3449,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 31.999992, y: 12}
+  m_AnchoredPosition: {x: 32, y: 12}
   m_SizeDelta: {x: 60, y: 60}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &1189777082
@@ -4337,7 +4338,7 @@ MonoBehaviour:
   tileSize: 60
   tileSpacing: 12
   tilePrefab: {fileID: 1313877467187986, guid: 8170f1fd781884ed38dae4cd93517250, type: 2}
-  boardSetupMethod: 0
+  boardSetupMethod: 1
 --- !u!114 &1327174338
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5533,7 +5534,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 23.100014, y: 13}
+  m_AnchoredPosition: {x: 23.100006, y: 13}
   m_SizeDelta: {x: 60, y: 60}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &1833542407

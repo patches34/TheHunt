@@ -15,6 +15,9 @@ public class PauseMenu : UIMenu
 	Text zoomSpeedLabel;
 
     [SerializeField]
+    Dropdown boardSetupmethodDropdown;
+
+    [SerializeField]
     List<RectTransform> boardSetupPanels;
 
 	// Use this for initialization
@@ -30,7 +33,7 @@ public class PauseMenu : UIMenu
             p.gameObject.SetActive(false);
         }
 
-        boardSetupPanels[(int)BoardManager.Instance.boardSetupMethod].gameObject.SetActive(true);
+        boardSetupmethodDropdown.value = (int)BoardManager.Instance.boardSetupMethod;
 	}
 	
 	// Update is called once per frame
