@@ -4,6 +4,12 @@ using UnityEngine.Analytics;
 using System.Collections;
 using System.Diagnostics;
 
+public enum BoardSetupMethods
+{
+    BASIC,
+    SPREAD_POINT
+}
+
 public class BoardManager : Singleton<BoardManager>
 {
 	[SerializeField]
@@ -25,6 +31,8 @@ public class BoardManager : Singleton<BoardManager>
 	GameObject tilePrefab;
 
 	Dictionary<Point, TileButton> tiles;
+
+    public BoardSetupMethods boardSetupMethod;
 
 	// Use this for initialization
 	protected BoardManager()
@@ -88,72 +96,24 @@ public class BoardManager : Singleton<BoardManager>
     public List<Point> SetupBoard()
     {
         Stopwatch timer = new Stopwatch();
-        long selectTime;
-
         timer.Start();
-        #region Select spawn points
-        spawnGroups = new Dictionary<int, List<Point>>();
-        List<Point> spawns = new List<Point>();
-        List<int> activeSpawns = new List<int>();
-        for (int i = 0; i < spawnPoints; ++i)
+
+        List<Point> actorPoints = new List<Point>();
+       
+        switch(boardSetupMethod)
         {
-            Point spawn = GetRandomBoardPoint(spawns, spawnDistance);
-
-            tiles[spawn].gameObject.SetActive(true);
-
-            spawns.Add(spawn);
-
-            spawnGroups.Add(i, new List<Point> { spawn });
-            activeSpawns.Add(i);
+            case BoardSetupMethods.BASIC:
+                actorPoints = BasicSetup();
+                break;
+            case BoardSetupMethods.SPREAD_POINT:
+                actorPoints = SpreadPointMethod();
+                break;
         }
-        selectTime = timer.ElapsedMilliseconds;
-        #endregion
-
-        #region Spread from spawns
-        //	each spawn group grows until it hits another group
-        int currentSpawnIndex = 0;
-        List<int> doneSpawnGroups = new List<int>();
-        do
-        {
-            if (!doneSpawnGroups.Contains(currentSpawnIndex))
-            {
-                //	Pick random tile from group
-                int tileIndex = Random.Range(0, spawnGroups[currentSpawnIndex].Count);
-                Point randomTile = spawnGroups[currentSpawnIndex][tileIndex];
-
-                //	Pick random neighbor tile
-                Point neighbour = tiles[randomTile].tile.GetRandomNeighbour();
-
-                tiles[neighbour].gameObject.SetActive(true);
-
-                spawnGroups[currentSpawnIndex].Add(neighbour);
-
-                //	Check if hit another spawn group
-                for (int i = 0; i < spawnGroups.Count; ++i)
-                {
-                    if (i == currentSpawnIndex)
-                        continue;
-                    else if (spawnGroups[i].Contains(neighbour))
-                    {
-                        doneSpawnGroups.Add(currentSpawnIndex);
-                    }
-                }
-            }
-
-            //	Move to next spawn group
-            ++currentSpawnIndex;
-            //	Check if have to reset the index counter
-            if (currentSpawnIndex >= activeSpawns.Count)
-            {
-                currentSpawnIndex = 0;
-            }
-        } while (doneSpawnGroups.Count < spawnGroups.Count);
-        #endregion
 
         UnityEngine.Debug.LogFormat("Setup Board Time: {0}",
             timer.ElapsedMilliseconds / 1000f);
 
-        return new List<Point> { spawnGroups[0][0], spawnGroups[1][0], spawnGroups[2][0]};
+        return actorPoints;
     }
 
     public void Reset()
@@ -256,4 +216,89 @@ public class BoardManager : Singleton<BoardManager>
     {
         return tiles[location];
     }
+
+    #region Board Setup Methods
+    List<Point> BasicSetup()
+    {
+        //  Turn on all tiles
+        foreach(TileButton t in tiles.Values)
+        {
+            t.gameObject.SetActive(true);
+        }
+
+        #region File actor starting tiles
+        List<Point> actorPoints = new List<Point>();
+
+        for(int i = 0; i < 3; ++i)
+        {
+            actorPoints.Add(GetRandomBoardPoint(actorPoints, spawnDistance));
+        }
+        #endregion
+
+        return actorPoints;
+    }
+
+    List<Point> SpreadPointMethod()
+    {
+        #region Select spawn points
+        spawnGroups = new Dictionary<int, List<Point>>();
+        List<Point> spawns = new List<Point>();
+        List<int> activeSpawns = new List<int>();
+        for (int i = 0; i < spawnPoints; ++i)
+        {
+            Point spawn = GetRandomBoardPoint(spawns, spawnDistance);
+
+            tiles[spawn].gameObject.SetActive(true);
+
+            spawns.Add(spawn);
+
+            spawnGroups.Add(i, new List<Point> { spawn });
+            activeSpawns.Add(i);
+        }
+        #endregion
+
+        #region Spread from spawns
+        //	each spawn group grows until it hits another group
+        int currentSpawnIndex = 0;
+        List<int> doneSpawnGroups = new List<int>();
+        do
+        {
+            if (!doneSpawnGroups.Contains(currentSpawnIndex))
+            {
+                //	Pick random tile from group
+                int tileIndex = Random.Range(0, spawnGroups[currentSpawnIndex].Count);
+                Point randomTile = spawnGroups[currentSpawnIndex][tileIndex];
+
+                //	Pick random neighbor tile
+                Point neighbour = tiles[randomTile].tile.GetRandomNeighbour();
+
+                tiles[neighbour].gameObject.SetActive(true);
+
+                spawnGroups[currentSpawnIndex].Add(neighbour);
+
+                //	Check if hit another spawn group
+                for (int i = 0; i < spawnGroups.Count; ++i)
+                {
+                    if (i == currentSpawnIndex)
+                        continue;
+                    else if (spawnGroups[i].Contains(neighbour))
+                    {
+                        doneSpawnGroups.Add(currentSpawnIndex);
+                    }
+                }
+            }
+
+            //	Move to next spawn group
+            ++currentSpawnIndex;
+            //	Check if have to reset the index counter
+            if (currentSpawnIndex >= activeSpawns.Count)
+            {
+                currentSpawnIndex = 0;
+            }
+        } while (doneSpawnGroups.Count < spawnGroups.Count);
+        #endregion
+
+        return new List<Point> { spawnGroups[0][0], spawnGroups[1][0], spawnGroups[2][0] };
+    }
+    #endregion
 }
