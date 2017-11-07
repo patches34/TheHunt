@@ -26,8 +26,6 @@ public class BoardManager : Singleton<BoardManager>
 
 	Dictionary<Point, TileButton> tiles;
 
-	List<Point> actorePoints;
-
 	// Use this for initialization
 	protected BoardManager()
 	{
@@ -37,7 +35,7 @@ public class BoardManager : Singleton<BoardManager>
 	public void CreateBoard()
 	{
 		Stopwatch timer = new Stopwatch();
-		long boardTime, generateTime, neighboursTime, selectTime;
+		long boardTime, generateTime, neighboursTime;
 
 		timer.Start();
 
@@ -81,80 +79,86 @@ public class BoardManager : Singleton<BoardManager>
 		neighboursTime = timer.ElapsedMilliseconds;
         #endregion
 
+		timer.Stop();
+
+		UnityEngine.Debug.LogFormat("Create Board Time: {0}", 
+			timer.ElapsedMilliseconds / 1000f);
+    }
+
+    public void SetupBoard()
+    {
+        Stopwatch timer = new Stopwatch();
+        long selectTime;
+
+        timer.Start();
         #region Select spawn points
-		spawnGroups = new Dictionary<int, List<Point>>();
+        spawnGroups = new Dictionary<int, List<Point>>();
         List<Point> spawns = new List<Point>();
-		List<int> activeSpawns = new List<int>();
-        for(int i = 0; i < spawnPoints; ++i)
+        List<int> activeSpawns = new List<int>();
+        for (int i = 0; i < spawnPoints; ++i)
         {
             Point spawn = GetRandomBoardPoint(spawns, spawnDistance);
 
-			tiles[spawn].gameObject.SetActive(true);
-			tiles[spawn].tile.Passable = true;
+            tiles[spawn].gameObject.SetActive(true);
 
-			spawns.Add(spawn);
+            spawns.Add(spawn);
 
-			spawnGroups.Add(i, new List<Point> {spawn});
-			activeSpawns.Add(i);
+            spawnGroups.Add(i, new List<Point> { spawn });
+            activeSpawns.Add(i);
         }
-		selectTime = timer.ElapsedMilliseconds;
+        selectTime = timer.ElapsedMilliseconds;
         #endregion
 
-		#region Spread from spawns
-		//	each spawn group grows until it hits another group
-		int currentSpawnIndex = 0;
-		List<int> doneSpawnGroups = new List<int>();
-		do
-		{
-			if(!doneSpawnGroups.Contains(currentSpawnIndex))
-			{
-				//	Pick random tile from group
-				int tileIndex = Random.Range(0, spawnGroups[currentSpawnIndex].Count);
-				Point randomTile = spawnGroups[currentSpawnIndex][tileIndex];
+        #region Spread from spawns
+        //	each spawn group grows until it hits another group
+        int currentSpawnIndex = 0;
+        List<int> doneSpawnGroups = new List<int>();
+        do
+        {
+            if (!doneSpawnGroups.Contains(currentSpawnIndex))
+            {
+                //	Pick random tile from group
+                int tileIndex = Random.Range(0, spawnGroups[currentSpawnIndex].Count);
+                Point randomTile = spawnGroups[currentSpawnIndex][tileIndex];
 
-				//	Pick random neighbor tile
-				Point neighbour = tiles[randomTile].tile.GetRandomNeighbour();
+                //	Pick random neighbor tile
+                Point neighbour = tiles[randomTile].tile.GetRandomNeighbour();
 
-				tiles[neighbour].gameObject.SetActive(true);
-				tiles[neighbour].tile.Passable = true;
-				spawnGroups[currentSpawnIndex].Add(neighbour);
+                tiles[neighbour].gameObject.SetActive(true);
 
-				//	Check if hit another spawn group
-				for(int i = 0; i < spawnGroups.Count; ++i)
-				{
-					if(i == currentSpawnIndex)
-						continue;
-					else if(spawnGroups[i].Contains(neighbour))
-					{
-						doneSpawnGroups.Add(currentSpawnIndex);
-					}
-				}
-			}
+                spawnGroups[currentSpawnIndex].Add(neighbour);
 
-			//	Move to next spawn group
-			++currentSpawnIndex;
-			//	Check if have to reset the index counter
-			if(currentSpawnIndex >= activeSpawns.Count)
-			{
-				currentSpawnIndex = 0;
-			}
-		}while(doneSpawnGroups.Count < spawnGroups.Count);
-		#endregion
+                //	Check if hit another spawn group
+                for (int i = 0; i < spawnGroups.Count; ++i)
+                {
+                    if (i == currentSpawnIndex)
+                        continue;
+                    else if (spawnGroups[i].Contains(neighbour))
+                    {
+                        doneSpawnGroups.Add(currentSpawnIndex);
+                    }
+                }
+            }
 
-		timer.Stop();
+            //	Move to next spawn group
+            ++currentSpawnIndex;
+            //	Check if have to reset the index counter
+            if (currentSpawnIndex >= activeSpawns.Count)
+            {
+                currentSpawnIndex = 0;
+            }
+        } while (doneSpawnGroups.Count < spawnGroups.Count);
+        #endregion
 
-		UnityEngine.Debug.LogFormat("Total Time: {0:F}\nSpread Time: {1:F}", 
-			timer.ElapsedMilliseconds / 1000f, 
-			(timer.ElapsedMilliseconds - selectTime) / 1000f);
-
-		actorePoints = new List<Point> {spawnGroups[0][0], spawnGroups[1][0], spawnGroups[2][0]};
+        UnityEngine.Debug.LogFormat("Setup Board Time: {0}",
+            timer.ElapsedMilliseconds / 1000f);
     }
 
     public void Reset()
 	{
 		foreach(TileButton t in tiles.Values)
 		{
-			t.SetState(TileState.None);
+            t.gameObject.SetActive(false);
 		}
 	}
 

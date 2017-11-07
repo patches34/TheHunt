@@ -53,7 +53,18 @@ public class TileButton : MonoBehaviour
 		}
 	}
 
-	public void Click()
+    void OnEnable()
+    {
+        tile.Passable = true;
+    }
+
+    void OnDisable()
+    {
+        tile.Passable = false;
+        btn.interactable = true;
+    }
+
+    public void Click()
 	{
 		//	Check if if its the player's turn
 		if(GameManager.Instance.IsActorTurn(TurnActor.Player))

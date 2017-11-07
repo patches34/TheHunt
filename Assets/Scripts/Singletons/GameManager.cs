@@ -71,6 +71,8 @@ public class GameManager : Singleton<GameManager>
 
 	void SetupBoard()
 	{
+        BoardManager.Instance.SetupBoard();
+
 		List<Point> actorTiles = new List<Point>();
 
 		foodTile = BoardManager.Instance.GetActorTileButton(0);;
@@ -169,7 +171,7 @@ public class GameManager : Singleton<GameManager>
 	{
 		GameOverState = TurnActor.None;
 
-		Rebuild();
+		BoardManager.Instance.Reset();
 
 		foodTile.SetState(TileState.None);
 
