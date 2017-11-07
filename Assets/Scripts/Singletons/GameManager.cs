@@ -71,24 +71,19 @@ public class GameManager : Singleton<GameManager>
 
 	void SetupBoard()
 	{
-        BoardManager.Instance.SetupBoard();
+		List<Point> actorTiles = BoardManager.Instance.SetupBoard();
 
-		List<Point> actorTiles = new List<Point>();
-
-		foodTile = BoardManager.Instance.GetActorTileButton(0);;
+        foodTile = BoardManager.Instance.GetTileButtonByPoint(actorTiles[0]);
 		foodTile.SetIsInteractable(false);
 		foodTile.SetState(TileState.Food);
-		actorTiles.Add(foodTile.tile.Location);
 
-		TileButton randomTile = BoardManager.Instance.GetActorTileButton(1);
-		randomTile.SetIsInteractable(false);
+		TileButton randomTile = BoardManager.Instance.GetTileButtonByPoint(actorTiles[1]);
+        randomTile.SetIsInteractable(false);
 		animalActor.Init(randomTile.tile, foodTile.tile);
-		actorTiles.Add(randomTile.tile.Location);
 
-		randomTile = BoardManager.Instance.GetActorTileButton(2);
-		randomTile.SetIsInteractable(false);
+		randomTile = BoardManager.Instance.GetTileButtonByPoint(actorTiles[2]);
+        randomTile.SetIsInteractable(false);
 		hunterActor.Init(randomTile.tile, animalActor.GetTile());
-		actorTiles.Add(randomTile.tile.Location);
 	}
 
 	void Update()
@@ -173,7 +168,7 @@ public class GameManager : Singleton<GameManager>
 
 		BoardManager.Instance.Reset();
 
-		foodTile.SetState(TileState.None);
+        foodTile.gameObject.SetActive(false);
 
 		animalActor.Reset();
 		hunterActor.Reset();

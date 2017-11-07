@@ -38,8 +38,7 @@ public class PathFinder : MonoBehaviour
 		timer = -1;
 
 		goalTile = null;
-
-		BoardManager.Instance.SetTileInteractable(currentTile.Location, true);
+        
 		currentTile = null;
 
 		gameObject.SetActive(false);

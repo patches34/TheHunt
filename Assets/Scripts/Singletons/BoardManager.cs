@@ -85,7 +85,7 @@ public class BoardManager : Singleton<BoardManager>
 			timer.ElapsedMilliseconds / 1000f);
     }
 
-    public void SetupBoard()
+    public List<Point> SetupBoard()
     {
         Stopwatch timer = new Stopwatch();
         long selectTime;
@@ -152,6 +152,8 @@ public class BoardManager : Singleton<BoardManager>
 
         UnityEngine.Debug.LogFormat("Setup Board Time: {0}",
             timer.ElapsedMilliseconds / 1000f);
+
+        return new List<Point> { spawnGroups[0][0], spawnGroups[1][0], spawnGroups[2][0]};
     }
 
     public void Reset()
@@ -250,8 +252,8 @@ public class BoardManager : Singleton<BoardManager>
 		}
 	}
 
-	public TileButton GetActorTileButton(int index)
-	{
-		return tiles[spawnGroups[index][0]];
-	}
+    public TileButton GetTileButtonByPoint(Point location)
+    {
+        return tiles[location];
+    }
 }
