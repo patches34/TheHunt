@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine.Analytics;
 using System.Collections;
-
+using CielaSpike;
 
 public enum TurnActor
 {
@@ -42,6 +42,10 @@ public class GameManager : Singleton<GameManager>
 
 	public int randomBlockedTiles;
 
+	public System.Random rand = new System.Random();
+
+	Task createBoardTask, setupBoardTask;
+
 	#region Initialization
 	// Use this for initialization
 	protected GameManager()
@@ -52,24 +56,35 @@ public class GameManager : Singleton<GameManager>
 
 	void Start()
 	{
-		BoardManager.Instance.CreateBoard();
+		MenuManager.Instance.loadingSpinner.SetActive(true);
+		StartCoroutine(CreateGame());
+	}
+
+	IEnumerator CreateGame()
+	{
+		this.StartCoroutineAsync(BoardManager.Instance.CreateBoard(), out createBoardTask);
+
+		yield return StartCoroutine(createBoardTask.Wait());
 
 		StartGame();
 	}
 
 	void StartGame()
 	{
+		MenuManager.Instance.loadingSpinner.SetActive(true);
 		turn = TurnActor.Player;
 		isWaiting = true;
 
-		SetupBoard();
-
-		isRunning = true;
+		StartCoroutine(SetupBoard());
 	}
 
-	void SetupBoard()
+	IEnumerator SetupBoard()
 	{
-		List<Point> actorTiles = BoardManager.Instance.SetupBoard();
+		this.StartCoroutineAsync(BoardManager.Instance.SetupBoard(), out setupBoardTask);
+
+		yield return StartCoroutine(setupBoardTask.Wait());
+
+		List<Point> actorTiles = BoardManager.Instance.AcotrPoints;
 
         foodTile = BoardManager.Instance.GetTileButtonByPoint(actorTiles[0]);
 		foodTile.SetIsInteractable(false);
@@ -82,6 +97,10 @@ public class GameManager : Singleton<GameManager>
 		randomTile = BoardManager.Instance.GetTileButtonByPoint(actorTiles[2]);
         randomTile.SetIsInteractable(false);
 		hunterActor.Init(randomTile.tile, animalActor.GetTile());
+
+		isRunning = true;
+
+		MenuManager.Instance.loadingSpinner.SetActive(false);
 	}
 
 	void Update()
@@ -162,11 +181,14 @@ public class GameManager : Singleton<GameManager>
 
 	public void Restart()
 	{
+		CancelTasks();
+
 		GameOverState = TurnActor.None;
 
 		BoardManager.Instance.Reset();
 
-        foodTile.gameObject.SetActive(false);
+		if(foodTile != null)
+        	foodTile.gameObject.SetActive(false);
 
 		animalActor.Reset();
 		hunterActor.Reset();
@@ -183,5 +205,24 @@ public class GameManager : Singleton<GameManager>
 		BoardManager.Instance.DestoryBoard();
 
 		Start();
+	}
+
+	void CancelTasks()
+	{
+		if(createBoardTask.State == TaskState.Running)
+			createBoardTask.Cancel();
+
+		if(setupBoardTask.State == TaskState.Running)
+		{
+			if(BoardManager.Instance.BoardSetupTask != null &&
+				BoardManager.Instance.BoardSetupTask.State == TaskState.Running)
+			{
+				BoardManager.Instance.BoardSetupTask.Cancel();
+			}
+
+			setupBoardTask.Cancel();
+		}
+
+		StopAllCoroutines();
 	}
 }

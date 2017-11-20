@@ -70,7 +70,7 @@ public class Tile: GridObject, IHasNeighbours<Tile>
 
 	public Point GetRandomNeighbour()
 	{
-		int index = UnityEngine.Random.Range(0, AllNeighbours.Count());
+		int index = GameManager.Instance.rand.Next(AllNeighbours.Count());
 
 		return AllNeighbours.ElementAt<Tile>(index).Location;
 	}

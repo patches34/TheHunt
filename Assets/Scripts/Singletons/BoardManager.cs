@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.Analytics;
 using System.Collections;
 using System.Diagnostics;
+using CielaSpike;
 
 public enum BoardSetupMethods
 {
@@ -34,13 +35,31 @@ public class BoardManager : Singleton<BoardManager>
 
     public BoardSetupMethods boardSetupMethod;
 
+	List<Point> actorPoints = new List<Point>();
+	public List<Point> AcotrPoints
+	{
+		get
+		{
+			return actorPoints;
+		}
+  	}
+
+	Task boardSetupTask;
+	public Task BoardSetupTask
+	{
+		get
+		{
+			return boardSetupTask;
+		}
+	}
+
 	// Use this for initialization
 	protected BoardManager()
 	{
 		// guarantee this will be always a singleton only - can't use the constructor!
 	}
 
-	public void CreateBoard()
+	public IEnumerator CreateBoard()
 	{
 		Stopwatch timer = new Stopwatch();
 		long boardTime, generateTime, neighboursTime;
@@ -52,6 +71,7 @@ public class BoardManager : Singleton<BoardManager>
 		boardRect.x = ((tileSize + tileSpacing) * boardSize.X - tileSpacing) / 2f;
 		boardRect.y = (tileSize * boardSize.Y) / 2f;
 
+		yield return Ninja.JumpToUnity;
 		MenuManager.Instance.ResizeGameBoard(boardRect);
 		boardTime = timer.ElapsedMilliseconds;
 		#endregion
@@ -76,6 +96,8 @@ public class BoardManager : Singleton<BoardManager>
                 newTile.SetActive(false);
 			}
 		}
+
+		yield return Ninja.JumpBack;
 		generateTime = timer.ElapsedMilliseconds;
         #endregion
 
@@ -93,27 +115,31 @@ public class BoardManager : Singleton<BoardManager>
 			timer.ElapsedMilliseconds / 1000f);
     }
 
-    public List<Point> SetupBoard()
+	public IEnumerator SetupBoard()
     {
         Stopwatch timer = new Stopwatch();
         timer.Start();
 
-        List<Point> actorPoints = new List<Point>();
+        actorPoints = new List<Point>();
        
+		yield return Ninja.JumpToUnity;
         switch(boardSetupMethod)
         {
-            case BoardSetupMethods.BASIC:
-                actorPoints = BasicSetup();
-                break;
-            case BoardSetupMethods.SPREAD_POINT:
-                actorPoints = SpreadPointMethod();
-                break;
+      	case BoardSetupMethods.BASIC:
+			this.StartCoroutineAsync(BasicSetup(), out boardSetupTask);
+            break;
+        case BoardSetupMethods.SPREAD_POINT:
+			this.StartCoroutineAsync(SpreadPointMethod(), out boardSetupTask);
+            break;
         }
+
+		yield return StartCoroutine(boardSetupTask.Wait());
+		yield return Ninja.JumpBack;
 
         UnityEngine.Debug.LogFormat("Setup Board Time: {0}",
             timer.ElapsedMilliseconds / 1000f);
 
-        return actorPoints;
+		yield return null;
     }
 
     public void Reset()
@@ -140,8 +166,8 @@ public class BoardManager : Singleton<BoardManager>
         do
         {
             ++tries;
-            randoPoint.Y = Random.Range(0, boardSize.Y);
-            randoPoint.X = Random.Range(0, boardSize.X - (randoPoint.Y % 2));
+			randoPoint.Y = GameManager.Instance.rand.Next(boardSize.Y);
+			randoPoint.X = GameManager.Instance.rand.Next(boardSize.X - (randoPoint.Y % 2));
             randoPoint.X -= (randoPoint.Y / 2);
             randoPoint.Z = -(randoPoint.X + randoPoint.Y);
 
@@ -218,27 +244,27 @@ public class BoardManager : Singleton<BoardManager>
     }
 
     #region Board Setup Methods
-    List<Point> BasicSetup()
+	IEnumerator BasicSetup()
     {
         //  Turn on all tiles
+		yield return Ninja.JumpToUnity;
         foreach(TileButton t in tiles.Values)
         {
             t.gameObject.SetActive(true);
         }
+		yield return Ninja.JumpBack;
 
         #region File actor starting tiles
-        List<Point> actorPoints = new List<Point>();
+        actorPoints = new List<Point>();
 
         for(int i = 0; i < 3; ++i)
         {
             actorPoints.Add(GetRandomBoardPoint(actorPoints, spawnDistance));
         }
         #endregion
-
-        return actorPoints;
     }
 
-    List<Point> SpreadPointMethod()
+	IEnumerator SpreadPointMethod()
     {
         #region Select spawn points
         spawnGroups = new Dictionary<int, List<Point>>();
@@ -247,8 +273,6 @@ public class BoardManager : Singleton<BoardManager>
         for (int i = 0; i < spawnPoints; ++i)
         {
             Point spawn = GetRandomBoardPoint(spawns, spawnDistance);
-
-            tiles[spawn].gameObject.SetActive(true);
 
             spawns.Add(spawn);
 
@@ -266,15 +290,16 @@ public class BoardManager : Singleton<BoardManager>
             if (!doneSpawnGroups.Contains(currentSpawnIndex))
             {
                 //	Pick random tile from group
-                int tileIndex = Random.Range(0, spawnGroups[currentSpawnIndex].Count);
+				int tileIndex = GameManager.Instance.rand.Next(spawnGroups[currentSpawnIndex].Count);
                 Point randomTile = spawnGroups[currentSpawnIndex][tileIndex];
 
                 //	Pick random neighbor tile
                 Point neighbour = tiles[randomTile].tile.GetRandomNeighbour();
 
-                tiles[neighbour].gameObject.SetActive(true);
-
-                spawnGroups[currentSpawnIndex].Add(neighbour);
+				if(!spawnGroups.ContainsKey(currentSpawnIndex))
+					continue;
+				
+               	spawnGroups[currentSpawnIndex].Add(neighbour);
 
                 //	Check if hit another spawn group
                 for (int i = 0; i < spawnGroups.Count; ++i)
@@ -298,7 +323,20 @@ public class BoardManager : Singleton<BoardManager>
         } while (doneSpawnGroups.Count < spawnGroups.Count);
         #endregion
 
-        return new List<Point> { spawnGroups[0][0], spawnGroups[1][0], spawnGroups[2][0] };
+		#region Activevate Tiles
+		yield return Ninja.JumpToUnity;
+		for(int i = 0; i < spawnPoints; ++i)
+		{
+			foreach(Point tile in spawnGroups[i])
+			{
+				tiles[tile].gameObject.SetActive(true);
+			}
+			yield return null;
+		}
+		yield return Ninja.JumpBack;
+		#endregion
+
+		actorPoints = new List<Point> { spawnGroups[0][0], spawnGroups[1][0], spawnGroups[2][0] };
     }
     #endregion
 }
