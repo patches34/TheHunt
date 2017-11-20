@@ -56,6 +56,7 @@ public class GameManager : Singleton<GameManager>
 
 	void Start()
 	{
+		MenuManager.Instance.loadingSpinner.SetActive(true);
 		StartCoroutine(CreateGame());
 	}
 
@@ -70,6 +71,7 @@ public class GameManager : Singleton<GameManager>
 
 	void StartGame()
 	{
+		MenuManager.Instance.loadingSpinner.SetActive(true);
 		turn = TurnActor.Player;
 		isWaiting = true;
 
@@ -98,6 +100,7 @@ public class GameManager : Singleton<GameManager>
 
 		isRunning = true;
 
+		MenuManager.Instance.loadingSpinner.SetActive(false);
 	}
 
 	void Update()

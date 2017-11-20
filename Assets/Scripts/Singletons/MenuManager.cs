@@ -36,6 +36,8 @@ public class MenuManager : Singleton<MenuManager>
 	[SerializeField]
 	float zoonMin, zoomMax;
 
+	public GameObject loadingSpinner;
+
 	#region Initialization
 	// Use this for initialization
 	protected MenuManager()
