@@ -9,7 +9,7 @@ public class PauseMenu : UIMenu
 	Slider zoomSpeedSlider;
 
     [SerializeField]
-    InputField widthInput, heightInput;
+    InputField widthInput, heightInput, blockedTilesInput, blockedTilesDistanceInput;
 
     [SerializeField]
 	Text zoomSpeedLabel;
@@ -26,6 +26,9 @@ public class PauseMenu : UIMenu
 		widthInput.text = BoardManager.Instance.BoardSize.X.ToString();
 		heightInput.text = BoardManager.Instance.BoardSize.Y.ToString();
 
+		blockedTilesInput.text = BoardManager.Instance.blockPoints.ToString();
+		blockedTilesDistanceInput.text = BoardManager.Instance.blockDistance.ToString();
+
 		zoomSpeedSlider.value = MenuManager.Instance.zoomSpeed;
 
         foreach(RectTransform p in boardSetupPanels)
@@ -34,16 +37,15 @@ public class PauseMenu : UIMenu
         }
 
         boardSetupmethodDropdown.value = (int)BoardManager.Instance.boardSetupMethod;
-	}
-	
-	// Update is called once per frame
-	void Update()
-	{
-		
+
+		boardSetupPanels[(int)BoardManager.Instance.boardSetupMethod].gameObject.SetActive(true);
 	}
 
 	public void SetBoardWidth(string value)
 	{
+		if(string.IsNullOrEmpty(value))
+			value = "0";
+		
 		BoardManager.Instance.SetBoardSize(width:Convert.ToInt32(value));
 
 		widthInput.text = BoardManager.Instance.BoardSize.X.ToString();
@@ -51,6 +53,9 @@ public class PauseMenu : UIMenu
 
 	public void SetBoardHeight(string value)
 	{
+		if(string.IsNullOrEmpty(value))
+			value = "0";
+		
 		BoardManager.Instance.SetBoardSize(height: Convert.ToInt32(value));
 
         heightInput.text = BoardManager.Instance.BoardSize.Y.ToString();
@@ -71,4 +76,24 @@ public class PauseMenu : UIMenu
 
         boardSetupPanels[value].gameObject.SetActive(true);
     }
+
+	public void SetBlockedTiles(string value)
+	{
+		if(string.IsNullOrEmpty(value))
+			value = "0";
+
+		BoardManager.Instance.blockPoints = Convert.ToInt32(value);
+
+		blockedTilesInput.text = BoardManager.Instance.blockPoints.ToString();
+	}
+
+	public void SetBlockedTilesDistane(string value)
+	{
+		if(string.IsNullOrEmpty(value))
+			value = "0";
+
+		BoardManager.Instance.blockDistance = Convert.ToInt32(value);
+
+		blockedTilesDistanceInput.text = BoardManager.Instance.blockDistance.ToString();
+	}
 }
