@@ -23,7 +23,7 @@ public class BoardManager : Singleton<BoardManager>
 		}
 	}
 
-    public int spawnPoints, spawnDistance;
+    public int spawnPoints, spawnDistance, blockPoints, blockDistance;
     Dictionary<int, List<Point>> spawnGroups;
 
 	public int tileSize, tileSpacing;
@@ -198,10 +198,26 @@ public class BoardManager : Singleton<BoardManager>
         } while (tries <= maxTries);
 
 		if(tries >= maxTries)
-			UnityEngine.Debug.LogWarning("GetRandomBoardPoint hit max tries");
+			UnityEngine.Debug.LogWarningFormat("GetRandomBoardPoint hit max tries. Point: {0}", randoPoint);
 
         return randoPoint;
     }
+
+	Point GetRandomBoardPointAtY(int y)
+	{
+		List<Point> activeTiles = new List<Point>();
+
+		for(int i = 0; i < boardSize.X; ++i)
+		{
+			Point p = new Point(i - y / 2, y);
+			if(tiles[p].gameObject.activeInHierarchy)
+			{
+				activeTiles.Add(p);
+			}
+		}
+
+		return activeTiles[GameManager.Instance.rand.Next(activeTiles.Count)];
+	}
 
 	public Vector2 TileCoordToScreenSpace(Point tileCoord)
 	{
@@ -246,21 +262,39 @@ public class BoardManager : Singleton<BoardManager>
     #region Board Setup Methods
 	IEnumerator BasicSetup()
     {
-        //  Turn on all tiles
+		#region Reset board
 		yield return Ninja.JumpToUnity;
         foreach(TileButton t in tiles.Values)
         {
             t.gameObject.SetActive(true);
         }
 		yield return Ninja.JumpBack;
+		#endregion
+
+		#region Block tiles
+		List<Point> blockedPoints = new List<Point>();
+		for(int i = 0; i < blockPoints; ++i)
+		{
+			blockedPoints.Add(GetRandomBoardPoint(blockedPoints, blockDistance));
+		}
+
+		yield return Ninja.JumpToUnity;
+		foreach(Point t in blockedPoints)
+		{
+			tiles[t].gameObject.SetActive(false);
+		}
+
+		#endregion
 
         #region File actor starting tiles
         actorPoints = new List<Point>();
 
-        for(int i = 0; i < 3; ++i)
-        {
-            actorPoints.Add(GetRandomBoardPoint(actorPoints, spawnDistance));
-        }
+		actorPoints.Add(GetRandomBoardPointAtY(0));
+		actorPoints.Add(GetRandomBoardPointAtY(boardSize.Y - 1));
+
+		yield return Ninja.JumpBack;
+
+		actorPoints.Add(GetRandomBoardPoint(actorPoints, spawnDistance));
         #endregion
     }
 
