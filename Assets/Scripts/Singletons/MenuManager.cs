@@ -78,7 +78,7 @@ public class MenuManager : Singleton<MenuManager>
 			float deltaMagnitudeDiff = prevTouchDeltaMag - touchDeltaMag;
 
 			Vector3 rectScale = boardRect.localScale;
-			rectScale.x += deltaMagnitudeDiff * zoomSpeed;
+			rectScale.x -= deltaMagnitudeDiff * zoomSpeed;
 			if(rectScale.x > zoomMax)
 			{
 				rectScale.x = zoomMax;
@@ -88,7 +88,7 @@ public class MenuManager : Singleton<MenuManager>
 				rectScale.x = zoonMin;
 			}
 
-			rectScale.y += deltaMagnitudeDiff * zoomSpeed;
+			rectScale.y -= deltaMagnitudeDiff * zoomSpeed;
 			if(rectScale.y > zoomMax)
 			{
 				rectScale.y = zoomMax;

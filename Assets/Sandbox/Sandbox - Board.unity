@@ -2242,7 +2242,7 @@ MonoBehaviour:
   canvasRectTransform: {fileID: 741098274}
   debugLabel: {fileID: 437479265}
   boardRect: {fileID: 1327174336}
-  zoomSpeed: 0.0035
+  zoomSpeed: 0.002
   zoonMin: 0.6
   zoomMax: 1.5
   loadingSpinner: {fileID: 1303585945}
