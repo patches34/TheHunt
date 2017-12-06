@@ -34,7 +34,7 @@ public class MenuManager : Singleton<MenuManager>
 	Vector2 boardPadding;
 
 	[SerializeField]
-	public float zoomSpeed;
+	public float zoomSpeed, mouseWheelSpeed;
 	[SerializeField]
 	float zoonMin, zoomMax;
 
@@ -80,30 +80,45 @@ public class MenuManager : Singleton<MenuManager>
 			// Find the difference in the distances between each frame.
 			float deltaMagnitudeDiff = prevTouchDeltaMag - touchDeltaMag;
 
-			Vector3 rectScale = boardRect.localScale;
-			rectScale.x -= deltaMagnitudeDiff * zoomSpeed;
-			if(rectScale.x > zoomMax)
-			{
-				rectScale.x = zoomMax;
-			}
-			else if(rectScale.x < zoonMin)
-			{
-				rectScale.x = zoonMin;
-			}
-
-			rectScale.y -= deltaMagnitudeDiff * zoomSpeed;
-			if(rectScale.y > zoomMax)
-			{
-				rectScale.y = zoomMax;
-			}
-			else if(rectScale.y < zoonMin)
-			{
-				rectScale.y = zoonMin;
-			}
-
-			boardRect.localScale = rectScale;
+			SetZoom(deltaMagnitudeDiff, zoomSpeed);
 		}
 		#endregion
+
+		#if UNITY_EDITOR
+		if(Input.mouseScrollDelta.y != 0)
+		{
+			SetZoom(-Input.mouseScrollDelta.y, mouseWheelSpeed);
+		}
+		#endif
+	}
+
+	void SetZoom(float delta, float zoomSpeed)
+	{
+		Vector3 rectScale = boardPaddingRect.localScale;
+
+		//	X
+		rectScale.x -= delta * zoomSpeed;
+		if(rectScale.x > zoomMax)
+		{
+			rectScale.x = zoomMax;
+		}
+		else if(rectScale.x < zoonMin)
+		{
+			rectScale.x = zoonMin;
+		}
+
+		//	Y
+		rectScale.y -= delta * zoomSpeed;
+		if(rectScale.y > zoomMax)
+		{
+			rectScale.y = zoomMax;
+		}
+		else if(rectScale.y < zoonMin)
+		{
+			rectScale.y = zoonMin;
+		}
+
+		boardPaddingRect.localScale = rectScale;
 	}
 
 	public void ShowMenu(int type)

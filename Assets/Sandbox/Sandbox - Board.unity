@@ -2245,6 +2245,7 @@ MonoBehaviour:
   boardPaddingRect: {fileID: 1710987149}
   boardPadding: {x: 20, y: 20}
   zoomSpeed: 0.002
+  mouseWheelSpeed: 0.05
   zoonMin: 0.6
   zoomMax: 1.5
   loadingSpinner: {fileID: 1303585945}
