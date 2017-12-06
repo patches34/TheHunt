@@ -37,4 +37,9 @@ public struct Point
 	{
 		return new Vector2(p.X, p.Y);
 	}
+
+	public bool IsNull()
+	{
+		return X < 0 && Y < 0;
+	}
 }

@@ -3125,8 +3125,8 @@ MonoBehaviour:
   zoomSpeedSlider: {fileID: 1950500062}
   widthInput: {fileID: 1814644057}
   heightInput: {fileID: 171313780}
-  blockedTilesInput: {fileID: 0}
-  blockedTilesDistanceInput: {fileID: 0}
+  blockedTilesInput: {fileID: 1148973041}
+  blockedTilesDistanceInput: {fileID: 2057475161}
   zoomSpeedLabel: {fileID: 202685287}
   boardSetupmethodDropdown: {fileID: 1315527747}
   boardSetupPanels:
@@ -3426,6 +3426,12 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1077233789}
+--- !u!114 &1148973041 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114402181457829534, guid: 0a19226c06ca94342bf2e3a326857ce6,
+    type: 2}
+  m_PrefabInternal: {fileID: 1273719048}
+  m_Script: {fileID: 575553740, guid: f70555f144d8491a825f0804e09c671c, type: 3}
 --- !u!1 &1167062122
 GameObject:
   m_ObjectHideFlags: 0
@@ -4691,13 +4697,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boardSize:
-    X: 10
-    Y: 15
+    X: 8
+    Y: 13
     Z: 0
   spawnPoints: 5
   spawnDistance: 5
   blockPoints: 20
-  blockDistance: 0
+  blockDistance: 2
+  maxTries: 100
   tileSize: 60
   tileSpacing: 12
   tilePrefab: {fileID: 1313877467187986, guid: 8170f1fd781884ed38dae4cd93517250, type: 2}
@@ -7002,6 +7009,12 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1971230115}
+--- !u!114 &2057475161 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114402181457829534, guid: 0a19226c06ca94342bf2e3a326857ce6,
+    type: 2}
+  m_PrefabInternal: {fileID: 1815841117}
+  m_Script: {fileID: 575553740, guid: f70555f144d8491a825f0804e09c671c, type: 3}
 --- !u!1001 &2058087567
 Prefab:
   m_ObjectHideFlags: 0

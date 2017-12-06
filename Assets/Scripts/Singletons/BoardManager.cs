@@ -23,7 +23,7 @@ public class BoardManager : Singleton<BoardManager>
 		}
 	}
 
-    public int spawnPoints, spawnDistance, blockPoints, blockDistance;
+    public int spawnPoints, spawnDistance, blockPoints, blockDistance, maxTries;
     Dictionary<int, List<Point>> spawnGroups;
 
 	public int tileSize, tileSpacing;
@@ -158,10 +158,10 @@ public class BoardManager : Singleton<BoardManager>
 		}
 	}
 
-    Point GetRandomBoardPoint(List<Point> usedTiles = null, int minDistance = 1)
+	Point GetRandomBoardPoint(List<Point> usedTiles = null, int minDistance = 1, bool allowNull = false)
     {
         Point randoPoint = new Point();
-        int maxTries = 10, tries = 0;
+        int tries = 0;
 
         do
         {
@@ -198,7 +198,12 @@ public class BoardManager : Singleton<BoardManager>
         } while (tries <= maxTries);
 
 		if(tries >= maxTries)
+		{
 			UnityEngine.Debug.LogWarningFormat("GetRandomBoardPoint hit max tries. Point: {0}", randoPoint);
+
+			if(allowNull)
+				return new Point(-1, -1);
+		}
 
         return randoPoint;
     }
@@ -275,7 +280,17 @@ public class BoardManager : Singleton<BoardManager>
 		List<Point> blockedPoints = new List<Point>();
 		for(int i = 0; i < blockPoints; ++i)
 		{
-			blockedPoints.Add(GetRandomBoardPoint(blockedPoints, blockDistance));
+			Point p = GetRandomBoardPoint(blockedPoints, blockDistance, true);
+
+			if(p.IsNull())
+			{
+				UnityEngine.Debug.Log(blockedPoints.Count);
+				break;
+			}
+			else
+			{
+				blockedPoints.Add(p);
+			}
 		}
 
 		yield return Ninja.JumpToUnity;
@@ -289,12 +304,13 @@ public class BoardManager : Singleton<BoardManager>
         #region File actor starting tiles
         actorPoints = new List<Point>();
 
+		//	food
 		actorPoints.Add(GetRandomBoardPointAtY(boardSize.Y - 1));
+		//	Animal
 		actorPoints.Add(GetRandomBoardPointAtY(0));
 
-		yield return Ninja.JumpBack;
-
-		actorPoints.Add(GetRandomBoardPoint(actorPoints, spawnDistance));
+		//	Hunter
+		actorPoints.Add(GetRandomBoardPointAtY(boardSize.Y / 2));
         #endregion
     }
 
