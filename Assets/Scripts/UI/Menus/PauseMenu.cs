@@ -29,8 +29,6 @@ public class PauseMenu : UIMenu
 		blockedTilesInput.text = BoardManager.Instance.blockPoints.ToString();
 		blockedTilesDistanceInput.text = BoardManager.Instance.blockDistance.ToString();
 
-		zoomSpeedSlider.value = MenuManager.Instance.zoomSpeed;
-
         foreach(RectTransform p in boardSetupPanels)
         {
             p.gameObject.SetActive(false);
@@ -60,13 +58,6 @@ public class PauseMenu : UIMenu
 
         heightInput.text = BoardManager.Instance.BoardSize.Y.ToString();
     }
-
-	public void SetZoomSpeed(float value)
-	{
-		MenuManager.Instance.zoomSpeed = value;
-
-		zoomSpeedLabel.text = value.ToString("F4");
-	}
 
     public void OnBoardSetupValueChange(int value)
     {

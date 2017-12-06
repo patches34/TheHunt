@@ -34,9 +34,8 @@ public class MenuManager : Singleton<MenuManager>
 	Vector2 boardPadding;
 
 	[SerializeField]
-	public float zoomSpeed, mouseWheelSpeed;
-	[SerializeField]
-	float zoonMin, zoomMax;
+	float zoomSpeed, mouseWheelSpeed, zoomMax;
+	float zoomMin;
 
 	public GameObject loadingSpinner;
 
@@ -82,7 +81,6 @@ public class MenuManager : Singleton<MenuManager>
 
 			SetZoom(deltaMagnitudeDiff, zoomSpeed);
 		}
-		#endregion
 
 		#if UNITY_EDITOR
 		if(Input.mouseScrollDelta.y != 0)
@@ -90,6 +88,7 @@ public class MenuManager : Singleton<MenuManager>
 			SetZoom(-Input.mouseScrollDelta.y, mouseWheelSpeed);
 		}
 		#endif
+		#endregion
 	}
 
 	void SetZoom(float delta, float zoomSpeed)
@@ -102,9 +101,9 @@ public class MenuManager : Singleton<MenuManager>
 		{
 			rectScale.x = zoomMax;
 		}
-		else if(rectScale.x < zoonMin)
+		else if(rectScale.x < zoomMin)
 		{
-			rectScale.x = zoonMin;
+			rectScale.x = zoomMin;
 		}
 
 		//	Y
@@ -113,9 +112,9 @@ public class MenuManager : Singleton<MenuManager>
 		{
 			rectScale.y = zoomMax;
 		}
-		else if(rectScale.y < zoonMin)
+		else if(rectScale.y < zoomMin)
 		{
-			rectScale.y = zoonMin;
+			rectScale.y = zoomMin;
 		}
 
 		boardPaddingRect.localScale = rectScale;
@@ -137,6 +136,8 @@ public class MenuManager : Singleton<MenuManager>
 
 		boardPaddingRect.offsetMax = boardSize + boardPadding;
 		boardPaddingRect.offsetMin = -boardSize - boardPadding;
+
+		zoomMin = Mathf.Min(CanvasRect.width / boardPaddingRect.rect.width, CanvasRect.height / boardPaddingRect.rect.height);
 	}
 
 	public void SetZoomSpeed(float value)
