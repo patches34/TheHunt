@@ -212,7 +212,7 @@ public class BoardManager : Singleton<BoardManager>
 	{
 		List<Point> activeTiles = new List<Point>();
 
-		for(int i = 0; i < boardSize.X; ++i)
+		for(int i = 0; i < boardSize.X - (y % 2); ++i)
 		{
 			Point p = new Point(i - y / 2, y);
 			if(tiles[p].gameObject.activeInHierarchy)
