@@ -289,8 +289,8 @@ public class BoardManager : Singleton<BoardManager>
         #region File actor starting tiles
         actorPoints = new List<Point>();
 
-		actorPoints.Add(GetRandomBoardPointAtY(0));
 		actorPoints.Add(GetRandomBoardPointAtY(boardSize.Y - 1));
+		actorPoints.Add(GetRandomBoardPointAtY(0));
 
 		yield return Ninja.JumpBack;
 
