@@ -53,6 +53,9 @@ public class BoardManager : Singleton<BoardManager>
 		}
 	}
 
+	[SerializeField]
+	Transform boardTransform;
+
 	// Use this for initialization
 	protected BoardManager()
 	{
@@ -83,7 +86,7 @@ public class BoardManager : Singleton<BoardManager>
 		{
 			for(int column = 0; column < boardSize.X - (row % 2); ++column)
 			{
-				GameObject newTile = Instantiate(tilePrefab, transform);
+				GameObject newTile = Instantiate(tilePrefab, boardTransform);
 				newTile.transform.SetAsFirstSibling();
 
 				TileButton tileBtn = newTile.GetComponent<TileButton>();

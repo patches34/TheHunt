@@ -29,7 +29,9 @@ public class MenuManager : Singleton<MenuManager>
 	public Text debugLabel;
 
 	[SerializeField]
-	RectTransform boardRect;
+	RectTransform boardRect, boardPaddingRect;
+	[SerializeField]
+	Vector2 boardPadding;
 
 	[SerializeField]
 	public float zoomSpeed;
@@ -60,6 +62,7 @@ public class MenuManager : Singleton<MenuManager>
 	{
 		debugLabel.text = string.Format("Touches = {0}", Input.touchCount);
 
+		#region Zooming
 		if(Input.touchCount >= 2)
 		{
 			// Store both touches.
@@ -100,6 +103,7 @@ public class MenuManager : Singleton<MenuManager>
 
 			boardRect.localScale = rectScale;
 		}
+		#endregion
 	}
 
 	public void ShowMenu(int type)
@@ -115,6 +119,9 @@ public class MenuManager : Singleton<MenuManager>
 	{
 		boardRect.offsetMax = boardSize;
 		boardRect.offsetMin = -boardSize;
+
+		boardPaddingRect.offsetMax = boardSize + boardPadding;
+		boardPaddingRect.offsetMin = -boardSize - boardPadding;
 	}
 
 	public void SetZoomSpeed(float value)
