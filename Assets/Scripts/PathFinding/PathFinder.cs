@@ -7,7 +7,7 @@ using CielaSpike;
 public class PathFinder : MonoBehaviour
 {
 	[SerializeField]
-	Tile currentTile, goalTile, nextTile;
+	Tile currentTile, goalTile, subGoalTile, nextTile;
 
 	public float moveLerpTime, timer;
 	Vector2 lerpStart, lerpEnd;
@@ -24,7 +24,7 @@ public class PathFinder : MonoBehaviour
 	public bool isReady;
 
 	// Use this for initialization
-	public void Init(Tile start, Tile goal)
+	public void Init(Tile start, Tile goal, Tile subGoal = null)
 	{
 		rectTrans.anchoredPosition = BoardManager.Instance.TileCoordToScreenSpace(start.Location);
 		currentTile = start;
@@ -32,6 +32,8 @@ public class PathFinder : MonoBehaviour
 		timer = -1;
 
 		gameObject.SetActive(true);
+
+		subGoalTile = subGoal;
 
 		SetGoalTile(goal);
 	}
@@ -147,12 +149,17 @@ public class PathFinder : MonoBehaviour
 
 			closed.Add(path.LastStep);
 
-			foreach (Tile n in path.LastStep.Neighbours)
+			foreach (Tile t in path.LastStep.Neighbours)
 			{
-				double d = distance(path.LastStep, n);
-				var newPath = path.AddStep(n, d);
-				queue.Enqueue(newPath.TotalCost + estimate(n, goalTile), 
-					newPath);
+				double d = distance(path.LastStep, t);
+				var newPath = path.AddStep(t, d);
+
+				double costVaule = newPath.TotalCost + estimate(t, goalTile);
+				if(subGoalTile != null)
+				{
+					costVaule += estimate(t, subGoalTile);
+				}
+				queue.Enqueue(costVaule, newPath);
 			}
 		}
 

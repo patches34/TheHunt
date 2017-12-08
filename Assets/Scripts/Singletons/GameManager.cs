@@ -111,7 +111,7 @@ public class GameManager : Singleton<GameManager>
 
 		randomTile = BoardManager.Instance.GetTileButtonByPoint(actorTiles[2]);
         randomTile.SetIsInteractable(false);
-		hunterActor.Init(randomTile.tile, animalActor.GetTile());
+		hunterActor.Init(randomTile.tile, animalActor.GetTile(), foodTile.tile);
 
 		isRunning = true;
 
