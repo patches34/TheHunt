@@ -28,11 +28,22 @@ public class GameManager : Singleton<GameManager>
 		}
 	}
 
-	public bool isWaiting = true, isRunning = false;
+	[SerializeField]
+	bool isWaiting, isRunning, isGameOver;
 	public float compTurnWait;
 	public float turnWaitTimer;
 
-	public TurnActor GameOverState { get; private set; }
+	public TurnActor GameOverState {
+		get
+		{
+			if(animalActor.IsBlocked())
+				return TurnActor.Animal;
+			else if(hunterActor.IsBlocked())
+				return TurnActor.Player;
+			else
+				return TurnActor.Hunter;
+		}
+	}
 
 	public TileButton foodTile;
 
@@ -56,6 +67,10 @@ public class GameManager : Singleton<GameManager>
 
 	void Start()
 	{
+		isWaiting = true;
+		isRunning = false;
+		isGameOver = false;
+
 		MenuManager.Instance.loadingSpinner.SetActive(true);
 		StartCoroutine(CreateGame());
 	}
@@ -105,7 +120,17 @@ public class GameManager : Singleton<GameManager>
 
 	void Update()
 	{
-		
+		if(isGameOver && hunterActor.isReady && animalActor.isReady)
+		{
+			if(animalActor.IsBlocked())
+			{
+				GameOver(false);
+			}
+			else
+			{
+				GameOver(true);
+			}
+		}
 	}
 
 	public void PlayerWent()
@@ -113,6 +138,8 @@ public class GameManager : Singleton<GameManager>
 		switch(turn)
 		{
 		case TurnActor.Player:
+			
+
 			turn = TurnActor.Hunter;
 			break;
 		case TurnActor.Hunter:
@@ -128,6 +155,12 @@ public class GameManager : Singleton<GameManager>
 		isWaiting = false;
 	}
 
+	public void BlockTile(Point tile)
+	{
+		hunterActor.CheckForPathBlocked(tile);
+		animalActor.CheckForPathBlocked(tile);
+	}
+
 	public void GoalReached(TurnActor actor = TurnActor.None)
 	{
 		if(turn == TurnActor.Hunter || actor == TurnActor.Hunter)
@@ -136,17 +169,9 @@ public class GameManager : Singleton<GameManager>
 		}
 	}
 
-	public void GoalBlocked(TurnActor actor)
+	public void GoalBlocked()
 	{
-		switch(actor)
-		{
-		case TurnActor.Animal:
-			GameOver(false);
-			break;
-		case TurnActor.Hunter:
-			GameOver(true);
-			break;
-		}
+		isGameOver = true;
 	}
 
 	public bool IsActorTurn(TurnActor actor)
@@ -163,16 +188,6 @@ public class GameManager : Singleton<GameManager>
 
 	void GameOver(bool didPlayerWin)
 	{
-		if(didPlayerWin)
-		{
-			GameOverState = TurnActor.Player;
-		}
-		else
-		{
-			GameOverState = turn;
-		}
-
-
 		isRunning = false;
 		turn = TurnActor.None;
 
@@ -183,8 +198,6 @@ public class GameManager : Singleton<GameManager>
 	{
 		CancelTasks();
 
-		GameOverState = TurnActor.None;
-
 		BoardManager.Instance.Reset();
 
 		if(foodTile != null)
@@ -192,10 +205,6 @@ public class GameManager : Singleton<GameManager>
 
 		animalActor.Reset();
 		hunterActor.Reset();
-
-		turn = TurnActor.None;
-
-		isRunning = false;
 
 		StartGame();
 	}

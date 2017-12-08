@@ -5938,6 +5938,7 @@ MonoBehaviour:
   turn: 0
   isWaiting: 0
   isRunning: 0
+  isGameOver: 0
   compTurnWait: 1
   turnWaitTimer: 0
   foodTile: {fileID: 0}

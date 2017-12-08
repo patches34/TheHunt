@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using CielaSpike;
 
 public class PathFinder : MonoBehaviour
 {
@@ -20,17 +21,19 @@ public class PathFinder : MonoBehaviour
 	[SerializeField]
 	Path<Tile> movePath;
 
+	public bool isReady;
+
 	// Use this for initialization
 	public void Init(Tile start, Tile goal)
 	{
 		rectTrans.anchoredPosition = BoardManager.Instance.TileCoordToScreenSpace(start.Location);
 		currentTile = start;
 
-		goalTile = goal;
-
 		timer = -1;
 
 		gameObject.SetActive(true);
+
+		SetGoalTile(goal);
 	}
 
 	public void Reset()
@@ -47,11 +50,10 @@ public class PathFinder : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-		if(GameManager.Instance.IsActorTurn(actor))
+		if(GameManager.Instance.IsActorTurn(actor) && isReady)
 		{
 			if(timer < 0)
 			{
-				
 				TakeTurn();
 			}
 			else
@@ -68,13 +70,16 @@ public class PathFinder : MonoBehaviour
 
 					timer = -1;
 
-					if(movePath.TotalCost == 1)
+					if(movePath.TotalCost <= 1)
 					{
+						Debug.Log("Goal reached" + goalTile.Location);
 						GameManager.Instance.GoalReached();
 					}
 					else
 					{
 						GameManager.Instance.PlayerWent();
+
+						this.StartCoroutineAsync(FindPath());
 					}
 				}
 			}
@@ -85,30 +90,13 @@ public class PathFinder : MonoBehaviour
 	{
 		if(currentTile.Location != goalTile.Location)
 		{
+			Debug.LogFormat("{0} path cost: {1}", actor, movePath.TotalCost);
+			BoardManager.Instance.SetTileInteractable(nextTile.Location, false);
+
+			lerpStart = BoardManager.Instance.TileCoordToScreenSpace(currentTile.Location);
+			lerpEnd = BoardManager.Instance.TileCoordToScreenSpace(nextTile.Location);
+
 			timer = 0;
-
-			movePath = FindPath();
-
-			if(movePath == null)
-			{
-				Debug.LogFormat("No Path for {0}", GameManager.Instance.Turn);
-				GameManager.Instance.GoalBlocked(actor);
-			}
-			else if(movePath.TotalCost <= 0)
-			{
-				Debug.LogFormat("{0} at goal", GameManager.Instance.Turn);
-			}
-			else
-			{
-				nextTile = movePath.ElementAt((int)movePath.TotalCost - 1);
-
-				BoardManager.Instance.SetTileInteractable(nextTile.Location, false);
-
-				lerpStart = BoardManager.Instance.TileCoordToScreenSpace(currentTile.Location);
-				lerpEnd = BoardManager.Instance.TileCoordToScreenSpace(nextTile.Location);
-
-				timer = 0;
-			}
 		}
 		else
 		{
@@ -116,9 +104,24 @@ public class PathFinder : MonoBehaviour
 		}
 	}
 
-	#region Find Path
-	public Path<Tile> FindPath()
+	public void CheckForPathBlocked(Point newBlocked)
 	{
+		foreach(Tile t in movePath)
+		{
+			if(t.Location.Equals(newBlocked))
+			{
+				Debug.LogFormat("{0} find new path", actor);
+				this.StartCoroutineAsync(FindPath());
+			}
+		}
+	}
+
+	#region Find Path
+	IEnumerator FindPath()
+	{
+		isReady = false;
+		movePath = null;
+
 		var closed = new HashSet<Tile>();
 		var queue = new PriorityQueue<double, Path<Tile>>();
 		queue.Enqueue(0, new Path<Tile>(currentTile));
@@ -135,7 +138,11 @@ public class PathFinder : MonoBehaviour
 			// if we added the destination to the closed list, we've found a path
 			if (path.LastStep.Equals(goalTile))
 			{
-				return path;
+				movePath = path;
+
+				nextTile = movePath.ElementAt((int)movePath.TotalCost - 1);
+
+				break;
 			}
 
 			closed.Add(path.LastStep);
@@ -148,6 +155,18 @@ public class PathFinder : MonoBehaviour
 					newPath);
 			}
 		}
+
+		if(movePath == null)
+		{
+			Debug.LogFormat("No Path for {0}", GameManager.Instance.Turn);
+			GameManager.Instance.GoalBlocked();
+		}
+		else if(movePath.TotalCost <= 0)
+		{
+			Debug.LogFormat("{0} at goal", GameManager.Instance.Turn);
+		}
+
+		isReady = true;
 
 		return null;
 	}
@@ -167,6 +186,11 @@ public class PathFinder : MonoBehaviour
 
 		return Mathf.Max(dx, dy, dz);
 	}
+
+	public bool IsBlocked()
+	{
+		return movePath == null;
+	}
 	#endregion
 
 	public Tile GetTile()
@@ -181,6 +205,10 @@ public class PathFinder : MonoBehaviour
 		if(goalTile.Location == currentTile.Location)
 		{
 			GameManager.Instance.GoalReached(TurnActor.Hunter);
+		}
+		else
+		{
+			this.StartCoroutineAsync(FindPath());
 		}
 	}
 }
