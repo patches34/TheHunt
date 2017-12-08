@@ -120,7 +120,6 @@ public class PathFinder : MonoBehaviour
 	IEnumerator FindPath()
 	{
 		isReady = false;
-		movePath = null;
 
 		var closed = new HashSet<Tile>();
 		var queue = new PriorityQueue<double, Path<Tile>>();
@@ -138,10 +137,6 @@ public class PathFinder : MonoBehaviour
 			// if we added the destination to the closed list, we've found a path
 			if (path.LastStep.Equals(goalTile))
 			{
-				movePath = path;
-
-				nextTile = movePath.ElementAt((int)movePath.TotalCost - 1);
-
 				break;
 			}
 
@@ -156,6 +151,10 @@ public class PathFinder : MonoBehaviour
 			}
 		}
 
+		yield return Ninja.JumpToUnity;
+		UpdatePathNodes(queue.Dequeue());
+		yield return Ninja.JumpBack;
+
 		if(movePath == null)
 		{
 			Debug.LogFormat("No Path for {0}", GameManager.Instance.Turn);
@@ -165,10 +164,12 @@ public class PathFinder : MonoBehaviour
 		{
 			Debug.LogFormat("{0} at goal", GameManager.Instance.Turn);
 		}
+		else
+		{
+			nextTile = movePath.ElementAt((int)movePath.TotalCost - 1);
+		}
 
 		isReady = true;
-
-		return null;
 	}
 
 	double distance(Tile tile1, Tile tile2)
@@ -210,5 +211,26 @@ public class PathFinder : MonoBehaviour
 		{
 			this.StartCoroutineAsync(FindPath());
 		}
+	}
+
+	void UpdatePathNodes(Path<Tile> newPath)
+	{
+		if(movePath != null)
+		{
+			foreach(Tile t in movePath)
+			{
+				BoardManager.Instance.SetPathNodeForActor(t.Location, TurnActor.None);
+			}
+		}
+
+		Debug.Log(newPath.TotalCost);
+		foreach(Tile t in newPath)
+		{
+			Debug.LogFormat("{0} path node: {1}", actor, t.Location);
+			//if(!t.Location.Equals(currentTile.Location) && !t.Location.Equals(goalTile.Location))
+				BoardManager.Instance.SetPathNodeForActor(t.Location, actor);
+		}
+
+		movePath = newPath;
 	}
 }
