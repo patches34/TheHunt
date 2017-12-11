@@ -43,7 +43,7 @@ public class TileButton : MonoBehaviour
 	Text label;
 
 	[SerializeField]
-	GameObject animalPath, hunterPath;
+	GameObject animalPath, hunterPath, pathPanel;
 
 	// Use this for initialization
 	void Start ()
@@ -123,5 +123,10 @@ public class TileButton : MonoBehaviour
 			hunterPath.SetActive(false);
 			break;
 		}
+	}
+
+	public void ShowActorPath(bool isVisible)
+	{
+		pathPanel.SetActive(isVisible);
 	}
 }

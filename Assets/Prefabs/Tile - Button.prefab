@@ -100,7 +100,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1534467643470060
 GameObject:
   m_ObjectHideFlags: 0
@@ -162,6 +162,7 @@ MonoBehaviour:
   label: {fileID: 114672540677944300}
   animalPath: {fileID: 1291085762574976}
   hunterPath: {fileID: 1320127135325316}
+  pathPanel: {fileID: 1349567335060752}
 --- !u!114 &114168743332066548
 MonoBehaviour:
   m_ObjectHideFlags: 1

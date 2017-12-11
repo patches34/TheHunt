@@ -20,6 +20,9 @@ public class PauseMenu : UIMenu
     [SerializeField]
     List<RectTransform> boardSetupPanels;
 
+	[SerializeField]
+	Toggle showPathToggle;
+
 	// Use this for initialization
 	void OnEnable()
 	{
@@ -37,6 +40,8 @@ public class PauseMenu : UIMenu
         boardSetupmethodDropdown.value = (int)BoardManager.Instance.boardSetupMethod;
 
 		boardSetupPanels[(int)BoardManager.Instance.boardSetupMethod].gameObject.SetActive(true);
+
+		showPathToggle.isOn = BoardManager.Instance.ShowAiPath;
 	}
 
 	public void SetBoardWidth(string value)

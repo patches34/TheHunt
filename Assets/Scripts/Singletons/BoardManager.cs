@@ -91,10 +91,27 @@ public class BoardManager : Singleton<BoardManager>
 	[SerializeField]
 	Transform boardTransform;
 
+	[SerializeField]
+	bool showAiPath;
+	public bool ShowAiPath
+	{
+		get
+		{
+			return showAiPath;
+		}
+		set
+		{
+			showAiPath = value;
+
+			PlayerPrefs.SetInt(k_SHOW_AI_PATH, System.Convert.ToInt32(showAiPath));
+		}
+	}
+
 	const string k_BOARD_SIZE_X = "boardSizeX";
 	const string k_BOARD_SIZE_Y = "boardSizeY";
 	const string k_BLOCKED_TILES = "blockedTiles";
 	const string k_BLOCKED_TILES_SPACING = "blockedTilesSpacing";
+	const string k_SHOW_AI_PATH = "showAiPath";
 
 	// Use this for initialization
 	protected BoardManager()
@@ -109,6 +126,8 @@ public class BoardManager : Singleton<BoardManager>
 
 		startBlockedTiles = PlayerPrefs.GetInt(k_BLOCKED_TILES, startBlockedTiles);
 		startBlockedTilesMinSpacing = PlayerPrefs.GetInt(k_BLOCKED_TILES_SPACING, startBlockedTilesMinSpacing);
+
+		showAiPath = System.Convert.ToBoolean(PlayerPrefs.GetInt(k_SHOW_AI_PATH, System.Convert.ToInt32(showAiPath)));
 	}
 
 	public IEnumerator CreateBoard()
@@ -144,6 +163,8 @@ public class BoardManager : Singleton<BoardManager>
 				newTile.GetComponent<RectTransform>().anchoredPosition = TileCoordToScreenSpace(tileBtn.tile.Location);
 
 				tiles.Add(tileBtn.tile.Location, tileBtn);
+
+				tileBtn.ShowActorPath(ShowAiPath);
 
                 newTile.SetActive(false);
 			}
@@ -453,4 +474,14 @@ public class BoardManager : Singleton<BoardManager>
 		actorPoints = new List<Point> { spawnGroups[0][0], spawnGroups[1][0], spawnGroups[2][0] };
     }
     #endregion
+
+	public void ShowActorPaths(bool isVisible)
+	{
+		ShowAiPath = isVisible;
+
+		foreach(TileButton tile in tiles.Values)
+		{
+			tile.ShowActorPath(ShowAiPath);
+		}
+	}
 }
