@@ -30,8 +30,6 @@ public class GameManager : Singleton<GameManager>
 
 	[SerializeField]
 	bool isWaiting, isRunning, isGameOver;
-	public float compTurnWait;
-	public float turnWaitTimer;
 
 	public TurnActor GameOverState {
 		get
@@ -48,10 +46,6 @@ public class GameManager : Singleton<GameManager>
 	public TileButton foodTile;
 
 	public PathFinder animalActor, hunterActor;
-
-	public int actorMinDistance;
-
-	public int randomBlockedTiles;
 
 	public System.Random rand = new System.Random();
 

@@ -23,10 +23,43 @@ public class BoardManager : Singleton<BoardManager>
 		}
 	}
 
-    public int spawnPoints, spawnDistance, blockPoints, blockDistance, maxTries;
+    int spawnPoints, spawnDistance;
+	[SerializeField]
+	int startBlockedTiles;
+	public int StartBlockedTiles
+	{
+		get
+		{
+			return startBlockedTiles;
+		}
+		set
+		{
+			startBlockedTiles = value;
+
+			PlayerPrefs.SetInt(k_BLOCKED_TILES, startBlockedTiles);
+		}
+	}
+
+	[SerializeField]
+	int startBlockedTilesMinSpacing;
+	public int StartBlockedTilesMinSpacing
+	{
+		get
+		{
+			return startBlockedTilesMinSpacing;
+		}
+		set
+		{
+			startBlockedTilesMinSpacing = value;
+
+			PlayerPrefs.SetInt(k_BLOCKED_TILES_SPACING, startBlockedTilesMinSpacing);
+		}
+	}
+
     Dictionary<int, List<Point>> spawnGroups;
 
-	public int tileSize, tileSpacing;
+	[SerializeField]
+	int tileSize, tileSpacing, maxTries;
 
 	[SerializeField]
 	GameObject tilePrefab;
@@ -56,10 +89,24 @@ public class BoardManager : Singleton<BoardManager>
 	[SerializeField]
 	Transform boardTransform;
 
+	const string k_BOARD_SIZE_X = "boardSizeX";
+	const string k_BOARD_SIZE_Y = "boardSizeY";
+	const string k_BLOCKED_TILES = "blockedTiles";
+	const string k_BLOCKED_TILES_SPACING = "blockedTilesSpacing";
+
 	// Use this for initialization
 	protected BoardManager()
 	{
 		// guarantee this will be always a singleton only - can't use the constructor!
+	}
+
+	void Awake()
+	{
+		boardSize.X = PlayerPrefs.GetInt(k_BOARD_SIZE_X, boardSize.X);
+		boardSize.Y = PlayerPrefs.GetInt(k_BOARD_SIZE_Y, boardSize.Y);
+
+		startBlockedTiles = PlayerPrefs.GetInt(k_BLOCKED_TILES, startBlockedTiles);
+		startBlockedTilesMinSpacing = PlayerPrefs.GetInt(k_BLOCKED_TILES_SPACING, startBlockedTilesMinSpacing);
 	}
 
 	public IEnumerator CreateBoard()
@@ -251,6 +298,8 @@ public class BoardManager : Singleton<BoardManager>
 
 	public void SetPathNodeForActor(Point tileCoord, TurnActor actor, bool isOn = true)
 	{
+		if(!tiles.ContainsKey(tileCoord))
+			UnityEngine.Debug.LogError(tileCoord);
 		tiles[tileCoord].SetAsPathNodeFor(actor, isOn);
 	}
 
@@ -259,13 +308,17 @@ public class BoardManager : Singleton<BoardManager>
 		if(width > 0)
 		{
 			boardSize.X = width;
+
+			PlayerPrefs.SetInt(k_BOARD_SIZE_X, width);
 		}
 
 		if(height > 0)
 		{
 			boardSize.Y = height;
+
+			PlayerPrefs.SetInt(k_BOARD_SIZE_Y, height);
 		}
-	}
+  	}
 
     public TileButton GetTileButtonByPoint(Point location)
     {
@@ -286,9 +339,9 @@ public class BoardManager : Singleton<BoardManager>
 
 		#region Block tiles
 		List<Point> blockedPoints = new List<Point>();
-		for(int i = 0; i < blockPoints; ++i)
+		for(int i = 0; i < startBlockedTiles; ++i)
 		{
-			Point p = GetRandomBoardPoint(blockedPoints, blockDistance, true);
+			Point p = GetRandomBoardPoint(blockedPoints, startBlockedTilesMinSpacing, true);
 
 			if(p.IsNull())
 			{

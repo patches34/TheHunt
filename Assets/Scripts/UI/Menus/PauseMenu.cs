@@ -26,8 +26,8 @@ public class PauseMenu : UIMenu
 		widthInput.text = BoardManager.Instance.BoardSize.X.ToString();
 		heightInput.text = BoardManager.Instance.BoardSize.Y.ToString();
 
-		blockedTilesInput.text = BoardManager.Instance.blockPoints.ToString();
-		blockedTilesDistanceInput.text = BoardManager.Instance.blockDistance.ToString();
+		blockedTilesInput.text = BoardManager.Instance.StartBlockedTiles.ToString();
+		blockedTilesDistanceInput.text = BoardManager.Instance.StartBlockedTilesMinSpacing.ToString();
 
         foreach(RectTransform p in boardSetupPanels)
         {
@@ -73,9 +73,9 @@ public class PauseMenu : UIMenu
 		if(string.IsNullOrEmpty(value))
 			value = "0";
 
-		BoardManager.Instance.blockPoints = Convert.ToInt32(value);
+		BoardManager.Instance.StartBlockedTiles = Convert.ToInt32(value);
 
-		blockedTilesInput.text = BoardManager.Instance.blockPoints.ToString();
+		blockedTilesInput.text = BoardManager.Instance.StartBlockedTiles.ToString();
 	}
 
 	public void SetBlockedTilesDistane(string value)
@@ -83,8 +83,8 @@ public class PauseMenu : UIMenu
 		if(string.IsNullOrEmpty(value))
 			value = "0";
 
-		BoardManager.Instance.blockDistance = Convert.ToInt32(value);
+		BoardManager.Instance.StartBlockedTilesMinSpacing = Convert.ToInt32(value);
 
-		blockedTilesDistanceInput.text = BoardManager.Instance.blockDistance.ToString();
+		blockedTilesDistanceInput.text = BoardManager.Instance.StartBlockedTilesMinSpacing.ToString();
 	}
 }
