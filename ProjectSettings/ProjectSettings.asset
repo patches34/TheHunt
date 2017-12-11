@@ -593,11 +593,15 @@ PlayerSettings:
       daydreamIconForeground: {fileID: 0}
       daydreamIconBackground: {fileID: 0}
   cloudServicesEnabled:
+    Build: 0
+    Collab: 0
+    ErrorHub: 0
+    Hub: 0
     UNet: 1
   facebookSdkVersion: 7.9.1
   apiCompatibilityLevel: 2
-  cloudProjectId: d32dc1d1-521b-44e1-acdc-508e476e1ea2
-  projectName: New Unity Project (2)
-  organizationId: patches34
+  cloudProjectId: 1ddc4700-04c4-4ff2-b466-3ca1ea6d040b
+  projectName: The Hunt
+  organizationId: craftbrewedgames
   cloudEnabled: 0
   enableNewInputSystem: 0

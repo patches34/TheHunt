@@ -12,6 +12,14 @@ public enum TurnActor
 	Animal
 }
 
+public enum GameOverReason
+{
+	PLAYER_WON,
+	HUNTER_WON,
+	ANIMAL_STARVED,
+	FORFEIT
+}
+
 public class GameManager : Singleton<GameManager>
 {
 	[SerializeField]
@@ -51,6 +59,9 @@ public class GameManager : Singleton<GameManager>
 
 	Task createBoardTask, setupBoardTask;
 
+	public GameOverReason reason;
+	public AnalyticsTracker gameStartedTracker, gameOverTracker;
+
 	#region Initialization
 	// Use this for initialization
 	protected GameManager()
@@ -83,6 +94,8 @@ public class GameManager : Singleton<GameManager>
 		MenuManager.Instance.loadingSpinner.SetActive(true);
 		turn = TurnActor.Player;
 		isWaiting = true;
+
+		gameStartedTracker.TriggerEvent();
 
 		StartCoroutine(SetupBoard());
 	}
@@ -118,10 +131,14 @@ public class GameManager : Singleton<GameManager>
 		{
 			if(animalActor.IsBlocked())
 			{
+				reason = GameOverReason.ANIMAL_STARVED;
+
 				GameOver(false);
 			}
 			else
 			{
+				reason = GameOverReason.PLAYER_WON;
+
 				GameOver(true);
 			}
 		}
@@ -159,6 +176,8 @@ public class GameManager : Singleton<GameManager>
 	{
 		if(turn == TurnActor.Hunter || actor == TurnActor.Hunter)
 		{
+			reason = GameOverReason.HUNTER_WON;
+
 			GameOver(false);
 		}
 	}
@@ -186,6 +205,8 @@ public class GameManager : Singleton<GameManager>
 		turn = TurnActor.None;
 
 		MenuManager.Instance.ShowMenu(MenuTypes.GameOver);
+
+		gameOverTracker.TriggerEvent();
 	}
 
 	public void Restart()
@@ -199,6 +220,8 @@ public class GameManager : Singleton<GameManager>
 
 		animalActor.Reset();
 		hunterActor.Reset();
+
+		gameOverTracker.TriggerEvent();
 
 		StartGame();
 	}

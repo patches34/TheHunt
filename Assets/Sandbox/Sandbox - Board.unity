@@ -960,10 +960,10 @@ RectTransform:
   m_Father: {fileID: 1627578070}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 273.83237, y: -292.63177}
-  m_SizeDelta: {x: 163.77893, y: 44}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 44}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &333498316
 MonoBehaviour:
@@ -1429,6 +1429,17 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -2990,10 +3001,10 @@ RectTransform:
   m_Father: {fileID: 1627578070}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 273.83237, y: -194.63177}
-  m_SizeDelta: {x: 188.76216, y: 32}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 32}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1077233791
 MonoBehaviour:
@@ -3744,10 +3755,10 @@ RectTransform:
   m_Father: {fileID: 1627578070}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 273.83237, y: -667.6318}
-  m_SizeDelta: {x: 347.66473, y: 60}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1299327643
 MonoBehaviour:
@@ -4392,10 +4403,10 @@ RectTransform:
   m_Father: {fileID: 1627578070}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 273.83237, y: -522.1318}
-  m_SizeDelta: {x: 347.66473, y: 111}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 111}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1377901582
 MonoBehaviour:
@@ -4570,10 +4581,10 @@ RectTransform:
   m_Father: {fileID: 1627578070}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 273.83237, y: -390.63177}
-  m_SizeDelta: {x: 184.13564, y: 32}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 32}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1503930148
 MonoBehaviour:
@@ -4822,7 +4833,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1627578070
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5095,7 +5106,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 20, y: 0}
+  m_AnchoredPosition: {x: 19.999992, y: 0}
   m_SizeDelta: {x: 60, y: 60}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &1747598109
@@ -5887,7 +5898,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 23.099998, y: 13}
+  m_AnchoredPosition: {x: 23.100006, y: 13}
   m_SizeDelta: {x: 60, y: 60}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &1833542407
@@ -6010,6 +6021,7 @@ GameObject:
   - component: {fileID: 1883270894}
   - component: {fileID: 1883270893}
   - component: {fileID: 1883270896}
+  - component: {fileID: 1883270897}
   m_Layer: 5
   m_Name: Board - Scroll View
   m_TagString: Untagged
@@ -6119,12 +6131,58 @@ MonoBehaviour:
     Z: 0
   startBlockedTiles: 20
   startBlockedTilesMinSpacing: 2
+  blockedTiles: 0
   tileSize: 60
   tileSpacing: 12
   maxTries: 20
   tilePrefab: {fileID: 1313877467187986, guid: 8170f1fd781884ed38dae4cd93517250, type: 2}
   boardSetupMethod: 0
   boardTransform: {fileID: 1327174336}
+--- !u!114 &1883270897
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1883270891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 207469858, guid: 852e56802eb941638acbb491814497b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EventName: Game Started
+  m_TrackableProperty:
+    m_Fields:
+    - m_ParamName: width
+      m_Target: {fileID: 1883270896}
+      m_FieldPath: BoardSize.X
+      m_TypeString: 
+      m_DoStatic: 0
+      m_StaticString: 
+    - m_ParamName: height
+      m_Target: {fileID: 1883270896}
+      m_FieldPath: BoardSize.Y
+      m_TypeString: 
+      m_DoStatic: 0
+      m_StaticString: 
+    - m_ParamName: startBlocked
+      m_Target: {fileID: 1883270896}
+      m_FieldPath: StartBlockedTiles
+      m_TypeString: 
+      m_DoStatic: 0
+      m_StaticString: 
+    - m_ParamName: startBlockedSpacing
+      m_Target: {fileID: 1883270896}
+      m_FieldPath: StartBlockedTilesMinSpacing
+      m_TypeString: 
+      m_DoStatic: 0
+      m_StaticString: 
+    - m_ParamName: blockedTiles
+      m_Target: {fileID: 1883270896}
+      m_FieldPath: blockedTiles
+      m_TypeString: 
+      m_DoStatic: 0
+      m_StaticString: 
+  m_Trigger: 0
 --- !u!1 &1894036751
 GameObject:
   m_ObjectHideFlags: 0
@@ -6134,6 +6192,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1894036753}
   - component: {fileID: 1894036752}
+  - component: {fileID: 1894036754}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -6159,6 +6218,9 @@ MonoBehaviour:
   foodTile: {fileID: 0}
   animalActor: {fileID: 1935166312}
   hunterActor: {fileID: 28757865}
+  reason: 0
+  gameStartedTracker: {fileID: 1883270897}
+  gameOverTracker: {fileID: 1894036754}
 --- !u!4 &1894036753
 Transform:
   m_ObjectHideFlags: 0
@@ -6172,6 +6234,57 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1894036754
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1894036751}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 207469858, guid: 852e56802eb941638acbb491814497b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EventName: Game Over
+  m_TrackableProperty:
+    m_Fields:
+    - m_ParamName: width
+      m_Target: {fileID: 1883270896}
+      m_FieldPath: BoardSize.X
+      m_TypeString: 
+      m_DoStatic: 0
+      m_StaticString: 
+    - m_ParamName: height
+      m_Target: {fileID: 1883270896}
+      m_FieldPath: BoardSize.Y
+      m_TypeString: 
+      m_DoStatic: 0
+      m_StaticString: 
+    - m_ParamName: startBlocked
+      m_Target: {fileID: 1883270896}
+      m_FieldPath: StartBlockedTiles
+      m_TypeString: 
+      m_DoStatic: 0
+      m_StaticString: 
+    - m_ParamName: startBlockedSpacing
+      m_Target: {fileID: 1883270896}
+      m_FieldPath: StartBlockedTilesMinSpacing
+      m_TypeString: 
+      m_DoStatic: 0
+      m_StaticString: 
+    - m_ParamName: blockedTiles
+      m_Target: {fileID: 1883270896}
+      m_FieldPath: blockedTiles
+      m_TypeString: 
+      m_DoStatic: 0
+      m_StaticString: 
+    - m_ParamName: gameOverReason
+      m_Target: {fileID: 1894036752}
+      m_FieldPath: reason.value__
+      m_TypeString: 
+      m_DoStatic: 0
+      m_StaticString: 
+  m_Trigger: 0
 --- !u!1 &1925364000
 GameObject:
   m_ObjectHideFlags: 0

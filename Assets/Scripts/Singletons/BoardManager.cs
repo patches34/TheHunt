@@ -56,6 +56,8 @@ public class BoardManager : Singleton<BoardManager>
 		}
 	}
 
+	public int blockedTiles;
+
     Dictionary<int, List<Point>> spawnGroups;
 
 	[SerializeField]
@@ -345,7 +347,8 @@ public class BoardManager : Singleton<BoardManager>
 
 			if(p.IsNull())
 			{
-				UnityEngine.Debug.Log(blockedPoints.Count);
+				blockedTiles = blockedPoints.Count;
+				UnityEngine.Debug.Log(blockedTiles);
 				break;
 			}
 			else
