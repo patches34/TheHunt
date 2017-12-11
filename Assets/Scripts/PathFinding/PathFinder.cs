@@ -45,6 +45,8 @@ public class PathFinder : MonoBehaviour
 		currentTile = null;
 
 		gameObject.SetActive(false);
+
+		movePath = null;
 	}
 	
 	// Update is called once per frame

@@ -205,7 +205,15 @@ public class GameManager : Singleton<GameManager>
 
 	public void Rebuild()
 	{
+		CancelTasks();
+
 		BoardManager.Instance.DestoryBoard();
+
+		if(foodTile != null)
+			foodTile.gameObject.SetActive(false);
+
+		animalActor.Reset();
+		hunterActor.Reset();
 
 		Start();
 	}
