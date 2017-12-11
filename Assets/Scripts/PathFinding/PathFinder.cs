@@ -156,7 +156,7 @@ public class PathFinder : MonoBehaviour
 			}
 		}
 
-		if(movePath == null)
+		if(queue.IsEmpty)
 		{
 			Debug.LogFormat("No Path for {0}", GameManager.Instance.Turn);
 			GameManager.Instance.GoalBlocked();
