@@ -19,7 +19,7 @@ public class PathFinder : MonoBehaviour
 	TurnActor actor;
 
 	[SerializeField]
-	Path<Tile> movePath;
+	Path<Tile> movePath, lastPath;
 
 	public bool isReady;
 
@@ -90,7 +90,7 @@ public class PathFinder : MonoBehaviour
 	{
 		if(currentTile.Location != goalTile.Location)
 		{
-			Debug.LogFormat("{0} path cost: {1}", actor, movePath.TotalCost);
+			//Debug.LogFormat("{0} path cost: {1}", actor, movePath.TotalCost);
 			BoardManager.Instance.SetTileInteractable(nextTile.Location, false);
 
 			lerpStart = BoardManager.Instance.TileCoordToScreenSpace(currentTile.Location);
@@ -110,7 +110,7 @@ public class PathFinder : MonoBehaviour
 		{
 			if(t.Location.Equals(newBlocked))
 			{
-				Debug.LogFormat("{0} find new path", actor);
+				//Debug.LogFormat("{0} find new path", actor);
 				this.StartCoroutineAsync(FindPath());
 			}
 		}
@@ -137,6 +137,10 @@ public class PathFinder : MonoBehaviour
 			// if we added the destination to the closed list, we've found a path
 			if (path.LastStep.Equals(goalTile))
 			{
+				yield return Ninja.JumpToUnity;
+				UpdatePathNodes(path);
+				yield return Ninja.JumpBack;
+
 				break;
 			}
 
@@ -146,14 +150,9 @@ public class PathFinder : MonoBehaviour
 			{
 				double d = distance(path.LastStep, n);
 				var newPath = path.AddStep(n, d);
-				queue.Enqueue(newPath.TotalCost + estimate(n, goalTile), 
-					newPath);
+				queue.Enqueue(newPath.TotalCost + estimate(n, goalTile), newPath);
 			}
 		}
-
-		yield return Ninja.JumpToUnity;
-		UpdatePathNodes(queue.Dequeue());
-		yield return Ninja.JumpBack;
 
 		if(movePath == null)
 		{
@@ -219,15 +218,15 @@ public class PathFinder : MonoBehaviour
 		{
 			foreach(Tile t in movePath)
 			{
-				BoardManager.Instance.SetPathNodeForActor(t.Location, TurnActor.None);
+				BoardManager.Instance.SetPathNodeForActor(t.Location, actor, false);
 			}
 		}
 
-		Debug.Log(newPath.TotalCost);
+		//Debug.Log(newPath.TotalCost);
 		foreach(Tile t in newPath)
 		{
-			Debug.LogFormat("{0} path node: {1}", actor, t.Location);
-			//if(!t.Location.Equals(currentTile.Location) && !t.Location.Equals(goalTile.Location))
+			//Debug.LogFormat("{0} path node: {1}", actor, t.Location);
+			if(!t.Location.Equals(currentTile.Location) && !t.Location.Equals(goalTile.Location))
 				BoardManager.Instance.SetPathNodeForActor(t.Location, actor);
 		}
 

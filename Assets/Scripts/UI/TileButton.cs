@@ -108,15 +108,15 @@ public class TileButton : MonoBehaviour
 		}
 	}
 
-	public void SetAsPathNodeFor(TurnActor actor)
+	public void SetAsPathNodeFor(TurnActor actor, bool isOn = true)
 	{
 		switch(actor)
 		{
 		case TurnActor.Animal:
-			animalPath.SetActive(true);
+			animalPath.SetActive(isOn);
 			break;
 		case TurnActor.Hunter:
-			hunterPath.SetActive(true);
+			hunterPath.SetActive(isOn);
 			break;
 		default:
 			animalPath.SetActive(false);
