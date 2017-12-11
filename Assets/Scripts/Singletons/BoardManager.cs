@@ -249,6 +249,11 @@ public class BoardManager : Singleton<BoardManager>
 		tiles[tileCoord].SetIsInteractable(isInteractable);
 	}
 
+	public void SetPathNodeForActor(Point tileCoord, TurnActor actor, bool isOn = true)
+	{
+		tiles[tileCoord].SetAsPathNodeFor(actor, isOn);
+	}
+
 	public void SetBoardSize(int width = 0, int height = 0)
 	{
 		if(width > 0)

@@ -42,6 +42,9 @@ public class TileButton : MonoBehaviour
 	[SerializeField]
 	Text label;
 
+	[SerializeField]
+	GameObject animalPath, hunterPath;
+
 	// Use this for initialization
 	void Start ()
 	{
@@ -51,6 +54,8 @@ public class TileButton : MonoBehaviour
 		{
 			label.text = coord.ToString();
 		}
+
+		SetAsPathNodeFor(TurnActor.None);
 	}
 
     void OnEnable()
@@ -62,6 +67,8 @@ public class TileButton : MonoBehaviour
     {
         tile.Passable = false;
         btn.interactable = true;
+
+		SetAsPathNodeFor(TurnActor.None);
     }
 
     public void Click()
@@ -98,6 +105,23 @@ public class TileButton : MonoBehaviour
 		if(state != TileState.Food)
 		{
 			btn.interactable = value;
+		}
+	}
+
+	public void SetAsPathNodeFor(TurnActor actor, bool isOn = true)
+	{
+		switch(actor)
+		{
+		case TurnActor.Animal:
+			animalPath.SetActive(isOn);
+			break;
+		case TurnActor.Hunter:
+			hunterPath.SetActive(isOn);
+			break;
+		default:
+			animalPath.SetActive(false);
+			hunterPath.SetActive(false);
+			break;
 		}
 	}
 }
