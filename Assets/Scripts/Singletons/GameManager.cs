@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
-using UnityEngine.Analytics;
 using System.Collections;
 using CielaSpike;
+using GameAnalyticsSDK;
 
 public enum TurnActor
 {
@@ -60,7 +60,20 @@ public class GameManager : Singleton<GameManager>
 	Task createBoardTask, setupBoardTask;
 
 	public GameOverReason reason;
-	public AnalyticsTracker gameStartedTracker, gameOverTracker;
+
+	[SerializeField]
+	int turnsTaken;
+	public int TurnsTaken
+	{
+		get
+		{
+			return turnsTaken;
+		}
+		private set
+		{
+			turnsTaken = value;
+		}
+	}
 
 	#region Initialization
 	// Use this for initialization
@@ -95,7 +108,7 @@ public class GameManager : Singleton<GameManager>
 		turn = TurnActor.Player;
 		isWaiting = true;
 
-		gameStartedTracker.TriggerEvent();
+		GameAnalytics.NewProgressionEvent(GAProgressionStatus.Start, BoardManager.Instance.boardSetupMethod.ToString());
 
 		StartCoroutine(SetupBoard());
 	}
@@ -120,6 +133,7 @@ public class GameManager : Singleton<GameManager>
         randomTile.SetIsInteractable(false);
 		hunterActor.Init(randomTile.tile, animalActor.GetTile());
 
+		TurnsTaken = 0;
 		isRunning = true;
 
 		MenuManager.Instance.loadingSpinner.SetActive(false);
@@ -127,7 +141,7 @@ public class GameManager : Singleton<GameManager>
 
 	void Update()
 	{
-		if(isGameOver && hunterActor.isReady && animalActor.isReady)
+		if(isRunning && isGameOver && hunterActor.isReady && animalActor.isReady)
 		{
 			if(animalActor.IsBlocked())
 			{
@@ -149,7 +163,7 @@ public class GameManager : Singleton<GameManager>
 		switch(turn)
 		{
 		case TurnActor.Player:
-			
+			++TurnsTaken;
 
 			turn = TurnActor.Hunter;
 			break;
@@ -206,7 +220,7 @@ public class GameManager : Singleton<GameManager>
 
 		MenuManager.Instance.ShowMenu(MenuTypes.GameOver);
 
-		gameOverTracker.TriggerEvent();
+		GameAnalytics.NewProgressionEvent(GAProgressionStatus.Complete, BoardManager.Instance.boardSetupMethod.ToString(), reason.ToString(), TurnsTaken);
 	}
 
 	public void Restart()
@@ -221,7 +235,7 @@ public class GameManager : Singleton<GameManager>
 		animalActor.Reset();
 		hunterActor.Reset();
 
-		gameOverTracker.TriggerEvent();
+		GameAnalytics.NewProgressionEvent(GAProgressionStatus.Fail, BoardManager.Instance.boardSetupMethod.ToString(), TurnsTaken);
 
 		StartGame();
 	}

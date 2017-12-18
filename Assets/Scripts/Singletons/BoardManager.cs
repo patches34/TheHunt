@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
-using UnityEngine.Analytics;
 using System.Collections;
 using System.Diagnostics;
 using CielaSpike;
+using GameAnalyticsSDK;
 
 public enum BoardSetupMethods
 {
@@ -132,6 +132,8 @@ public class BoardManager : Singleton<BoardManager>
 
 	public IEnumerator CreateBoard()
 	{
+		GameAnalytics.SettingsGA.SetCustomArea(string.Format("X:{0}_Y:{1}", BoardSize.X, BoardSize.Y));
+
 		Stopwatch timer = new Stopwatch();
 		long boardTime, generateTime, neighboursTime;
 
@@ -184,8 +186,7 @@ public class BoardManager : Singleton<BoardManager>
 
 		timer.Stop();
 
-		UnityEngine.Debug.LogFormat("Create Board Time: {0}", 
-			timer.ElapsedMilliseconds / 1000f);
+		GameAnalytics.NewDesignEvent("BoardCreation", timer.ElapsedMilliseconds / 1000f);
     }
 
 	public IEnumerator SetupBoard()
@@ -209,10 +210,7 @@ public class BoardManager : Singleton<BoardManager>
 		yield return StartCoroutine(boardSetupTask.Wait());
 		yield return Ninja.JumpBack;
 
-        UnityEngine.Debug.LogFormat("Setup Board Time: {0}",
-            timer.ElapsedMilliseconds / 1000f);
-
-		yield return null;
+		GameAnalytics.NewDesignEvent("BoardSetup", timer.ElapsedMilliseconds / 1000f);
     }
 
     public void Reset()
@@ -368,8 +366,7 @@ public class BoardManager : Singleton<BoardManager>
 
 			if(p.IsNull())
 			{
-				blockedTiles = blockedPoints.Count;
-				UnityEngine.Debug.Log(blockedTiles);
+				GameAnalytics.NewDesignEvent("BlockedTiles", blockedPoints.Count);
 				break;
 			}
 			else
