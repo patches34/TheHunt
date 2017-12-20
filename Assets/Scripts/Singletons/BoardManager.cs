@@ -186,7 +186,7 @@ public class BoardManager : Singleton<BoardManager>
 
 		timer.Stop();
 
-		GameAnalytics.NewDesignEvent("BoardCreation", timer.ElapsedMilliseconds / 1000f);
+		//GameAnalytics.NewDesignEvent("BoardCreation", (float)System.Math.Round(timer.Elapsed.TotalSeconds, 4));
     }
 
 	public IEnumerator SetupBoard()
@@ -210,7 +210,7 @@ public class BoardManager : Singleton<BoardManager>
 		yield return StartCoroutine(boardSetupTask.Wait());
 		yield return Ninja.JumpBack;
 
-		GameAnalytics.NewDesignEvent("BoardSetup", timer.ElapsedMilliseconds / 1000f);
+		//GameAnalytics.NewDesignEvent("BoardSetup", (float)System.Math.Round(timer.Elapsed.TotalSeconds, 4));
     }
 
     public void Reset()
@@ -366,7 +366,7 @@ public class BoardManager : Singleton<BoardManager>
 
 			if(p.IsNull())
 			{
-				GameAnalytics.NewDesignEvent("BlockedTiles", blockedPoints.Count);
+				//GameAnalytics.NewDesignEvent("BlockedTiles", blockedPoints.Count);
 				break;
 			}
 			else
