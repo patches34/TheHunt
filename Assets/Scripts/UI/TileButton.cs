@@ -80,7 +80,7 @@ public class TileButton : MonoBehaviour
 
 			GameManager.Instance.BlockTile(tile.Location);
 
-			GameManager.Instance.PlayerWent();
+			GameManager.Instance.ActorWent();
 		}
 	}
 

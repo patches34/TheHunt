@@ -23,6 +23,9 @@ public class PathFinder : MonoBehaviour
 
 	public bool isReady;
 
+	[SerializeField]
+	int pathIndex;
+
 	// Use this for initialization
 	public void Init(Tile start, Tile goal)
 	{
@@ -30,6 +33,8 @@ public class PathFinder : MonoBehaviour
 		currentTile = start;
 
 		timer = -1;
+
+		pathIndex = 0;
 
 		gameObject.SetActive(true);
 
@@ -79,9 +84,7 @@ public class PathFinder : MonoBehaviour
 					}
 					else
 					{
-						GameManager.Instance.PlayerWent();
-
-						this.StartCoroutineAsync(FindPath());
+						GameManager.Instance.ActorWent();
 					}
 				}
 			}
@@ -92,7 +95,9 @@ public class PathFinder : MonoBehaviour
 	{
 		if(currentTile.Location != goalTile.Location)
 		{
-			//Debug.LogFormat("{0} path cost: {1}", actor, movePath.TotalCost);
+			++pathIndex;
+			nextTile = movePath.ElementAt((int)movePath.TotalCost - pathIndex);
+
 			BoardManager.Instance.SetTileInteractable(nextTile.Location, false);
 
 			lerpStart = BoardManager.Instance.TileCoordToScreenSpace(currentTile.Location);
@@ -102,20 +107,25 @@ public class PathFinder : MonoBehaviour
 		}
 		else
 		{
-			GameManager.Instance.PlayerWent();
+			GameManager.Instance.ActorWent();
 		}
 	}
 
 	public void CheckForPathBlocked(Point newBlocked)
 	{
+		isReady = false;
+
 		foreach(Tile t in movePath)
 		{
 			if(t.Location.Equals(newBlocked))
 			{
-				//Debug.LogFormat("{0} find new path", actor);
 				this.StartCoroutineAsync(FindPath());
+
+				return;
 			}
 		}
+
+		isReady = true;
 	}
 
 	#region Find Path
@@ -167,7 +177,7 @@ public class PathFinder : MonoBehaviour
 		}
 		else
 		{
-			nextTile = movePath.ElementAt((int)movePath.TotalCost - 1);
+			pathIndex = 0;
 		}
 
 		isReady = true;
@@ -224,10 +234,8 @@ public class PathFinder : MonoBehaviour
 			}
 		}
 
-		//Debug.Log(newPath.TotalCost);
 		foreach(Tile t in newPath)
 		{
-			//Debug.LogFormat("{0} path node: {1}", actor, t.Location);
 			if(!t.Location.Equals(currentTile.Location) && !t.Location.Equals(goalTile.Location))
 				BoardManager.Instance.SetPathNodeForActor(t.Location, actor);
 		}

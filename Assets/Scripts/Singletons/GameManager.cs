@@ -158,7 +158,7 @@ public class GameManager : Singleton<GameManager>
 		}
 	}
 
-	public void PlayerWent()
+	public void ActorWent()
 	{
 		switch(turn)
 		{
