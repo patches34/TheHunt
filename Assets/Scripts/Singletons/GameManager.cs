@@ -237,6 +237,8 @@ public class GameManager : Singleton<GameManager>
 
 		GameAnalytics.NewProgressionEvent(GAProgressionStatus.Fail, BoardManager.Instance.boardSetupMethod.ToString(), TurnsTaken);
 
+		isGameOver = false;
+
 		StartGame();
 	}
 
