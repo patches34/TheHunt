@@ -143,4 +143,9 @@ public class MenuManager : Singleton<MenuManager>
 	{
 		zoomSpeed = value;
 	}
+
+	public void OpenFeedback()
+	{
+		Application.OpenURL("https://github.com/patches34/TheHunt/issues/new");
+	}
 }
