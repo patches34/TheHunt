@@ -29,7 +29,7 @@ MonoBehaviour:
   secretKey:
   - 9c70d0276b3b786d1e68551f5a3694805a1d08b4
   Build:
-  - 0.2.3
+  - 0.2.5
   SelectedPlatformStudio:
   - Craft Brewed Games
   SelectedPlatformGame:
@@ -61,7 +61,7 @@ MonoBehaviour:
   ResourceCurrencies: []
   LastCreatedGamePlatform: -1
   Platforms: 0b000000
-  CurrentInspectorState: 3
+  CurrentInspectorState: 1
   ClosedHints: 
   DisplayHints: 0
   DisplayHintsScrollState: {x: 0, y: 0}

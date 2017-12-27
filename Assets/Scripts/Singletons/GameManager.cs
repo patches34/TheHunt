@@ -158,6 +158,16 @@ public class GameManager : Singleton<GameManager>
 		}
 	}
 
+	public void PlayerPass()
+	{
+		if(IsPlayerTurn())
+		{
+			ActorWent();
+		}
+
+		GameAnalytics.NewDesignEvent("playerPassed");
+	}
+
 	public void ActorWent()
 	{
 		switch(turn)
@@ -274,5 +284,15 @@ public class GameManager : Singleton<GameManager>
 		}
 
 		StopAllCoroutines();
+	}
+
+	public bool IsPlayerTurn()
+	{
+		return isRunning && !isGameOver && turn == TurnActor.Player;
+	}
+
+	public bool IsGameActive()
+	{
+		return isRunning && !isGameOver;
 	}
 }

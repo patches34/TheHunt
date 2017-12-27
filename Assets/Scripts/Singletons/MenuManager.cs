@@ -38,6 +38,9 @@ public class MenuManager : Singleton<MenuManager>
 
 	public GameObject loadingSpinner;
 
+	[SerializeField]
+	Button playerPassBtn, playerForfeitBtn;
+
 	#region Initialization
 	// Use this for initialization
 	protected MenuManager()
@@ -87,6 +90,12 @@ public class MenuManager : Singleton<MenuManager>
 			SetZoom(-Input.mouseScrollDelta.y, mouseWheelSpeed);
 		}
 		#endif
+		#endregion
+
+		#region Game Buttons Activation Status
+		playerPassBtn.interactable = GameManager.Instance.IsPlayerTurn();
+
+		playerForfeitBtn.interactable = GameManager.Instance.IsGameActive();
 		#endregion
 	}
 
