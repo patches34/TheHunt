@@ -111,4 +111,9 @@ public class PauseMenu : UIMenu
 	{
 		GameManager.Instance.DoesHunterSeeksHome = value;
 	}
+
+	public void Rebuild()
+	{
+		GameManager.Instance.Rebuild();
+	}
 }

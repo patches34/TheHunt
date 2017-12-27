@@ -17,6 +17,11 @@ public class GameOverMenu : UIMenu
 		
 	}
 
+	public void Restart()
+	{
+		GameManager.Instance.Restart();
+	}
+
 	public override void SetVisible (bool value)
 	{
 		switch(GameManager.Instance.gameOverReason)

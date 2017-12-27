@@ -54,9 +54,41 @@ public class MenuManager : Singleton<MenuManager>
 		
 	}
 
-	public void AddMenu(MenuTypes type, UIMenu menu)
+	/// <summary>
+	/// Adds a UI screen to the stack and deletes its scene
+	/// </summary>
+	/// <param name="screen">Screen.</param>
+	public void AddScreen(UIMenu screen)
 	{
-		menus.Add(type, menu);
+		//Store a ref to the screen's go
+		UnityEngine.SceneManagement.Scene rootScene = screen.gameObject.scene;
+
+		//Set the screens transform to the main scene's canvas
+		screen.transform.SetParent(transform);
+		screen.transform.SetAsLastSibling();
+
+		//Make sure the screen is scaled and positioned correctly
+		screen.gameObject.GetComponent<RectTransform>().localScale = Vector3.one;
+		screen.gameObject.GetComponent<RectTransform>().sizeDelta = Vector2.one;
+		screen.gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector2(0.5f, 0.5f);
+		screen.gameObject.GetComponent<RectTransform>().offsetMax = Vector2.zero;
+		screen.gameObject.GetComponent<RectTransform>().offsetMin = Vector2.zero;
+
+		//Hide the screen
+		screen.gameObject.SetActive(false);
+
+		//Add this screen to the screens dictionary
+		if(!menus.ContainsKey(screen.type))
+		{
+			menus.Add(screen.type, screen);
+		}
+		else
+		{
+			Debug.LogError("Duplicate screens: " + screen.type);
+		}
+
+		//Remove the scene the screen came from
+		LoadSceneManager.Instance.UnloadScene(rootScene);
 	}
 
 	void Update()

@@ -4,15 +4,12 @@ using UnityEngine;
 
 public abstract class UIMenu : MonoBehaviour
 {
-	[SerializeField]
-	MenuTypes type;
+	public MenuTypes type;
 
 	// Use this for initialization
 	void Awake ()
 	{
-		MenuManager.Instance.AddMenu(type, this);
-
-		SetVisible(false);
+		MenuManager.Instance.AddScreen(this);
 	}
 	
 	// Update is called once per frame
