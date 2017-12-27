@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
-using UnityEngine.Analytics;
 using System.Collections;
 using System.Diagnostics;
 using CielaSpike;
+using GameAnalyticsSDK;
 
 public enum BoardSetupMethods
 {
@@ -23,10 +23,45 @@ public class BoardManager : Singleton<BoardManager>
 		}
 	}
 
-    public int spawnPoints, spawnDistance, blockPoints, blockDistance, maxTries;
+    int spawnPoints, spawnDistance;
+	[SerializeField]
+	int startBlockedTiles;
+	public int StartBlockedTiles
+	{
+		get
+		{
+			return startBlockedTiles;
+		}
+		set
+		{
+			startBlockedTiles = value;
+
+			PlayerPrefs.SetInt(k_BLOCKED_TILES, startBlockedTiles);
+		}
+	}
+
+	[SerializeField]
+	int startBlockedTilesMinSpacing;
+	public int StartBlockedTilesMinSpacing
+	{
+		get
+		{
+			return startBlockedTilesMinSpacing;
+		}
+		set
+		{
+			startBlockedTilesMinSpacing = value;
+
+			PlayerPrefs.SetInt(k_BLOCKED_TILES_SPACING, startBlockedTilesMinSpacing);
+		}
+	}
+
+	public int blockedTiles;
+
     Dictionary<int, List<Point>> spawnGroups;
 
-	public int tileSize, tileSpacing;
+	[SerializeField]
+	int tileSize, tileSpacing, maxTries;
 
 	[SerializeField]
 	GameObject tilePrefab;
@@ -56,14 +91,49 @@ public class BoardManager : Singleton<BoardManager>
 	[SerializeField]
 	Transform boardTransform;
 
+	[SerializeField]
+	bool showAiPath;
+	public bool ShowAiPath
+	{
+		get
+		{
+			return showAiPath;
+		}
+		set
+		{
+			showAiPath = value;
+
+			PlayerPrefs.SetInt(k_SHOW_AI_PATH, System.Convert.ToInt32(showAiPath));
+		}
+	}
+
+	const string k_BOARD_SIZE_X = "boardSizeX";
+	const string k_BOARD_SIZE_Y = "boardSizeY";
+	const string k_BLOCKED_TILES = "blockedTiles";
+	const string k_BLOCKED_TILES_SPACING = "blockedTilesSpacing";
+	const string k_SHOW_AI_PATH = "showAiPath";
+
 	// Use this for initialization
 	protected BoardManager()
 	{
 		// guarantee this will be always a singleton only - can't use the constructor!
 	}
 
+	void Awake()
+	{
+		boardSize.X = PlayerPrefs.GetInt(k_BOARD_SIZE_X, boardSize.X);
+		boardSize.Y = PlayerPrefs.GetInt(k_BOARD_SIZE_Y, boardSize.Y);
+
+		startBlockedTiles = PlayerPrefs.GetInt(k_BLOCKED_TILES, startBlockedTiles);
+		startBlockedTilesMinSpacing = PlayerPrefs.GetInt(k_BLOCKED_TILES_SPACING, startBlockedTilesMinSpacing);
+
+		showAiPath = System.Convert.ToBoolean(PlayerPrefs.GetInt(k_SHOW_AI_PATH, System.Convert.ToInt32(showAiPath)));
+	}
+
 	public IEnumerator CreateBoard()
 	{
+		GameAnalytics.SettingsGA.SetCustomArea(string.Format("X:{0}_Y:{1}", BoardSize.X, BoardSize.Y));
+
 		Stopwatch timer = new Stopwatch();
 		long boardTime, generateTime, neighboursTime;
 
@@ -96,6 +166,8 @@ public class BoardManager : Singleton<BoardManager>
 
 				tiles.Add(tileBtn.tile.Location, tileBtn);
 
+				tileBtn.ShowActorPath(ShowAiPath);
+
                 newTile.SetActive(false);
 			}
 		}
@@ -114,8 +186,7 @@ public class BoardManager : Singleton<BoardManager>
 
 		timer.Stop();
 
-		UnityEngine.Debug.LogFormat("Create Board Time: {0}", 
-			timer.ElapsedMilliseconds / 1000f);
+		//GameAnalytics.NewDesignEvent("BoardCreation", (float)System.Math.Round(timer.Elapsed.TotalSeconds, 4));
     }
 
 	public IEnumerator SetupBoard()
@@ -139,10 +210,7 @@ public class BoardManager : Singleton<BoardManager>
 		yield return StartCoroutine(boardSetupTask.Wait());
 		yield return Ninja.JumpBack;
 
-        UnityEngine.Debug.LogFormat("Setup Board Time: {0}",
-            timer.ElapsedMilliseconds / 1000f);
-
-		yield return null;
+		//GameAnalytics.NewDesignEvent("BoardSetup", (float)System.Math.Round(timer.Elapsed.TotalSeconds, 4));
     }
 
     public void Reset()
@@ -249,18 +317,29 @@ public class BoardManager : Singleton<BoardManager>
 		tiles[tileCoord].SetIsInteractable(isInteractable);
 	}
 
+	public void SetPathNodeForActor(Point tileCoord, TurnActor actor, bool isOn = true)
+	{
+		if(!tiles.ContainsKey(tileCoord))
+			UnityEngine.Debug.LogError(tileCoord);
+		tiles[tileCoord].SetAsPathNodeFor(actor, isOn);
+	}
+
 	public void SetBoardSize(int width = 0, int height = 0)
 	{
 		if(width > 0)
 		{
 			boardSize.X = width;
+
+			PlayerPrefs.SetInt(k_BOARD_SIZE_X, width);
 		}
 
 		if(height > 0)
 		{
 			boardSize.Y = height;
+
+			PlayerPrefs.SetInt(k_BOARD_SIZE_Y, height);
 		}
-	}
+  	}
 
     public TileButton GetTileButtonByPoint(Point location)
     {
@@ -281,13 +360,13 @@ public class BoardManager : Singleton<BoardManager>
 
 		#region Block tiles
 		List<Point> blockedPoints = new List<Point>();
-		for(int i = 0; i < blockPoints; ++i)
+		for(int i = 0; i < startBlockedTiles; ++i)
 		{
-			Point p = GetRandomBoardPoint(blockedPoints, blockDistance, true);
+			Point p = GetRandomBoardPoint(blockedPoints, startBlockedTilesMinSpacing, true);
 
 			if(p.IsNull())
 			{
-				UnityEngine.Debug.Log(blockedPoints.Count);
+				//GameAnalytics.NewDesignEvent("BlockedTiles", blockedPoints.Count);
 				break;
 			}
 			else
@@ -392,4 +471,14 @@ public class BoardManager : Singleton<BoardManager>
 		actorPoints = new List<Point> { spawnGroups[0][0], spawnGroups[1][0], spawnGroups[2][0] };
     }
     #endregion
+
+	public void ShowActorPaths(bool isVisible)
+	{
+		ShowAiPath = isVisible;
+
+		foreach(TileButton tile in tiles.Values)
+		{
+			tile.ShowActorPath(ShowAiPath);
+		}
+	}
 }

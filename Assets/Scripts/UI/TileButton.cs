@@ -42,6 +42,9 @@ public class TileButton : MonoBehaviour
 	[SerializeField]
 	Text label;
 
+	[SerializeField]
+	GameObject animalPath, hunterPath, pathPanel;
+
 	// Use this for initialization
 	void Start ()
 	{
@@ -51,6 +54,8 @@ public class TileButton : MonoBehaviour
 		{
 			label.text = coord.ToString();
 		}
+
+		SetAsPathNodeFor(TurnActor.None);
 	}
 
     void OnEnable()
@@ -62,19 +67,32 @@ public class TileButton : MonoBehaviour
     {
         tile.Passable = false;
         btn.interactable = true;
+
+		SetAsPathNodeFor(TurnActor.None);
+
+		state = TileState.None;
     }
 
     public void Click()
 	{
-		//	Check if if its the player's turn
-		if(GameManager.Instance.IsActorTurn(TurnActor.Player))
+		if(state == TileState.Blocked)
 		{
-			SetState(TileState.Blocked);
+			--GameManager.Instance.playerBlockedTilesCount;
 
-			GameManager.Instance.BlockTile(tile.Location);
-
-			GameManager.Instance.PlayerWent();
+			SetState(TileState.None);
 		}
+		else if(GameManager.Instance.CanPlayerBlockTile())
+		{
+			++GameManager.Instance.playerBlockedTilesCount;
+
+			SetState(TileState.Blocked);
+		}
+		else
+		{
+			return;
+		}
+
+		GameManager.Instance.ActorWent();
 	}
 
 	public void SetState(TileState newState)
@@ -83,7 +101,7 @@ public class TileButton : MonoBehaviour
 
 		anim.SetInteger(k_State, (int)newState);
 
-		SetIsInteractable(newState == TileState.None);
+		SetIsInteractable(newState != TileState.Food);
 
 		tile.Passable = newState != TileState.Blocked;
 	}
@@ -99,5 +117,27 @@ public class TileButton : MonoBehaviour
 		{
 			btn.interactable = value;
 		}
+	}
+
+	public void SetAsPathNodeFor(TurnActor actor, bool isOn = true)
+	{
+		switch(actor)
+		{
+		case TurnActor.Animal:
+			animalPath.SetActive(isOn);
+			break;
+		case TurnActor.Hunter:
+			hunterPath.SetActive(isOn);
+			break;
+		default:
+			animalPath.SetActive(false);
+			hunterPath.SetActive(false);
+			break;
+		}
+	}
+
+	public void ShowActorPath(bool isVisible)
+	{
+		pathPanel.SetActive(isVisible);
 	}
 }

@@ -9,7 +9,7 @@ public class PauseMenu : UIMenu
 	Slider zoomSpeedSlider;
 
     [SerializeField]
-    InputField widthInput, heightInput, blockedTilesInput, blockedTilesDistanceInput;
+    InputField widthInput, heightInput, blockedTilesInput, blockedTilesDistanceInput, maxBlocksInput;
 
     [SerializeField]
 	Text zoomSpeedLabel;
@@ -20,14 +20,17 @@ public class PauseMenu : UIMenu
     [SerializeField]
     List<RectTransform> boardSetupPanels;
 
+	[SerializeField]
+	Toggle showPathToggle;
+
 	// Use this for initialization
 	void OnEnable()
 	{
 		widthInput.text = BoardManager.Instance.BoardSize.X.ToString();
 		heightInput.text = BoardManager.Instance.BoardSize.Y.ToString();
 
-		blockedTilesInput.text = BoardManager.Instance.blockPoints.ToString();
-		blockedTilesDistanceInput.text = BoardManager.Instance.blockDistance.ToString();
+		blockedTilesInput.text = BoardManager.Instance.StartBlockedTiles.ToString();
+		blockedTilesDistanceInput.text = BoardManager.Instance.StartBlockedTilesMinSpacing.ToString();
 
         foreach(RectTransform p in boardSetupPanels)
         {
@@ -37,6 +40,10 @@ public class PauseMenu : UIMenu
         boardSetupmethodDropdown.value = (int)BoardManager.Instance.boardSetupMethod;
 
 		boardSetupPanels[(int)BoardManager.Instance.boardSetupMethod].gameObject.SetActive(true);
+
+		showPathToggle.isOn = BoardManager.Instance.ShowAiPath;
+
+		maxBlocksInput.text = GameManager.Instance.MaxPlayerBlocks.ToString();
 	}
 
 	public void SetBoardWidth(string value)
@@ -73,9 +80,9 @@ public class PauseMenu : UIMenu
 		if(string.IsNullOrEmpty(value))
 			value = "0";
 
-		BoardManager.Instance.blockPoints = Convert.ToInt32(value);
+		BoardManager.Instance.StartBlockedTiles = Convert.ToInt32(value);
 
-		blockedTilesInput.text = BoardManager.Instance.blockPoints.ToString();
+		blockedTilesInput.text = BoardManager.Instance.StartBlockedTiles.ToString();
 	}
 
 	public void SetBlockedTilesDistane(string value)
@@ -83,8 +90,18 @@ public class PauseMenu : UIMenu
 		if(string.IsNullOrEmpty(value))
 			value = "0";
 
-		BoardManager.Instance.blockDistance = Convert.ToInt32(value);
+		BoardManager.Instance.StartBlockedTilesMinSpacing = Convert.ToInt32(value);
 
-		blockedTilesDistanceInput.text = BoardManager.Instance.blockDistance.ToString();
+		blockedTilesDistanceInput.text = BoardManager.Instance.StartBlockedTilesMinSpacing.ToString();
+	}
+
+	public void SetMaxBlocks(string value)
+	{
+		if(string.IsNullOrEmpty(value))
+			value = "0";
+
+		GameManager.Instance.MaxPlayerBlocks = Convert.ToInt32(value);
+
+		maxBlocksInput.text = GameManager.Instance.MaxPlayerBlocks.ToString();
 	}
 }

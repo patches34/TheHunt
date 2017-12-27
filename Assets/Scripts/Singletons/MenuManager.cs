@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
-using UnityEngine.Analytics;
 using System.Collections;
 using UnityEngine.UI;
 
@@ -37,7 +36,10 @@ public class MenuManager : Singleton<MenuManager>
 	float zoomSpeed, mouseWheelSpeed, zoomMax;
 	float zoomMin;
 
-	public GameObject loadingSpinner;
+	public GameObject loadingSpinner, playerInputBlock;
+
+	[SerializeField]
+	Button playerPassBtn, playerForfeitBtn;
 
 	#region Initialization
 	// Use this for initialization
@@ -88,6 +90,14 @@ public class MenuManager : Singleton<MenuManager>
 			SetZoom(-Input.mouseScrollDelta.y, mouseWheelSpeed);
 		}
 		#endif
+		#endregion
+
+		#region Game Buttons Activation Status
+		playerPassBtn.interactable = GameManager.Instance.IsPlayerTurn();
+
+		playerForfeitBtn.interactable = GameManager.Instance.IsGameActive();
+
+		playerInputBlock.SetActive(!GameManager.Instance.IsPlayerTurn());
 		#endregion
 	}
 
@@ -143,5 +153,10 @@ public class MenuManager : Singleton<MenuManager>
 	public void SetZoomSpeed(float value)
 	{
 		zoomSpeed = value;
+	}
+
+	public void OpenFeedback()
+	{
+		Application.OpenURL("https://github.com/patches34/TheHunt/issues/new");
 	}
 }

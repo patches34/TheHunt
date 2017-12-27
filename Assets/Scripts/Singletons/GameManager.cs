@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
-using UnityEngine.Analytics;
 using System.Collections;
 using CielaSpike;
+using GameAnalyticsSDK;
 
 public enum TurnActor
 {
@@ -12,50 +12,61 @@ public enum TurnActor
 	Animal
 }
 
+public enum GameOverReason
+{
+	PLAYER_WON,
+	HUNTER_WON,
+	ANIMAL_STARVED,
+	FORFEIT
+}
+
 public class GameManager : Singleton<GameManager>
 {
 	[SerializeField]
 	TurnActor turn;
-	public TurnActor Turn
-	{
-		get
-		{
-			return this.turn;
-		}
-		private set
-		{
-			this.turn = value;
-		}
-	}
 
 	[SerializeField]
 	bool isWaiting, isRunning, isGameOver;
-	public float compTurnWait;
-	public float turnWaitTimer;
-
-	public TurnActor GameOverState {
-		get
-		{
-			if(animalActor.IsBlocked())
-				return TurnActor.Animal;
-			else if(hunterActor.IsBlocked())
-				return TurnActor.Player;
-			else
-				return TurnActor.Hunter;
-		}
-	}
 
 	public TileButton foodTile;
 
 	public PathFinder animalActor, hunterActor;
 
-	public int actorMinDistance;
-
-	public int randomBlockedTiles;
-
 	public System.Random rand = new System.Random();
 
 	Task createBoardTask, setupBoardTask;
+
+	public GameOverReason gameOverReason;
+
+	[SerializeField]
+	int turnsTaken;
+	public int TurnsTaken
+	{
+		get
+		{
+			return turnsTaken;
+		}
+		private set
+		{
+			turnsTaken = value;
+		}
+	}
+
+	[SerializeField]
+	int maxPlayerBlocks;
+	public int MaxPlayerBlocks
+	{
+		get
+		{
+			return maxPlayerBlocks;
+		}
+		set
+		{
+			maxPlayerBlocks = value;
+		}
+	}
+
+	public int playerBlockedTilesCount;
 
 	#region Initialization
 	// Use this for initialization
@@ -88,7 +99,10 @@ public class GameManager : Singleton<GameManager>
 	{
 		MenuManager.Instance.loadingSpinner.SetActive(true);
 		turn = TurnActor.Player;
+		playerBlockedTilesCount = 0;
 		isWaiting = true;
+
+		GameAnalytics.NewProgressionEvent(GAProgressionStatus.Start, BoardManager.Instance.boardSetupMethod.ToString());
 
 		StartCoroutine(SetupBoard());
 	}
@@ -113,6 +127,7 @@ public class GameManager : Singleton<GameManager>
         randomTile.SetIsInteractable(false);
 		hunterActor.Init(randomTile.tile, animalActor.GetTile(), foodTile.tile);
 
+		TurnsTaken = 0;
 		isRunning = true;
 
 		MenuManager.Instance.loadingSpinner.SetActive(false);
@@ -120,25 +135,42 @@ public class GameManager : Singleton<GameManager>
 
 	void Update()
 	{
-		if(isGameOver && hunterActor.isReady && animalActor.isReady)
+		if(isRunning && isGameOver && hunterActor.isReady && animalActor.isReady)
 		{
 			if(animalActor.IsBlocked())
 			{
+				gameOverReason = GameOverReason.ANIMAL_STARVED;
+
 				GameOver(false);
 			}
 			else
 			{
+				gameOverReason = GameOverReason.PLAYER_WON;
+
 				GameOver(true);
 			}
 		}
 	}
 
-	public void PlayerWent()
+	public void PlayerPass()
+	{
+		if(IsPlayerTurn())
+		{
+			ActorWent();
+		}
+
+		GameAnalytics.NewDesignEvent("playerPassed");
+	}
+
+	public void ActorWent()
 	{
 		switch(turn)
 		{
 		case TurnActor.Player:
-			
+			++TurnsTaken;
+
+			hunterActor.FindPath();
+			animalActor.FindPath();
 
 			turn = TurnActor.Hunter;
 			break;
@@ -155,17 +187,19 @@ public class GameManager : Singleton<GameManager>
 		isWaiting = false;
 	}
 
-	public void BlockTile(Point tile)
+	public void GoalReached(TurnActor actor)
 	{
-		hunterActor.CheckForPathBlocked(tile);
-		animalActor.CheckForPathBlocked(tile);
-	}
-
-	public void GoalReached(TurnActor actor = TurnActor.None)
-	{
-		if(turn == TurnActor.Hunter || actor == TurnActor.Hunter)
+		if(actor == TurnActor.Hunter)
 		{
+			gameOverReason = GameOverReason.HUNTER_WON;
+
 			GameOver(false);
+		}
+		else if(actor == TurnActor.Animal)
+		{
+			gameOverReason = GameOverReason.PLAYER_WON;
+
+			GameOver(true);
 		}
 	}
 
@@ -192,6 +226,8 @@ public class GameManager : Singleton<GameManager>
 		turn = TurnActor.None;
 
 		MenuManager.Instance.ShowMenu(MenuTypes.GameOver);
+
+		GameAnalytics.NewProgressionEvent(GAProgressionStatus.Complete, BoardManager.Instance.boardSetupMethod.ToString(), gameOverReason.ToString(), TurnsTaken);
 	}
 
 	public void Restart()
@@ -206,12 +242,24 @@ public class GameManager : Singleton<GameManager>
 		animalActor.Reset();
 		hunterActor.Reset();
 
+		GameAnalytics.NewProgressionEvent(GAProgressionStatus.Fail, BoardManager.Instance.boardSetupMethod.ToString(), TurnsTaken);
+
+		isGameOver = false;
+
 		StartGame();
 	}
 
 	public void Rebuild()
 	{
+		CancelTasks();
+
 		BoardManager.Instance.DestoryBoard();
+
+		if(foodTile != null)
+			foodTile.gameObject.SetActive(false);
+
+		animalActor.Reset();
+		hunterActor.Reset();
 
 		Start();
 	}
@@ -233,5 +281,25 @@ public class GameManager : Singleton<GameManager>
 		}
 
 		StopAllCoroutines();
+	}
+
+	public bool IsPlayerTurn()
+	{
+		return isRunning && !isGameOver && turn == TurnActor.Player;
+	}
+
+	public bool IsGameActive()
+	{
+		return isRunning && !isGameOver;
+	}
+
+	public bool CanPlayerBlockTile()
+	{
+		if(maxPlayerBlocks <= 0 || playerBlockedTilesCount < maxPlayerBlocks)
+		{
+			return true;
+		}
+
+		return false;
 	}
 }

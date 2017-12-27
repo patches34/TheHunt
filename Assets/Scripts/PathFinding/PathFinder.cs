@@ -19,7 +19,7 @@ public class PathFinder : MonoBehaviour
 	TurnActor actor;
 
 	[SerializeField]
-	Path<Tile> movePath;
+	Path<Tile> movePath, lastPath;
 
 	public bool isReady;
 
@@ -47,12 +47,14 @@ public class PathFinder : MonoBehaviour
 		currentTile = null;
 
 		gameObject.SetActive(false);
+
+		movePath = null;
 	}
 	
 	// Update is called once per frame
 	void Update ()
 	{
-		if(GameManager.Instance.IsActorTurn(actor) && isReady)
+		if(GameManager.Instance.IsActorTurn(actor) && isReady && movePath != null)
 		{
 			if(timer < 0)
 			{
@@ -74,14 +76,12 @@ public class PathFinder : MonoBehaviour
 
 					if(movePath.TotalCost <= 1)
 					{
-						Debug.Log("Goal reached" + goalTile.Location);
-						GameManager.Instance.GoalReached();
+						Debug.LogFormat("{0} Goal reached: {1}", actor, goalTile.Location);
+						GameManager.Instance.GoalReached(actor);
 					}
 					else
 					{
-						GameManager.Instance.PlayerWent();
-
-						this.StartCoroutineAsync(FindPath());
+						GameManager.Instance.ActorWent();
 					}
 				}
 			}
@@ -90,39 +90,44 @@ public class PathFinder : MonoBehaviour
 
 	public void TakeTurn()
 	{
-		if(currentTile.Location != goalTile.Location)
-		{
-			Debug.LogFormat("{0} path cost: {1}", actor, movePath.TotalCost);
-			BoardManager.Instance.SetTileInteractable(nextTile.Location, false);
+		nextTile = movePath.ElementAt((int)movePath.TotalCost - 1);
 
-			lerpStart = BoardManager.Instance.TileCoordToScreenSpace(currentTile.Location);
-			lerpEnd = BoardManager.Instance.TileCoordToScreenSpace(nextTile.Location);
+		BoardManager.Instance.SetTileInteractable(nextTile.Location, false);
 
-			timer = 0;
-		}
-		else
-		{
-			GameManager.Instance.PlayerWent();
-		}
+		lerpStart = BoardManager.Instance.TileCoordToScreenSpace(currentTile.Location);
+		lerpEnd = BoardManager.Instance.TileCoordToScreenSpace(nextTile.Location);
+
+		timer = 0;
 	}
 
 	public void CheckForPathBlocked(Point newBlocked)
 	{
+		isReady = false;
+
 		foreach(Tile t in movePath)
 		{
 			if(t.Location.Equals(newBlocked))
 			{
-				Debug.LogFormat("{0} find new path", actor);
-				this.StartCoroutineAsync(FindPath());
+				this.StartCoroutineAsync(BuildPath());
+
+				return;
 			}
 		}
+
+		isReady = true;
+	}
+
+	public void FindPath()
+	{
+		isReady = false;
+
+		this.StartCoroutineAsync(BuildPath());
 	}
 
 	#region Find Path
-	IEnumerator FindPath()
+	IEnumerator BuildPath()
 	{
 		isReady = false;
-		movePath = null;
 
 		var closed = new HashSet<Tile>();
 		var queue = new PriorityQueue<double, Path<Tile>>();
@@ -140,9 +145,9 @@ public class PathFinder : MonoBehaviour
 			// if we added the destination to the closed list, we've found a path
 			if (path.LastStep.Equals(goalTile))
 			{
-				movePath = path;
-
-				nextTile = movePath.ElementAt((int)movePath.TotalCost - 1);
+				yield return Ninja.JumpToUnity;
+				UpdatePathNodes(path);
+				yield return Ninja.JumpBack;
 
 				break;
 			}
@@ -163,19 +168,18 @@ public class PathFinder : MonoBehaviour
 			}
 		}
 
-		if(movePath == null)
+		if(queue.IsEmpty)
 		{
-			Debug.LogFormat("No Path for {0}", GameManager.Instance.Turn);
+			Debug.LogFormat("No Path for {0}", actor);
+			movePath = null;
 			GameManager.Instance.GoalBlocked();
 		}
 		else if(movePath.TotalCost <= 0)
 		{
-			Debug.LogFormat("{0} at goal", GameManager.Instance.Turn);
+			Debug.LogFormat("{0} at goal", actor);
 		}
 
 		isReady = true;
-
-		return null;
 	}
 
 	double distance(Tile tile1, Tile tile2)
@@ -215,7 +219,26 @@ public class PathFinder : MonoBehaviour
 		}
 		else
 		{
-			this.StartCoroutineAsync(FindPath());
+			this.StartCoroutineAsync(BuildPath());
 		}
+	}
+
+	void UpdatePathNodes(Path<Tile> newPath)
+	{
+		if(movePath != null)
+		{
+			foreach(Tile t in movePath)
+			{
+				BoardManager.Instance.SetPathNodeForActor(t.Location, actor, false);
+			}
+		}
+
+		foreach(Tile t in newPath)
+		{
+			if(!t.Location.Equals(currentTile.Location) && !t.Location.Equals(goalTile.Location))
+				BoardManager.Instance.SetPathNodeForActor(t.Location, actor);
+		}
+
+		movePath = newPath;
 	}
 }
