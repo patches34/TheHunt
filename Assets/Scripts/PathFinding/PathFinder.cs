@@ -7,7 +7,8 @@ using CielaSpike;
 public class PathFinder : MonoBehaviour
 {
 	[SerializeField]
-	Tile currentTile, goalTile, subGoalTile, nextTile;
+	Tile currentTile, goalTile, subGoalTile;
+	Tile nextTile;
 
 	public float moveLerpTime, timer;
 	Vector2 lerpStart, lerpEnd;
@@ -156,13 +157,13 @@ public class PathFinder : MonoBehaviour
 
 			foreach (Tile t in path.LastStep.Neighbours)
 			{
-				double d = distance(path.LastStep, t);
+				int d = distance(path.LastStep, t);
 				var newPath = path.AddStep(t, d);
 
-				double costVaule = newPath.TotalCost + estimate(t, goalTile);
+				int costVaule = newPath.TotalCost + estimate(t, goalTile);
 				if(subGoalTile != null)
 				{
-					costVaule += estimate(t, subGoalTile);
+					costVaule += estimate(t, subGoalTile) * 2;
 				}
 				queue.Enqueue(costVaule, newPath);
 			}
@@ -182,18 +183,18 @@ public class PathFinder : MonoBehaviour
 		isReady = true;
 	}
 
-	double distance(Tile tile1, Tile tile2)
+	int distance(Tile tile1, Tile tile2)
 	{
 		return 1;
 	}
 
-	double estimate(Tile tile, Tile destTile)
+	int estimate(Tile tile, Tile destTile)
 	{
-		float dx = Mathf.Abs(destTile.X - tile.X);
-		float dy = Mathf.Abs(destTile.Y - tile.Y);
+		int dx = Mathf.Abs(destTile.X - tile.X);
+		int dy = Mathf.Abs(destTile.Y - tile.Y);
 		int z1 = -(tile.X + tile.Y);
 		int z2 = -(destTile.X + destTile.Y);
-		float dz = Mathf.Abs(z2 - z1);
+		int dz = Mathf.Abs(z2 - z1);
 
 		return Mathf.Max(dx, dy, dz);
 	}
