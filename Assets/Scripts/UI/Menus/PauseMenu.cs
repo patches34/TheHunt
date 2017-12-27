@@ -21,7 +21,7 @@ public class PauseMenu : UIMenu
     List<RectTransform> boardSetupPanels;
 
 	[SerializeField]
-	Toggle showPathToggle;
+	Toggle showPathToggle, hunterSeeksHomeToggle;
 
 	// Use this for initialization
 	void OnEnable()
@@ -44,6 +44,8 @@ public class PauseMenu : UIMenu
 		showPathToggle.isOn = BoardManager.Instance.ShowAiPath;
 
 		maxBlocksInput.text = GameManager.Instance.MaxPlayerBlocks.ToString();
+
+		hunterSeeksHomeToggle.isOn = GameManager.Instance.DoesHunterSeeksHome;
 	}
 
 	public void SetBoardWidth(string value)
@@ -103,5 +105,10 @@ public class PauseMenu : UIMenu
 		GameManager.Instance.MaxPlayerBlocks = Convert.ToInt32(value);
 
 		maxBlocksInput.text = GameManager.Instance.MaxPlayerBlocks.ToString();
+	}
+
+	public void OnHunterSeekHomeValueChange(bool value)
+	{
+		GameManager.Instance.DoesHunterSeeksHome = value;
 	}
 }

@@ -7,7 +7,8 @@ using CielaSpike;
 public class PathFinder : MonoBehaviour
 {
 	[SerializeField]
-	Tile currentTile, goalTile, nextTile;
+	Tile currentTile, goalTile, subGoalTile;
+	Tile nextTile;
 
 	public float moveLerpTime, timer;
 	Vector2 lerpStart, lerpEnd;
@@ -24,7 +25,7 @@ public class PathFinder : MonoBehaviour
 	public bool isReady;
 
 	// Use this for initialization
-	public void Init(Tile start, Tile goal)
+	public void Init(Tile start, Tile goal, Tile subGoal = null)
 	{
 		rectTrans.anchoredPosition = BoardManager.Instance.TileCoordToScreenSpace(start.Location);
 		currentTile = start;
@@ -32,6 +33,8 @@ public class PathFinder : MonoBehaviour
 		timer = -1;
 
 		gameObject.SetActive(true);
+
+		subGoalTile = subGoal;
 
 		SetGoalTile(goal);
 	}
@@ -152,11 +155,17 @@ public class PathFinder : MonoBehaviour
 
 			closed.Add(path.LastStep);
 
-			foreach (Tile n in path.LastStep.Neighbours)
+			foreach (Tile t in path.LastStep.Neighbours)
 			{
-				double d = distance(path.LastStep, n);
-				var newPath = path.AddStep(n, d);
-				queue.Enqueue(newPath.TotalCost + estimate(n, goalTile), newPath);
+				int d = distance(path.LastStep, t);
+				var newPath = path.AddStep(t, d);
+
+				int costVaule = newPath.TotalCost + estimate(t, goalTile);
+				if(subGoalTile != null)
+				{
+					costVaule += estimate(t, subGoalTile) * 2;
+				}
+				queue.Enqueue(costVaule, newPath);
 			}
 		}
 
@@ -174,18 +183,18 @@ public class PathFinder : MonoBehaviour
 		isReady = true;
 	}
 
-	double distance(Tile tile1, Tile tile2)
+	int distance(Tile tile1, Tile tile2)
 	{
 		return 1;
 	}
 
-	double estimate(Tile tile, Tile destTile)
+	int estimate(Tile tile, Tile destTile)
 	{
-		float dx = Mathf.Abs(destTile.X - tile.X);
-		float dy = Mathf.Abs(destTile.Y - tile.Y);
+		int dx = Mathf.Abs(destTile.X - tile.X);
+		int dy = Mathf.Abs(destTile.Y - tile.Y);
 		int z1 = -(tile.X + tile.Y);
 		int z2 = -(destTile.X + destTile.Y);
-		float dz = Mathf.Abs(z2 - z1);
+		int dz = Mathf.Abs(z2 - z1);
 
 		return Mathf.Max(dx, dy, dz);
 	}

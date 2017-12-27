@@ -68,6 +68,26 @@ public class GameManager : Singleton<GameManager>
 
 	public int playerBlockedTilesCount;
 
+	[SerializeField]
+	bool doesHunterSeekHome;
+	public bool DoesHunterSeeksHome
+	{
+		get
+		{
+			return doesHunterSeekHome;
+		}
+		set
+		{
+			doesHunterSeekHome = value;
+
+			PlayerPrefs.SetInt(k_DOES_HUNTER_SEEK_HOME, System.Convert.ToInt32(doesHunterSeekHome));
+
+			UpdateActorPaths();
+		}
+	}
+
+	const string k_DOES_HUNTER_SEEK_HOME = "doesHunterSeekHome";
+
 	#region Initialization
 	// Use this for initialization
 	protected GameManager()
@@ -81,6 +101,8 @@ public class GameManager : Singleton<GameManager>
 		isWaiting = true;
 		isRunning = false;
 		isGameOver = false;
+
+		DoesHunterSeeksHome = System.Convert.ToBoolean(PlayerPrefs.GetInt(k_DOES_HUNTER_SEEK_HOME, System.Convert.ToInt32(DoesHunterSeeksHome)));
 
 		MenuManager.Instance.loadingSpinner.SetActive(true);
 		StartCoroutine(CreateGame());
@@ -125,7 +147,7 @@ public class GameManager : Singleton<GameManager>
 
 		randomTile = BoardManager.Instance.GetTileButtonByPoint(actorTiles[2]);
         randomTile.SetIsInteractable(false);
-		hunterActor.Init(randomTile.tile, animalActor.GetTile());
+		hunterActor.Init(randomTile.tile, animalActor.GetTile(), foodTile.tile);
 
 		TurnsTaken = 0;
 		isRunning = true;
@@ -169,8 +191,7 @@ public class GameManager : Singleton<GameManager>
 		case TurnActor.Player:
 			++TurnsTaken;
 
-			hunterActor.FindPath();
-			animalActor.FindPath();
+			UpdateActorPaths();
 
 			turn = TurnActor.Hunter;
 			break;
@@ -301,5 +322,14 @@ public class GameManager : Singleton<GameManager>
 		}
 
 		return false;
+	}
+
+	public void UpdateActorPaths()
+	{
+		if(hunterActor.isActiveAndEnabled)
+			hunterActor.FindPath();
+
+		if(animalActor.isActiveAndEnabled)
+			animalActor.FindPath();
 	}
 }
