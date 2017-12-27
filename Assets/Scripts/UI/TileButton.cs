@@ -78,8 +78,6 @@ public class TileButton : MonoBehaviour
 		{
 			SetState(TileState.Blocked);
 
-			GameManager.Instance.BlockTile(tile.Location);
-
 			GameManager.Instance.ActorWent();
 		}
 	}

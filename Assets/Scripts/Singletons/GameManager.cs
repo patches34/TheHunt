@@ -152,6 +152,9 @@ public class GameManager : Singleton<GameManager>
 		case TurnActor.Player:
 			++TurnsTaken;
 
+			hunterActor.FindPath();
+			animalActor.FindPath();
+
 			turn = TurnActor.Hunter;
 			break;
 		case TurnActor.Hunter:

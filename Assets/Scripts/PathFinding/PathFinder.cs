@@ -23,9 +23,6 @@ public class PathFinder : MonoBehaviour
 
 	public bool isReady;
 
-	[SerializeField]
-	int pathIndex;
-
 	// Use this for initialization
 	public void Init(Tile start, Tile goal)
 	{
@@ -33,8 +30,6 @@ public class PathFinder : MonoBehaviour
 		currentTile = start;
 
 		timer = -1;
-
-		pathIndex = 0;
 
 		gameObject.SetActive(true);
 
@@ -77,7 +72,7 @@ public class PathFinder : MonoBehaviour
 
 					timer = -1;
 
-					if(movePath.TotalCost - pathIndex <= 0)
+					if(movePath.TotalCost <= 1)
 					{
 						Debug.LogFormat("{0} Goal reached: {1}", actor, goalTile.Location);
 						GameManager.Instance.GoalReached(actor);
@@ -93,8 +88,7 @@ public class PathFinder : MonoBehaviour
 
 	public void TakeTurn()
 	{
-		++pathIndex;
-		nextTile = movePath.ElementAt((int)movePath.TotalCost - pathIndex);
+		nextTile = movePath.ElementAt((int)movePath.TotalCost - 1);
 
 		BoardManager.Instance.SetTileInteractable(nextTile.Location, false);
 
@@ -112,7 +106,7 @@ public class PathFinder : MonoBehaviour
 		{
 			if(t.Location.Equals(newBlocked))
 			{
-				this.StartCoroutineAsync(FindPath());
+				this.StartCoroutineAsync(BuildPath());
 
 				return;
 			}
@@ -121,8 +115,15 @@ public class PathFinder : MonoBehaviour
 		isReady = true;
 	}
 
+	public void FindPath()
+	{
+		isReady = false;
+
+		this.StartCoroutineAsync(BuildPath());
+	}
+
 	#region Find Path
-	IEnumerator FindPath()
+	IEnumerator BuildPath()
 	{
 		isReady = false;
 
@@ -169,10 +170,6 @@ public class PathFinder : MonoBehaviour
 		{
 			Debug.LogFormat("{0} at goal", actor);
 		}
-		else
-		{
-			pathIndex = 0;
-		}
 
 		isReady = true;
 	}
@@ -214,7 +211,7 @@ public class PathFinder : MonoBehaviour
 		}
 		else
 		{
-			this.StartCoroutineAsync(FindPath());
+			this.StartCoroutineAsync(BuildPath());
 		}
 	}
 
