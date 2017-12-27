@@ -63,6 +63,8 @@ public class GameManager : Singleton<GameManager>
 		set
 		{
 			maxPlayerBlocks = value;
+
+			PlayerPrefs.SetInt(k_MAX_PLAYER_BLOCKS, maxPlayerBlocks);
 		}
 	}
 
@@ -87,6 +89,7 @@ public class GameManager : Singleton<GameManager>
 	}
 
 	const string k_DOES_HUNTER_SEEK_HOME = "doesHunterSeekHome";
+	const string k_MAX_PLAYER_BLOCKS = "maxPlayerBlocks";
 
 	#region Initialization
 	// Use this for initialization
@@ -102,7 +105,9 @@ public class GameManager : Singleton<GameManager>
 		isRunning = false;
 		isGameOver = false;
 
-		DoesHunterSeeksHome = System.Convert.ToBoolean(PlayerPrefs.GetInt(k_DOES_HUNTER_SEEK_HOME, System.Convert.ToInt32(DoesHunterSeeksHome)));
+		doesHunterSeekHome = System.Convert.ToBoolean(PlayerPrefs.GetInt(k_DOES_HUNTER_SEEK_HOME, System.Convert.ToInt32(DoesHunterSeeksHome)));
+
+		maxPlayerBlocks = PlayerPrefs.GetInt(k_MAX_PLAYER_BLOCKS, maxPlayerBlocks);
 
 		MenuManager.Instance.loadingSpinner.SetActive(true);
 		StartCoroutine(CreateGame());
