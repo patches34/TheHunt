@@ -24,32 +24,9 @@ public class GameManager : Singleton<GameManager>
 {
 	[SerializeField]
 	TurnActor turn;
-	public TurnActor Turn
-	{
-		get
-		{
-			return this.turn;
-		}
-		private set
-		{
-			this.turn = value;
-		}
-	}
 
 	[SerializeField]
 	bool isWaiting, isRunning, isGameOver;
-
-	public TurnActor GameOverState {
-		get
-		{
-			if(animalActor.IsBlocked())
-				return TurnActor.Animal;
-			else if(hunterActor.IsBlocked())
-				return TurnActor.Player;
-			else
-				return TurnActor.Hunter;
-		}
-	}
 
 	public TileButton foodTile;
 
@@ -59,7 +36,7 @@ public class GameManager : Singleton<GameManager>
 
 	Task createBoardTask, setupBoardTask;
 
-	public GameOverReason reason;
+	public GameOverReason gameOverReason;
 
 	[SerializeField]
 	int turnsTaken;
@@ -145,13 +122,13 @@ public class GameManager : Singleton<GameManager>
 		{
 			if(animalActor.IsBlocked())
 			{
-				reason = GameOverReason.ANIMAL_STARVED;
+				gameOverReason = GameOverReason.ANIMAL_STARVED;
 
 				GameOver(false);
 			}
 			else
 			{
-				reason = GameOverReason.PLAYER_WON;
+				gameOverReason = GameOverReason.PLAYER_WON;
 
 				GameOver(true);
 			}
@@ -196,13 +173,19 @@ public class GameManager : Singleton<GameManager>
 		animalActor.CheckForPathBlocked(tile);
 	}
 
-	public void GoalReached(TurnActor actor = TurnActor.None)
+	public void GoalReached(TurnActor actor)
 	{
-		if(turn == TurnActor.Hunter || actor == TurnActor.Hunter)
+		if(actor == TurnActor.Hunter)
 		{
-			reason = GameOverReason.HUNTER_WON;
+			gameOverReason = GameOverReason.HUNTER_WON;
 
 			GameOver(false);
+		}
+		else if(actor == TurnActor.Animal)
+		{
+			gameOverReason = GameOverReason.PLAYER_WON;
+
+			GameOver(true);
 		}
 	}
 
@@ -230,7 +213,7 @@ public class GameManager : Singleton<GameManager>
 
 		MenuManager.Instance.ShowMenu(MenuTypes.GameOver);
 
-		GameAnalytics.NewProgressionEvent(GAProgressionStatus.Complete, BoardManager.Instance.boardSetupMethod.ToString(), reason.ToString(), TurnsTaken);
+		GameAnalytics.NewProgressionEvent(GAProgressionStatus.Complete, BoardManager.Instance.boardSetupMethod.ToString(), gameOverReason.ToString(), TurnsTaken);
 	}
 
 	public void Restart()

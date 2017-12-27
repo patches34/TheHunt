@@ -57,7 +57,7 @@ public class PathFinder : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-		if(GameManager.Instance.IsActorTurn(actor) && isReady)
+		if(GameManager.Instance.IsActorTurn(actor) && isReady && movePath != null)
 		{
 			if(timer < 0)
 			{
@@ -77,10 +77,10 @@ public class PathFinder : MonoBehaviour
 
 					timer = -1;
 
-					if(movePath.TotalCost <= 1)
+					if(movePath.TotalCost - pathIndex <= 0)
 					{
-						Debug.Log("Goal reached" + goalTile.Location);
-						GameManager.Instance.GoalReached();
+						Debug.LogFormat("{0} Goal reached: {1}", actor, goalTile.Location);
+						GameManager.Instance.GoalReached(actor);
 					}
 					else
 					{
@@ -93,22 +93,15 @@ public class PathFinder : MonoBehaviour
 
 	public void TakeTurn()
 	{
-		if(currentTile.Location != goalTile.Location)
-		{
-			++pathIndex;
-			nextTile = movePath.ElementAt((int)movePath.TotalCost - pathIndex);
+		++pathIndex;
+		nextTile = movePath.ElementAt((int)movePath.TotalCost - pathIndex);
 
-			BoardManager.Instance.SetTileInteractable(nextTile.Location, false);
+		BoardManager.Instance.SetTileInteractable(nextTile.Location, false);
 
-			lerpStart = BoardManager.Instance.TileCoordToScreenSpace(currentTile.Location);
-			lerpEnd = BoardManager.Instance.TileCoordToScreenSpace(nextTile.Location);
+		lerpStart = BoardManager.Instance.TileCoordToScreenSpace(currentTile.Location);
+		lerpEnd = BoardManager.Instance.TileCoordToScreenSpace(nextTile.Location);
 
-			timer = 0;
-		}
-		else
-		{
-			GameManager.Instance.ActorWent();
-		}
+		timer = 0;
 	}
 
 	public void CheckForPathBlocked(Point newBlocked)
@@ -168,12 +161,13 @@ public class PathFinder : MonoBehaviour
 
 		if(queue.IsEmpty)
 		{
-			Debug.LogFormat("No Path for {0}", GameManager.Instance.Turn);
+			Debug.LogFormat("No Path for {0}", actor);
+			movePath = null;
 			GameManager.Instance.GoalBlocked();
 		}
 		else if(movePath.TotalCost <= 0)
 		{
-			Debug.LogFormat("{0} at goal", GameManager.Instance.Turn);
+			Debug.LogFormat("{0} at goal", actor);
 		}
 		else
 		{
