@@ -68,6 +68,8 @@ public class GameManager : Singleton<GameManager>
 
 	public int playerBlockedTilesCount;
 
+	public bool DoesHunterSeeksHome;
+
 	#region Initialization
 	// Use this for initialization
 	protected GameManager()
@@ -169,8 +171,7 @@ public class GameManager : Singleton<GameManager>
 		case TurnActor.Player:
 			++TurnsTaken;
 
-			hunterActor.FindPath();
-			animalActor.FindPath();
+			UpdateActorPaths();
 
 			turn = TurnActor.Hunter;
 			break;
@@ -301,5 +302,11 @@ public class GameManager : Singleton<GameManager>
 		}
 
 		return false;
+	}
+
+	public void UpdateActorPaths()
+	{
+		hunterActor.FindPath();
+		animalActor.FindPath();
 	}
 }
