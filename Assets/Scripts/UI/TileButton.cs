@@ -69,11 +69,20 @@ public class TileButton : MonoBehaviour
         btn.interactable = true;
 
 		SetAsPathNodeFor(TurnActor.None);
+
+		state = TileState.None;
     }
 
     public void Click()
 	{
-		SetState(TileState.Blocked);
+		if(state == TileState.Blocked)
+		{
+			SetState(TileState.None);
+		}
+		else
+		{
+			SetState(TileState.Blocked);
+		}
 
 		GameManager.Instance.ActorWent();
 	}
@@ -84,7 +93,7 @@ public class TileButton : MonoBehaviour
 
 		anim.SetInteger(k_State, (int)newState);
 
-		SetIsInteractable(newState == TileState.None);
+		SetIsInteractable(newState != TileState.Food);
 
 		tile.Passable = newState != TileState.Blocked;
 	}
