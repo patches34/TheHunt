@@ -36,7 +36,7 @@ public class MenuManager : Singleton<MenuManager>
 	float zoomSpeed, mouseWheelSpeed, zoomMax;
 	float zoomMin;
 
-	public GameObject loadingSpinner;
+	public GameObject loadingSpinner, playerInputBlock;
 
 	[SerializeField]
 	Button playerPassBtn, playerForfeitBtn;
@@ -96,6 +96,8 @@ public class MenuManager : Singleton<MenuManager>
 		playerPassBtn.interactable = GameManager.Instance.IsPlayerTurn();
 
 		playerForfeitBtn.interactable = GameManager.Instance.IsGameActive();
+
+		playerInputBlock.SetActive(!GameManager.Instance.IsPlayerTurn());
 		#endregion
 	}
 

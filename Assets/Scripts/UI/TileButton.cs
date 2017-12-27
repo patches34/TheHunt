@@ -73,13 +73,9 @@ public class TileButton : MonoBehaviour
 
     public void Click()
 	{
-		//	Check if if its the player's turn
-		if(GameManager.Instance.IsActorTurn(TurnActor.Player))
-		{
-			SetState(TileState.Blocked);
+		SetState(TileState.Blocked);
 
-			GameManager.Instance.ActorWent();
-		}
+		GameManager.Instance.ActorWent();
 	}
 
 	public void SetState(TileState newState)
