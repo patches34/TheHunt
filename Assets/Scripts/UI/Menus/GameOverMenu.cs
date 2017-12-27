@@ -19,15 +19,15 @@ public class GameOverMenu : UIMenu
 
 	public override void SetVisible (bool value)
 	{
-		switch(GameManager.Instance.GameOverState)
+		switch(GameManager.Instance.gameOverReason)
 		{
-		case TurnActor.Player:
+		case GameOverReason.PLAYER_WON:
 			reasonLabel.text = "Player Won!";
 			break;
-		case TurnActor.Animal:
+		case GameOverReason.ANIMAL_STARVED:
 			reasonLabel.text = "Animal Starved";
 			break;
-		case TurnActor.Hunter:
+		case GameOverReason.HUNTER_WON:
 			reasonLabel.text = "Animal Killed";
 			break;
 		}
