@@ -110,7 +110,5 @@ public class PauseMenu : UIMenu
 	public void OnHunterSeekHomeValueChange(bool value)
 	{
 		GameManager.Instance.DoesHunterSeeksHome = value;
-
-		GameManager.Instance.UpdateActorPaths();
 	}
 }

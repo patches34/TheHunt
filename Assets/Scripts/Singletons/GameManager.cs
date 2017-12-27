@@ -68,7 +68,25 @@ public class GameManager : Singleton<GameManager>
 
 	public int playerBlockedTilesCount;
 
-	public bool DoesHunterSeeksHome;
+	[SerializeField]
+	bool doesHunterSeekHome;
+	public bool DoesHunterSeeksHome
+	{
+		get
+		{
+			return doesHunterSeekHome;
+		}
+		set
+		{
+			doesHunterSeekHome = value;
+
+			PlayerPrefs.SetInt(k_DOES_HUNTER_SEEK_HOME, System.Convert.ToInt32(doesHunterSeekHome));
+
+			UpdateActorPaths();
+		}
+	}
+
+	const string k_DOES_HUNTER_SEEK_HOME = "doesHunterSeekHome";
 
 	#region Initialization
 	// Use this for initialization
@@ -83,6 +101,8 @@ public class GameManager : Singleton<GameManager>
 		isWaiting = true;
 		isRunning = false;
 		isGameOver = false;
+
+		DoesHunterSeeksHome = System.Convert.ToBoolean(PlayerPrefs.GetInt(k_DOES_HUNTER_SEEK_HOME, System.Convert.ToInt32(DoesHunterSeeksHome)));
 
 		MenuManager.Instance.loadingSpinner.SetActive(true);
 		StartCoroutine(CreateGame());
@@ -306,7 +326,10 @@ public class GameManager : Singleton<GameManager>
 
 	public void UpdateActorPaths()
 	{
-		hunterActor.FindPath();
-		animalActor.FindPath();
+		if(hunterActor.isActiveAndEnabled)
+			hunterActor.FindPath();
+
+		if(animalActor.isActiveAndEnabled)
+			animalActor.FindPath();
 	}
 }

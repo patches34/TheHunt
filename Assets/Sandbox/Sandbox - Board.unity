@@ -7954,7 +7954,7 @@ MonoBehaviour:
   turnsTaken: 0
   maxPlayerBlocks: 4
   playerBlockedTilesCount: 0
-  DoesHunterSeeksHome: 1
+  doesHunterSeekHome: 0
 --- !u!4 &1894036753
 Transform:
   m_ObjectHideFlags: 0
