@@ -77,11 +77,19 @@ public class TileButton : MonoBehaviour
 	{
 		if(state == TileState.Blocked)
 		{
+			--GameManager.Instance.playerBlockedTilesCount;
+
 			SetState(TileState.None);
+		}
+		else if(GameManager.Instance.CanPlayerBlockTile())
+		{
+			++GameManager.Instance.playerBlockedTilesCount;
+
+			SetState(TileState.Blocked);
 		}
 		else
 		{
-			SetState(TileState.Blocked);
+			return;
 		}
 
 		GameManager.Instance.ActorWent();

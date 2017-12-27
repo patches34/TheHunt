@@ -9,7 +9,7 @@ public class PauseMenu : UIMenu
 	Slider zoomSpeedSlider;
 
     [SerializeField]
-    InputField widthInput, heightInput, blockedTilesInput, blockedTilesDistanceInput;
+    InputField widthInput, heightInput, blockedTilesInput, blockedTilesDistanceInput, maxBlocksInput;
 
     [SerializeField]
 	Text zoomSpeedLabel;
@@ -42,6 +42,8 @@ public class PauseMenu : UIMenu
 		boardSetupPanels[(int)BoardManager.Instance.boardSetupMethod].gameObject.SetActive(true);
 
 		showPathToggle.isOn = BoardManager.Instance.ShowAiPath;
+
+		maxBlocksInput.text = GameManager.Instance.MaxPlayerBlocks.ToString();
 	}
 
 	public void SetBoardWidth(string value)
@@ -91,5 +93,15 @@ public class PauseMenu : UIMenu
 		BoardManager.Instance.StartBlockedTilesMinSpacing = Convert.ToInt32(value);
 
 		blockedTilesDistanceInput.text = BoardManager.Instance.StartBlockedTilesMinSpacing.ToString();
+	}
+
+	public void SetMaxBlocks(string value)
+	{
+		if(string.IsNullOrEmpty(value))
+			value = "0";
+
+		GameManager.Instance.MaxPlayerBlocks = Convert.ToInt32(value);
+
+		maxBlocksInput.text = GameManager.Instance.MaxPlayerBlocks.ToString();
 	}
 }

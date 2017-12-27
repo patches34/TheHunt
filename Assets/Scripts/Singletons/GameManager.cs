@@ -52,6 +52,22 @@ public class GameManager : Singleton<GameManager>
 		}
 	}
 
+	[SerializeField]
+	int maxPlayerBlocks;
+	public int MaxPlayerBlocks
+	{
+		get
+		{
+			return maxPlayerBlocks;
+		}
+		set
+		{
+			maxPlayerBlocks = value;
+		}
+	}
+
+	public int playerBlockedTilesCount;
+
 	#region Initialization
 	// Use this for initialization
 	protected GameManager()
@@ -83,6 +99,7 @@ public class GameManager : Singleton<GameManager>
 	{
 		MenuManager.Instance.loadingSpinner.SetActive(true);
 		turn = TurnActor.Player;
+		playerBlockedTilesCount = 0;
 		isWaiting = true;
 
 		GameAnalytics.NewProgressionEvent(GAProgressionStatus.Start, BoardManager.Instance.boardSetupMethod.ToString());
@@ -168,12 +185,6 @@ public class GameManager : Singleton<GameManager>
 		}
 
 		isWaiting = false;
-	}
-
-	public void BlockTile(Point tile)
-	{
-		hunterActor.CheckForPathBlocked(tile);
-		animalActor.CheckForPathBlocked(tile);
 	}
 
 	public void GoalReached(TurnActor actor)
@@ -280,5 +291,15 @@ public class GameManager : Singleton<GameManager>
 	public bool IsGameActive()
 	{
 		return isRunning && !isGameOver;
+	}
+
+	public bool CanPlayerBlockTile()
+	{
+		if(maxPlayerBlocks <= 0 || playerBlockedTilesCount < maxPlayerBlocks)
+		{
+			return true;
+		}
+
+		return false;
 	}
 }
