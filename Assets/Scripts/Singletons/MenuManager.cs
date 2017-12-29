@@ -39,7 +39,7 @@ public class MenuManager : Singleton<MenuManager>
 	public GameObject loadingSpinner, playerInputBlock;
 
 	[SerializeField]
-	Button playerPassBtn, playerForfeitBtn;
+	Button playerPassBtn, playerForfeitBtn, playerRetryBtn;
 
 	#region Initialization
 	// Use this for initialization
@@ -130,6 +130,8 @@ public class MenuManager : Singleton<MenuManager>
 		playerForfeitBtn.interactable = GameManager.Instance.IsGameActive();
 
 		playerInputBlock.SetActive(!GameManager.Instance.IsPlayerTurn());
+
+        playerRetryBtn.interactable = GameManager.Instance.IsGameActive();
 		#endregion
 	}
 

@@ -221,6 +221,19 @@ public class BoardManager : Singleton<BoardManager>
 		}
 	}
 
+    public void RestartBoard()
+    {
+        foreach (TileButton t in tiles.Values)
+        {
+            t.SetIsInteractable(true);
+
+            if (t.isActiveAndEnabled)
+            {
+                t.SetState(TileState.None);
+            }
+        }
+    }
+
 	public void DestoryBoard()
 	{
 		foreach(TileButton t in tiles.Values)

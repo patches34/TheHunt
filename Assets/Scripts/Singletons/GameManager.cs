@@ -28,7 +28,7 @@ public class GameManager : Singleton<GameManager>
 	[SerializeField]
 	bool isWaiting, isRunning, isGameOver, isFastFoward;
 
-	public TileButton foodTile;
+	public TileButton foodTile, animalStartTile, hunterStartTile;
 
 	public PathFinder animalActor, hunterActor;
 
@@ -146,13 +146,13 @@ public class GameManager : Singleton<GameManager>
 		foodTile.SetIsInteractable(false);
 		foodTile.SetState(TileState.Food);
 
-		TileButton randomTile = BoardManager.Instance.GetTileButtonByPoint(actorTiles[1]);
-        randomTile.SetIsInteractable(false);
-		animalActor.Init(randomTile.tile, foodTile.tile);
+		animalStartTile = BoardManager.Instance.GetTileButtonByPoint(actorTiles[1]);
+        animalStartTile.SetIsInteractable(false);
+		animalActor.Init(animalStartTile.tile, foodTile.tile);
 
-		randomTile = BoardManager.Instance.GetTileButtonByPoint(actorTiles[2]);
-        randomTile.SetIsInteractable(false);
-		hunterActor.Init(randomTile.tile, animalActor.GetTile(), foodTile.tile);
+		hunterStartTile = BoardManager.Instance.GetTileButtonByPoint(actorTiles[2]);
+        hunterStartTile.SetIsInteractable(false);
+		hunterActor.Init(hunterStartTile.tile, animalActor.GetTile(), foodTile.tile);
 
 		TurnsTaken = 0;
         isFastFoward = false;
@@ -280,7 +280,7 @@ public class GameManager : Singleton<GameManager>
 		GameAnalytics.NewProgressionEvent(GAProgressionStatus.Complete, BoardManager.Instance.boardSetupMethod.ToString(), gameOverReason.ToString(), TurnsTaken);
 	}
 
-	public void Restart()
+	public void NewGame()
 	{
 		CancelTasks();
 
@@ -298,6 +298,27 @@ public class GameManager : Singleton<GameManager>
 
 		StartGame();
 	}
+
+    public void Restart()
+    {
+        BoardManager.Instance.RestartBoard();
+
+        foodTile.SetIsInteractable(false);
+        foodTile.SetState(TileState.Food);
+
+        animalStartTile.SetIsInteractable(false);
+        animalActor.Init(animalStartTile.tile, foodTile.tile);
+
+        hunterStartTile.SetIsInteractable(false);
+        hunterActor.Init(hunterStartTile.tile, animalActor.GetTile(), foodTile.tile);
+
+        turn = TurnActor.Player;
+        TurnsTaken = 0;
+        isFastFoward = false;
+        isRunning = true;
+
+        GameAnalytics.NewDesignEvent("playerRetry");
+    }
 
 	public void Rebuild()
 	{
