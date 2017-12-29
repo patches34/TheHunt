@@ -26,7 +26,7 @@ public class GameManager : Singleton<GameManager>
 	TurnActor turn;
 
 	[SerializeField]
-	bool isWaiting, isRunning, isGameOver;
+	bool isWaiting, isRunning, isGameOver, isFastFoward;
 
 	public TileButton foodTile;
 
@@ -155,6 +155,7 @@ public class GameManager : Singleton<GameManager>
 		hunterActor.Init(randomTile.tile, animalActor.GetTile(), foodTile.tile);
 
 		TurnsTaken = 0;
+        isFastFoward = false;
 		isRunning = true;
 
 		MenuManager.Instance.loadingSpinner.SetActive(false);
@@ -162,6 +163,10 @@ public class GameManager : Singleton<GameManager>
 
 	void Update()
 	{
+        if(isFastFoward && IsGameActive() && IsPlayerTurn())
+        {
+            ActorWent();
+        }
 		if(isRunning && isGameOver && hunterActor.isReady && animalActor.isReady)
 		{
 			if(animalActor.IsBlocked())
@@ -178,6 +183,20 @@ public class GameManager : Singleton<GameManager>
 			}
 		}
 	}
+
+    public void ToggleFastForward()
+    {
+        isFastFoward = !isFastFoward;
+
+        if(isFastFoward)
+        {
+            GameAnalytics.NewDesignEvent("playerFastFowardStart");
+        }
+        else
+        {
+            GameAnalytics.NewDesignEvent("playerFastFowardStop");
+        }
+    }
 
 	public void PlayerPass()
 	{
@@ -252,6 +271,11 @@ public class GameManager : Singleton<GameManager>
 		turn = TurnActor.None;
 
 		MenuManager.Instance.ShowMenu(MenuTypes.GameOver);
+
+        if(isFastFoward)
+        {
+            GameAnalytics.NewDesignEvent("gameOverFastForward");
+        }
 
 		GameAnalytics.NewProgressionEvent(GAProgressionStatus.Complete, BoardManager.Instance.boardSetupMethod.ToString(), gameOverReason.ToString(), TurnsTaken);
 	}
