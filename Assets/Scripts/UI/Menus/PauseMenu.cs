@@ -116,4 +116,9 @@ public class PauseMenu : UIMenu
 	{
 		GameManager.Instance.Rebuild();
 	}
+
+    public void OnShowAiPathValueChange(bool value)
+    {
+        BoardManager.Instance.ShowActorPaths(value);
+    }
 }
