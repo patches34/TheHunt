@@ -42,6 +42,8 @@ public class MenuManager : Singleton<MenuManager>
 	[SerializeField]
 	Button playerPassBtn, playerForfeitBtn, playerRetryBtn;
 
+    const string k_IS_NEW_PLAYER = "isNewPlayer";
+
 	#region Initialization
 	// Use this for initialization
 	protected MenuManager()
@@ -52,7 +54,11 @@ public class MenuManager : Singleton<MenuManager>
 
 	void Start()
 	{
-		
+        if (PlayerPrefs.GetInt(k_IS_NEW_PLAYER, -1) < 0)
+        {
+            ShowMenu(MenuTypes.Info);
+            PlayerPrefs.SetInt(k_IS_NEW_PLAYER, 0);
+        }
 	}
 
 	/// <summary>
@@ -94,8 +100,6 @@ public class MenuManager : Singleton<MenuManager>
 
 	void Update()
 	{
-		debugLabel.text = string.Format("Touches = {0}", Input.touchCount);
-
 		#region Zooming
 		if(Input.touchCount >= 2)
 		{
