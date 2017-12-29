@@ -115,6 +115,8 @@ public class PauseMenu : UIMenu
 	public void Rebuild()
 	{
 		GameManager.Instance.Rebuild();
+
+        MenuManager.Instance.HideMenu(MenuTypes.Pause);
 	}
 
     public void OnShowAiPathValueChange(bool value)

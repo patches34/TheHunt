@@ -8,7 +8,8 @@ public enum MenuTypes
 	None,
 	GameOver,
 	Pause,
-	Info
+	Info,
+    Settings
 }
 
 public class MenuManager : Singleton<MenuManager>
@@ -172,6 +173,11 @@ public class MenuManager : Singleton<MenuManager>
 	{
 		menus[type].SetVisible(true);
 	}
+
+    public void HideMenu(MenuTypes type)
+    {
+        menus[type].SetVisible(false);
+    }
 
 	public void ResizeGameBoard(Vector2 boardSize)
 	{
