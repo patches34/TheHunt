@@ -44,21 +44,25 @@ MonoBehaviour:
     Location:
       X: 0
       Y: 0
+      Z: 0
     Passable: 0
   goalTile:
     Location:
       X: 0
       Y: 0
+      Z: 0
     Passable: 0
-  nextTile:
+  subGoalTile:
     Location:
       X: 0
       Y: 0
+      Z: 0
     Passable: 0
   moveLerpTime: 0.5
   timer: 0
   rectTrans: {fileID: 224700074368305652}
   actor: 2
+  isReady: 0
 --- !u!114 &114650517064503490
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -71,7 +75,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.039655175, g: 0.33823532, b: 0, a: 1}
+  m_Color: {r: 0.3137255, g: 0.8666667, b: 0.6666667, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
