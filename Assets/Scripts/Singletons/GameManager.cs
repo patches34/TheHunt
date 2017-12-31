@@ -314,6 +314,7 @@ public class GameManager : Singleton<GameManager>
 
         turn = TurnActor.Player;
         TurnsTaken = 0;
+        playerBlockedTilesCount = 0;
         isFastFoward = false;
         isRunning = true;
 
