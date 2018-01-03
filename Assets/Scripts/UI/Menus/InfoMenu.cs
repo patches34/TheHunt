@@ -5,6 +5,16 @@ using UnityEngine.UI;
 
 public class InfoMenu : UIMenu
 {
+	[SerializeField]
+	Text versionlabel;
+
+	const string k_VERSION_CODE = "V_{0} #{2}";
+
+	void Start()
+	{
+		versionlabel.text = MenuManager.Instance.BuildVersionStr;
+	}
+
     public void GoToInfo()
     {
         MenuManager.Instance.ShowMenu(MenuTypes.Info);

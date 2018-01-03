@@ -61,6 +61,8 @@ public class MenuManager : Singleton<MenuManager>
         }
 	}
 
+	public string BuildVersionStr;
+
 	/// <summary>
 	/// Adds a UI screen to the stack and deletes its scene
 	/// </summary>
