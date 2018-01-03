@@ -79,7 +79,7 @@ public class MenuManager : Singleton<MenuManager>
 		//Make sure the screen is scaled and positioned correctly
 		screen.gameObject.GetComponent<RectTransform>().localScale = Vector3.one;
 		screen.gameObject.GetComponent<RectTransform>().sizeDelta = Vector2.one;
-		screen.gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector2(0.5f, 0.5f);
+		screen.gameObject.GetComponent<RectTransform>().anchoredPosition3D = new Vector3(0.5f, 0.5f, 0f);
 		screen.gameObject.GetComponent<RectTransform>().offsetMax = Vector2.zero;
 		screen.gameObject.GetComponent<RectTransform>().offsetMin = Vector2.zero;
 
