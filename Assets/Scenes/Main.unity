@@ -861,7 +861,7 @@ MonoBehaviour:
   playerPassBtn: {fileID: 1128041091}
   playerForfeitBtn: {fileID: 519499928}
   playerRetryBtn: {fileID: 1852339414}
-  BuildVersionStr: 'v_0.3.1 #13'
+  BuildVersionStr: 'v_0.3.2 #14'
 --- !u!1 &843061707
 GameObject:
   m_ObjectHideFlags: 0
