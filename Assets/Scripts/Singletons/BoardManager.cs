@@ -132,8 +132,6 @@ public class BoardManager : Singleton<BoardManager>
 
 	public IEnumerator CreateBoard()
 	{
-		GameAnalytics.SettingsGA.SetCustomArea(string.Format("X:{0}_Y:{1}", BoardSize.X, BoardSize.Y));
-
 		Stopwatch timer = new Stopwatch();
 		long boardTime, generateTime, neighboursTime;
 
@@ -186,7 +184,9 @@ public class BoardManager : Singleton<BoardManager>
 
 		timer.Stop();
 
-		//GameAnalytics.NewDesignEvent("BoardCreation", (float)System.Math.Round(timer.Elapsed.TotalSeconds, 4));
+		yield return Ninja.JumpToUnity;
+		GameAnalytics.SettingsGA.SetCustomArea(string.Format("X:{0}_Y:{1}", BoardSize.X, BoardSize.Y));
+		GameAnalytics.NewDesignEvent("BoardCreation", (float)System.Math.Round(timer.Elapsed.TotalSeconds, 4));
     }
 
 	public IEnumerator SetupBoard()
@@ -208,9 +208,8 @@ public class BoardManager : Singleton<BoardManager>
         }
 
 		yield return StartCoroutine(boardSetupTask.Wait());
-		yield return Ninja.JumpBack;
 
-		//GameAnalytics.NewDesignEvent("BoardSetup", (float)System.Math.Round(timer.Elapsed.TotalSeconds, 4));
+		GameAnalytics.NewDesignEvent("BoardSetup", (float)System.Math.Round(timer.Elapsed.TotalSeconds, 4));
     }
 
     public void Reset()
