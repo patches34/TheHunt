@@ -166,6 +166,7 @@ public class GameManager : Singleton<GameManager>
         isFastFoward = false;
 		isRunning = true;
 
+		MenuManager.Instance.SetFastForwardBtnState();
 		MenuManager.Instance.loadingSpinner.SetActive(false);
 	}
 
@@ -279,6 +280,8 @@ public class GameManager : Singleton<GameManager>
 	{
 		isRunning = false;
 		turn = TurnActor.None;
+		isFastFoward = false;
+		MenuManager.Instance.SetFastForwardBtnState();
 
 		MenuManager.Instance.ShowMenu(MenuTypes.GameOver);
 
@@ -305,6 +308,8 @@ public class GameManager : Singleton<GameManager>
 		GameAnalytics.NewProgressionEvent(GAProgressionStatus.Fail, BoardManager.Instance.boardSetupMethod.ToString(), TurnsTaken);
 
 		isGameOver = false;
+		isFastFoward = false;
+		MenuManager.Instance.SetFastForwardBtnState();
 
 		StartGame();
 	}
@@ -326,6 +331,7 @@ public class GameManager : Singleton<GameManager>
         TurnsTaken = 0;
         playerBlockedTilesCount = 0;
         isFastFoward = false;
+		MenuManager.Instance.SetFastForwardBtnState();
         isRunning = true;
 
         GameAnalytics.NewDesignEvent("playerRetry");
