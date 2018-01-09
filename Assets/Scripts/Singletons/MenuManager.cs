@@ -41,8 +41,11 @@ public class MenuManager : Singleton<MenuManager>
 
 	[SerializeField]
 	Button playerPassBtn, playerForfeitBtn, playerRetryBtn;
+	[SerializeField]
+	Animator fastForwardBtnAnim;
 
     const string k_IS_NEW_PLAYER = "isNewPlayer";
+	const string k_IS_ENGAGED = "isEngaged";
 
 	#region Initialization
 	// Use this for initialization
@@ -204,5 +207,10 @@ public class MenuManager : Singleton<MenuManager>
 	public void OpenFeedback()
 	{
 		Application.OpenURL("https://github.com/patches34/TheHunt/issues/new");
+	}
+
+	public void SetFastForwardBtnState()
+	{
+		fastForwardBtnAnim.SetBool(k_IS_ENGAGED, GameManager.Instance.IsFastForward);
 	}
 }

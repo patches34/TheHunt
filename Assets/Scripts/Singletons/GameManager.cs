@@ -28,6 +28,14 @@ public class GameManager : Singleton<GameManager>
 	[SerializeField]
 	bool isWaiting, isRunning, isGameOver, isFastFoward;
 
+	public bool IsFastForward
+	{
+		get
+		{
+			return isFastFoward;
+		}
+	}
+
 	public TileButton foodTile, animalStartTile, hunterStartTile;
 
 	public PathFinder animalActor, hunterActor;
@@ -196,6 +204,8 @@ public class GameManager : Singleton<GameManager>
         {
             GameAnalytics.NewDesignEvent("playerFastFowardStop");
         }
+
+		MenuManager.Instance.SetFastForwardBtnState();
     }
 
 	public void PlayerPass()
