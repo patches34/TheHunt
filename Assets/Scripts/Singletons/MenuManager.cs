@@ -57,6 +57,8 @@ public class MenuManager : Singleton<MenuManager>
 
 	void Start()
 	{
+		Application.targetFrameRate = 30;
+
         if (PlayerPrefs.GetInt(k_IS_NEW_PLAYER, -1) < 0)
         {
             ShowMenu(MenuTypes.Info);
