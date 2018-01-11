@@ -822,7 +822,7 @@ MonoBehaviour:
   playerForfeitBtn: {fileID: 519499928}
   playerRetryBtn: {fileID: 1852339414}
   fastForwardBtnAnim: {fileID: 1559868242}
-  BuildVersionStr: 'v_0.4.1 #16'
+  BuildVersionStr: 'v_0.4.2 #17'
 --- !u!1 &843061707
 GameObject:
   m_ObjectHideFlags: 0
