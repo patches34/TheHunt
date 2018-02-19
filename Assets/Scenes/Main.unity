@@ -759,11 +759,11 @@ RectTransform:
   m_Father: {fileID: 741098274}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 100}
-  m_Pivot: {x: 0.5, y: 0}
+  m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &725830833
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -938,10 +938,10 @@ MonoBehaviour:
   zoomMax: 1.5
   loadingSpinner: {fileID: 1303585945}
   playerInputBlock: {fileID: 1746089991}
-  playerPassBtn: {fileID: 0}
-  playerForfeitBtn: {fileID: 0}
-  playerRetryBtn: {fileID: 0}
-  fastForwardBtnAnim: {fileID: 0}
+  playerPassBtn: {fileID: 1278459609}
+  playerForfeitBtn: {fileID: 1292260034}
+  playerRetryBtn: {fileID: 1493923721}
+  fastForwardBtnAnim: {fileID: 1078950978}
   BuildVersionStr: 'v_0.4.2 #17'
 --- !u!1 &843061707
 GameObject:
@@ -1242,6 +1242,47 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 903797005}
+--- !u!1 &1059103038 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1414681385222836, guid: 476011d0503ba44a3ade857838efabb7,
+    type: 2}
+  m_PrefabInternal: {fileID: 1315310099}
+--- !u!114 &1059103039
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1059103038}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -900027084, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0.9490196, g: 0.29803923, b: 0.15294118, a: 1}
+  m_EffectDistance: {x: 1, y: 1}
+  m_UseGraphicAlpha: 1
+--- !u!1 &1078950977 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1961244824627288, guid: 476011d0503ba44a3ade857838efabb7,
+    type: 2}
+  m_PrefabInternal: {fileID: 1315310099}
+--- !u!95 &1078950978
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1078950977}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 9359ecee262c24cfe8e659adad079434, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!1001 &1142069392
 Prefab:
   m_ObjectHideFlags: 0
@@ -1489,6 +1530,18 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1196070867}
+--- !u!114 &1278459609 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114434274657183832, guid: 476011d0503ba44a3ade857838efabb7,
+    type: 2}
+  m_PrefabInternal: {fileID: 1142069392}
+  m_Script: {fileID: 1392445389, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+--- !u!114 &1292260034 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114434274657183832, guid: 476011d0503ba44a3ade857838efabb7,
+    type: 2}
+  m_PrefabInternal: {fileID: 535006952}
+  m_Script: {fileID: 1392445389, guid: f70555f144d8491a825f0804e09c671c, type: 3}
 --- !u!1 &1303585945
 GameObject:
   m_ObjectHideFlags: 0
@@ -1811,6 +1864,12 @@ RectTransform:
   m_PrefabParentObject: {fileID: 224485434292327550, guid: 476011d0503ba44a3ade857838efabb7,
     type: 2}
   m_PrefabInternal: {fileID: 1142069392}
+--- !u!114 &1493923721 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114434274657183832, guid: 476011d0503ba44a3ade857838efabb7,
+    type: 2}
+  m_PrefabInternal: {fileID: 177560772}
+  m_Script: {fileID: 1392445389, guid: f70555f144d8491a825f0804e09c671c, type: 3}
 --- !u!1001 &1535501182
 Prefab:
   m_ObjectHideFlags: 0
@@ -2213,8 +2272,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: -200}
+  m_AnchoredPosition: {x: 0, y: -50}
+  m_SizeDelta: {x: 0, y: -100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1883270893
 MonoBehaviour:
