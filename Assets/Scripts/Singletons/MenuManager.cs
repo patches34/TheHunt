@@ -28,6 +28,8 @@ public class MenuManager : Singleton<MenuManager>
 
 	public Text debugLabel;
 
+    public List<TileButton> paths;
+
 	[SerializeField]
 	RectTransform boardRect, boardPaddingRect;
 	[SerializeField]
