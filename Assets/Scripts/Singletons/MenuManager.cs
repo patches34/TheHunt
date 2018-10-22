@@ -42,7 +42,7 @@ public class MenuManager : Singleton<MenuManager>
 	public GameObject loadingSpinner, playerInputBlock;
 
 	[SerializeField]
-	Button playerPassBtn, playerForfeitBtn, playerRetryBtn;
+	Button playerPassBtn, playerForfeitBtn, playerRetryBtn, fastForwardBtn;
 	[SerializeField]
 	Animator fastForwardBtnAnim;
 
@@ -215,6 +215,6 @@ public class MenuManager : Singleton<MenuManager>
 
 	public void SetFastForwardBtnState()
 	{
-		fastForwardBtnAnim.SetBool(k_IS_ENGAGED, GameManager.Instance.IsFastForward);
+        fastForwardBtn.GetComponent<Animator>().SetBool("IsActive", GameManager.Instance.IsFastForward);
 	}
 }
