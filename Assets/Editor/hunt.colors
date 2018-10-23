@@ -23,7 +23,7 @@ MonoBehaviour:
   - m_Name: Animal
     m_Color: {r: 0.3137255, g: 0.8666667, b: 0.6666667, a: 1}
   - m_Name: Background
-    m_Color: {r: 0.47843137, g: 0.42352942, b: 0.3647059, a: 1}
+    m_Color: {r: 0.003921569, g: 0.15294118, b: 0.22352941, a: 1}
   - m_Name: Board
     m_Color: {r: 0.03529412, g: 0.42745098, b: 0.39607844, a: 1}
   - m_Name: 

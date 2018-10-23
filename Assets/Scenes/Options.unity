@@ -792,7 +792,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.000091552734}
+  m_AnchoredPosition: {x: 0, y: 0.000030517578}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &346943788
@@ -905,7 +905,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 177516117}
   m_HandleRect: {fileID: 177516116}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 0.99999994
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -1354,6 +1354,10 @@ Prefab:
     - target: {fileID: 224801276052981410, guid: 0a19226c06ca94342bf2e3a326857ce6,
         type: 2}
       propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1994676229643828, guid: 0a19226c06ca94342bf2e3a326857ce6, type: 2}
+      propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -2020,7 +2024,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.47843137, g: 0.42352942, b: 0.3647059, a: 1}
+  m_Color: {r: 0.003921569, g: 0.15294118, b: 0.22352941, a: 1}
   m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
