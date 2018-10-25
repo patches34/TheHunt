@@ -59,6 +59,7 @@ GameObject:
   - component: {fileID: 114359103711825160}
   - component: {fileID: 114160959251152728}
   - component: {fileID: 95944735741182052}
+  - component: {fileID: 114767153092408074}
   m_Layer: 5
   m_Name: Tile - Button
   m_TagString: Untagged
@@ -183,7 +184,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: ed12d1d157b474f2db4b151aecabd2f9, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a199ff19321f89a45916c75f5ca9838e, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -315,6 +316,18 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: (X, Y)
+--- !u!114 &114767153092408074
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1313877467187986}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1200242548, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShowMaskGraphic: 1
 --- !u!114 &114858745769517410
 MonoBehaviour:
   m_ObjectHideFlags: 1

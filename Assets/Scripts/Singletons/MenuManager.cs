@@ -43,8 +43,6 @@ public class MenuManager : Singleton<MenuManager>
 
 	[SerializeField]
 	Button playerPassBtn, playerForfeitBtn, playerRetryBtn, fastForwardBtn;
-	[SerializeField]
-	Animator fastForwardBtnAnim;
 
     const string k_IS_NEW_PLAYER = "isNewPlayer";
 	const string k_IS_ENGAGED = "isEngaged";
