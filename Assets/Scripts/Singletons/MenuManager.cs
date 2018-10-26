@@ -28,6 +28,8 @@ public class MenuManager : Singleton<MenuManager>
 
 	public Text debugLabel;
 
+    public List<TileButton> paths;
+
 	[SerializeField]
 	RectTransform boardRect, boardPaddingRect;
 	[SerializeField]
@@ -40,9 +42,7 @@ public class MenuManager : Singleton<MenuManager>
 	public GameObject loadingSpinner, playerInputBlock;
 
 	[SerializeField]
-	Button playerPassBtn, playerForfeitBtn, playerRetryBtn;
-	[SerializeField]
-	Animator fastForwardBtnAnim;
+	Button playerPassBtn, playerForfeitBtn, playerRetryBtn, fastForwardBtn;
 
     const string k_IS_NEW_PLAYER = "isNewPlayer";
 	const string k_IS_ENGAGED = "isEngaged";
@@ -213,6 +213,6 @@ public class MenuManager : Singleton<MenuManager>
 
 	public void SetFastForwardBtnState()
 	{
-		fastForwardBtnAnim.SetBool(k_IS_ENGAGED, GameManager.Instance.IsFastForward);
+        fastForwardBtn.GetComponent<Animator>().SetBool("IsActive", GameManager.Instance.IsFastForward);
 	}
 }
