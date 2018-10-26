@@ -1011,8 +1011,7 @@ MonoBehaviour:
   playerForfeitBtn: {fileID: 1292260034}
   playerRetryBtn: {fileID: 1493923721}
   fastForwardBtn: {fileID: 1078950979}
-  fastForwardBtnAnim: {fileID: 1078950978}
-  BuildVersionStr: 'v_0.4.2 #17'
+  BuildVersionStr: 'v_0.5.0 #19'
 --- !u!1 &843061707
 GameObject:
   m_ObjectHideFlags: 0
@@ -1314,11 +1313,6 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 903797005}
   m_CullTransparentMesh: 0
---- !u!95 &1078950978 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 95613858405937312, guid: 476011d0503ba44a3ade857838efabb7,
-    type: 2}
-  m_PrefabInternal: {fileID: 1315310099}
 --- !u!114 &1078950979 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 114434274657183832, guid: 476011d0503ba44a3ade857838efabb7,
