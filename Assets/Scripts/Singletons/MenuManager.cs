@@ -47,6 +47,9 @@ public class MenuManager : Singleton<MenuManager>
     const string k_IS_NEW_PLAYER = "isNewPlayer";
 	const string k_IS_ENGAGED = "isEngaged";
 
+    [SerializeField]
+    Text blockNumberLabel;
+
 	#region Initialization
 	// Use this for initialization
 	protected MenuManager()
@@ -215,4 +218,16 @@ public class MenuManager : Singleton<MenuManager>
 	{
         fastForwardBtn.GetComponent<Animator>().SetBool("IsActive", GameManager.Instance.IsFastForward);
 	}
+
+    public void SetBlockTileCount(int count)
+    {
+        if (GameManager.Instance.MaxPlayerBlocks == 0)
+        {
+            blockNumberLabel.text = "unlimited";
+        }
+        else
+        {
+            blockNumberLabel.text = (GameManager.Instance.MaxPlayerBlocks - count).ToString();
+        }
+    }
 }

@@ -70,13 +70,42 @@ public class GameManager : Singleton<GameManager>
 		}
 		set
 		{
-			maxPlayerBlocks = value;
+            if (value >= 0)
+            {
+                maxPlayerBlocks = value;
 
-			PlayerPrefs.SetInt(k_MAX_PLAYER_BLOCKS, maxPlayerBlocks);
-		}
+                PlayerPrefs.SetInt(k_MAX_PLAYER_BLOCKS, maxPlayerBlocks);
+
+                MenuManager.Instance.SetBlockTileCount(playerBlockedTilesCount);
+            }
+            else
+            {
+                Debug.LogErrorFormat("Can not set max block count to {0}", value);
+            }
+        }
 	}
 
-	public int playerBlockedTilesCount;
+	int playerBlockedTilesCount;
+    public int PlayerBlockedTilesCount
+    {
+        get
+        {
+            return playerBlockedTilesCount;
+        }
+        set
+        {
+            if (value >= 0)
+            {
+                playerBlockedTilesCount = value;
+
+                MenuManager.Instance.SetBlockTileCount(playerBlockedTilesCount);
+            }
+            else
+            {
+                Debug.LogErrorFormat("Can not set playerBlockTilesCount to {0}", value);
+            }
+        }
+    }
 
 	[SerializeField]
 	bool doesHunterSeekHome;
@@ -134,8 +163,9 @@ public class GameManager : Singleton<GameManager>
 	{
 		MenuManager.Instance.loadingSpinner.SetActive(true);
 		turn = TurnActor.Player;
-		playerBlockedTilesCount = 0;
-		isWaiting = true;
+		PlayerBlockedTilesCount = 0;
+        MenuManager.Instance.SetBlockTileCount(playerBlockedTilesCount);
+        isWaiting = true;
 
 		GameAnalytics.NewProgressionEvent(GAProgressionStatus.Start, BoardManager.Instance.boardSetupMethod.ToString());
 
@@ -329,7 +359,7 @@ public class GameManager : Singleton<GameManager>
 
         turn = TurnActor.Player;
         TurnsTaken = 0;
-        playerBlockedTilesCount = 0;
+        PlayerBlockedTilesCount = 0;
         isFastFoward = false;
 		MenuManager.Instance.SetFastForwardBtnState();
         isRunning = true;
