@@ -9,7 +9,8 @@ public enum MenuTypes
 	GameOver,
 	Pause,
 	Info,
-    Settings
+    Settings,
+    Credits
 }
 
 public class MenuManager : Singleton<MenuManager>
