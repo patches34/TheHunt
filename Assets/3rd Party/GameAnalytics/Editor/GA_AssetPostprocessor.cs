@@ -19,7 +19,7 @@ namespace GameAnalyticsSDK.Editor
 					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinuxUniversal, false);
 					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSXIntel, false);
 					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSXIntel64, false);
-					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSXUniversal, false);
+					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSX, false);
 					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneWindows, false);
 					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneWindows64, false);
 					importer.SetCompatibleWithPlatform(BuildTarget.iOS, false);
@@ -41,7 +41,7 @@ namespace GameAnalyticsSDK.Editor
 					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinuxUniversal, false);
 					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSXIntel, false);
 					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSXIntel64, false);
-					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSXUniversal, false);
+					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSX, false);
 					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneWindows, false);
 					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneWindows64, false);
 					importer.SetCompatibleWithPlatform(BuildTarget.iOS, false);
@@ -63,7 +63,7 @@ namespace GameAnalyticsSDK.Editor
 					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinuxUniversal, false);
 					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSXIntel, false);
 					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSXIntel64, false);
-					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSXUniversal, false);
+					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSX, false);
 					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneWindows, false);
 					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneWindows64, false);
 					importer.SetCompatibleWithPlatform(BuildTarget.iOS, false);
@@ -82,7 +82,7 @@ namespace GameAnalyticsSDK.Editor
 				    !importer.GetCompatibleWithPlatform(BuildTarget.StandaloneLinuxUniversal) ||
 				    !importer.GetCompatibleWithPlatform(BuildTarget.StandaloneOSXIntel) ||
 				    !importer.GetCompatibleWithPlatform(BuildTarget.StandaloneOSXIntel64) ||
-				    !importer.GetCompatibleWithPlatform(BuildTarget.StandaloneOSXUniversal) ||
+				    !importer.GetCompatibleWithPlatform(BuildTarget.StandaloneOSX) ||
 				    !importer.GetCompatibleWithPlatform(BuildTarget.StandaloneWindows) ||
 				    !importer.GetCompatibleWithPlatform(BuildTarget.StandaloneWindows64) ||
                     !importer.GetCompatibleWithPlatform(BuildTarget.WSAPlayer) ||
@@ -97,7 +97,7 @@ namespace GameAnalyticsSDK.Editor
 					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinuxUniversal, true);
 					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSXIntel, true);
 					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSXIntel64, true);
-					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSXUniversal, true);
+					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSX, true);
 					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneWindows, true);
 					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneWindows64, true);
 					importer.SetCompatibleWithPlatform(BuildTarget.iOS, false);
@@ -125,7 +125,7 @@ namespace GameAnalyticsSDK.Editor
 					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinuxUniversal, false);
 					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSXIntel, false);
 					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSXIntel64, false);
-					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSXUniversal, false);
+					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSX, false);
 					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneWindows, true);
 					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneWindows64, false);
 					importer.SetCompatibleWithPlatform(BuildTarget.iOS, false);
@@ -147,7 +147,7 @@ namespace GameAnalyticsSDK.Editor
 					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinuxUniversal, false);
 					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSXIntel, false);
 					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSXIntel64, false);
-					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSXUniversal, false);
+					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSX, false);
 					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneWindows, false);
 					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneWindows64, true);
 					importer.SetCompatibleWithPlatform(BuildTarget.iOS, false);
@@ -161,7 +161,7 @@ namespace GameAnalyticsSDK.Editor
 				PluginImporter importer = AssetImporter.GetAtPath("Assets/Plugins/Mac/sqlite3.bundle") as PluginImporter;
 				if(importer != null && (importer.GetCompatibleWithAnyPlatform() || !importer.GetCompatibleWithPlatform(BuildTarget.StandaloneOSXIntel) ||
 				    !importer.GetCompatibleWithPlatform(BuildTarget.StandaloneOSXIntel64) ||
-				    !importer.GetCompatibleWithPlatform(BuildTarget.StandaloneOSXUniversal)))
+				    !importer.GetCompatibleWithPlatform(BuildTarget.StandaloneOSX)))
 				{
 					importer.SetCompatibleWithAnyPlatform(false);
 					importer.SetCompatibleWithEditor(false);
@@ -171,7 +171,7 @@ namespace GameAnalyticsSDK.Editor
 					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinuxUniversal, false);
 					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSXIntel, true);
 					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSXIntel64, true);
-					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSXUniversal, true);
+					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSX, true);
 					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneWindows, false);
 					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneWindows64, false);
 					importer.SetCompatibleWithPlatform(BuildTarget.iOS, false);
@@ -195,7 +195,7 @@ namespace GameAnalyticsSDK.Editor
 					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinuxUniversal, true);
 					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSXIntel, false);
 					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSXIntel64, false);
-					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSXUniversal, false);
+					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSX, false);
 					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneWindows, false);
 					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneWindows64, false);
 					importer.SetCompatibleWithPlatform(BuildTarget.iOS, false);
@@ -219,7 +219,7 @@ namespace GameAnalyticsSDK.Editor
 					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinuxUniversal, false);
 					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSXIntel, false);
 					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSXIntel64, false);
-					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSXUniversal, false);
+					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSX, false);
 					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneWindows, false);
 					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneWindows64, false);
 					importer.SetCompatibleWithPlatform(BuildTarget.iOS, false);
@@ -241,7 +241,7 @@ namespace GameAnalyticsSDK.Editor
 					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinuxUniversal, false);
 					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSXIntel, false);
 					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSXIntel64, false);
-					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSXUniversal, false);
+					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSX, false);
 					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneWindows, false);
 					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneWindows64, false);
 					importer.SetCompatibleWithPlatform(BuildTarget.iOS, false);
@@ -263,7 +263,7 @@ namespace GameAnalyticsSDK.Editor
 					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinuxUniversal, false);
 					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSXIntel, false);
 					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSXIntel64, false);
-					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSXUniversal, false);
+					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSX, false);
 					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneWindows, false);
 					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneWindows64, false);
 					importer.SetCompatibleWithPlatform(BuildTarget.iOS, false);
@@ -285,7 +285,7 @@ namespace GameAnalyticsSDK.Editor
 					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinuxUniversal, false);
 					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSXIntel, false);
 					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSXIntel64, false);
-					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSXUniversal, false);
+					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSX, false);
 					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneWindows, false);
 					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneWindows64, false);
 					importer.SetCompatibleWithPlatform(BuildTarget.iOS, false);
@@ -307,7 +307,7 @@ namespace GameAnalyticsSDK.Editor
 					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinuxUniversal, false);
 					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSXIntel, false);
 					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSXIntel64, false);
-					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSXUniversal, false);
+					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSX, false);
 					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneWindows, false);
 					importer.SetCompatibleWithPlatform(BuildTarget.StandaloneWindows64, false);
 					importer.SetCompatibleWithPlatform(BuildTarget.iOS, false);
@@ -333,7 +333,7 @@ namespace GameAnalyticsSDK.Editor
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinuxUniversal, false);
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSXIntel, false);
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSXIntel64, false);
-                    importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSXUniversal, false);
+                    importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSX, false);
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneWindows, false);
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneWindows64, false);
                     importer.SetCompatibleWithPlatform(BuildTarget.iOS, false);
@@ -358,7 +358,7 @@ namespace GameAnalyticsSDK.Editor
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinuxUniversal, false);
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSXIntel, false);
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSXIntel64, false);
-                    importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSXUniversal, false);
+                    importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSX, false);
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneWindows, false);
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneWindows64, false);
                     importer.SetCompatibleWithPlatform(BuildTarget.iOS, false);
@@ -382,7 +382,7 @@ namespace GameAnalyticsSDK.Editor
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinuxUniversal, false);
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSXIntel, false);
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSXIntel64, false);
-                    importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSXUniversal, false);
+                    importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSX, false);
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneWindows, false);
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneWindows64, false);
                     importer.SetCompatibleWithPlatform(BuildTarget.iOS, false);
@@ -407,7 +407,7 @@ namespace GameAnalyticsSDK.Editor
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinuxUniversal, false);
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSXIntel, false);
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSXIntel64, false);
-                    importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSXUniversal, false);
+                    importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSX, false);
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneWindows, false);
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneWindows64, false);
                     importer.SetCompatibleWithPlatform(BuildTarget.iOS, false);
@@ -433,7 +433,7 @@ namespace GameAnalyticsSDK.Editor
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinuxUniversal, false);
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSXIntel, false);
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSXIntel64, false);
-                    importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSXUniversal, false);
+                    importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSX, false);
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneWindows, false);
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneWindows64, false);
                     importer.SetCompatibleWithPlatform(BuildTarget.iOS, false);
@@ -459,7 +459,7 @@ namespace GameAnalyticsSDK.Editor
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinuxUniversal, false);
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSXIntel, false);
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSXIntel64, false);
-                    importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSXUniversal, false);
+                    importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSX, false);
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneWindows, false);
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneWindows64, false);
                     importer.SetCompatibleWithPlatform(BuildTarget.iOS, false);

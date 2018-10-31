@@ -3,7 +3,7 @@
 --- !u!114 &1
 MonoBehaviour:
   m_ObjectHideFlags: 52
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
@@ -14,17 +14,15 @@ MonoBehaviour:
   m_Presets:
   - m_Name: 
     m_Color: {r: 0.23137255, g: 0.24705882, b: 0.25882354, a: 1}
-  - m_Name: 
+  - m_Name: Hunter
     m_Color: {r: 0.9490196, g: 0.29803923, b: 0.15294118, a: 1}
   - m_Name: 
     m_Color: {r: 0.9843137, g: 0.7294118, b: 0.25882354, a: 1}
-  - m_Name: 
+  - m_Name: Home
     m_Color: {r: 0.3372549, g: 0.7254902, b: 0.8156863, a: 1}
-  - m_Name: 
+  - m_Name: Animal
     m_Color: {r: 0.3137255, g: 0.8666667, b: 0.6666667, a: 1}
-  - m_Name: 
-    m_Color: {r: 0.003921569, g: 0.15294118, b: 0.22352941, a: 1}
-  - m_Name: 
+  - m_Name: Board
     m_Color: {r: 0.03529412, g: 0.42745098, b: 0.39607844, a: 1}
   - m_Name: 
     m_Color: {r: 0.7254902, g: 0.5921569, b: 0.023529412, a: 1}
@@ -35,6 +33,18 @@ MonoBehaviour:
   - m_Name: text
     m_Color: {r: 0.72156864, g: 0.77254903, b: 0.80784315, a: 1}
   - m_Name: 
-    m_Color: {r: 0.7764706, g: 0.47843137, b: 0.011764706, a: 1}
-  - m_Name: 
     m_Color: {r: 0.9764706, g: 0.52156866, b: 0.10980392, a: 1}
+  - m_Name: Yellow
+    m_Color: {r: 0.99215686, g: 0.90588236, b: 0.29803923, a: 1}
+  - m_Name: Dark Yellow
+    m_Color: {r: 0.80300003, g: 0.7331739, b: 0.24121739, a: 1}
+  - m_Name: 
+    m_Color: {r: 0.7764706, g: 0.47843137, b: 0.011764706, a: 1}
+  - m_Name: White
+    m_Color: {r: 0.9882353, g: 0.98039216, b: 0.9764706, a: 1}
+  - m_Name: Background
+    m_Color: {r: 0.003921569, g: 0.15294118, b: 0.22352941, a: 1}
+  - m_Name: 
+    m_Color: {r: 0.23137255, g: 0.24705882, b: 0.25882354, a: 0.4}
+  - m_Name: 
+    m_Color: {r: 0.09411766, g: 0.19215688, b: 0.2392157, a: 1}

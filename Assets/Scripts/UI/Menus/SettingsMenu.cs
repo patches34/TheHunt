@@ -5,20 +5,8 @@ using System.Collections.Generic;
 
 public class SettingsMenu : UIMenu
 {
-	[SerializeField]
-	Slider zoomSpeedSlider;
-
     [SerializeField]
     InputField widthInput, heightInput, blockedTilesInput, blockedTilesDistanceInput, maxBlocksInput;
-
-    [SerializeField]
-	Text zoomSpeedLabel;
-
-    [SerializeField]
-    Dropdown boardSetupmethodDropdown;
-
-    [SerializeField]
-    List<RectTransform> boardSetupPanels;
 
 	[SerializeField]
 	Toggle showPathToggle, hunterSeeksHomeToggle;
@@ -31,15 +19,6 @@ public class SettingsMenu : UIMenu
 
 		blockedTilesInput.text = BoardManager.Instance.StartBlockedTiles.ToString();
 		blockedTilesDistanceInput.text = BoardManager.Instance.StartBlockedTilesMinSpacing.ToString();
-
-        foreach(RectTransform p in boardSetupPanels)
-        {
-            p.gameObject.SetActive(false);
-        }
-
-        boardSetupmethodDropdown.value = (int)BoardManager.Instance.boardSetupMethod;
-
-		boardSetupPanels[(int)BoardManager.Instance.boardSetupMethod].gameObject.SetActive(true);
 
 		showPathToggle.isOn = BoardManager.Instance.ShowAiPath;
 
@@ -70,11 +49,7 @@ public class SettingsMenu : UIMenu
 
     public void OnBoardSetupValueChange(int value)
     {
-        boardSetupPanels[(int)BoardManager.Instance.boardSetupMethod].gameObject.SetActive(false);
-
         BoardManager.Instance.boardSetupMethod = (BoardSetupMethods)value;
-
-        boardSetupPanels[value].gameObject.SetActive(true);
     }
 
 	public void SetBlockedTiles(string value)
