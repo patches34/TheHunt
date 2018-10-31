@@ -24,4 +24,9 @@ public class PauseMenu : UIMenu
     {
         MenuManager.Instance.ShowMenu(MenuTypes.Settings);
     }
+
+    public void GoToCredits()
+    {
+        MenuManager.Instance.ShowMenu(MenuTypes.Credits);
+    }
 }
