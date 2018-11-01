@@ -29,4 +29,9 @@ public class PauseMenu : UIMenu
     {
         MenuManager.Instance.ShowMenu(MenuTypes.Credits);
     }
+
+    public void ExitGame()
+    {
+        Application.Quit();
+    }
 }
