@@ -167,7 +167,7 @@ public class GameManager : Singleton<GameManager>
         MenuManager.Instance.SetBlockTileCount(playerBlockedTilesCount);
         isWaiting = true;
 
-		GameAnalytics.NewProgressionEvent(GAProgressionStatus.Start, BoardManager.Instance.boardSetupMethod.ToString());
+		//GameAnalytics.NewProgressionEvent(GAProgressionStatus.Start, BoardManager.Instance.boardSetupMethod.ToString());
 
 		StartCoroutine(SetupBoard());
 	}
@@ -320,7 +320,7 @@ public class GameManager : Singleton<GameManager>
             GameAnalytics.NewDesignEvent("gameOverFastForward");
         }
 
-		GameAnalytics.NewProgressionEvent(GAProgressionStatus.Complete, BoardManager.Instance.boardSetupMethod.ToString(), gameOverReason.ToString(), TurnsTaken);
+		//GameAnalytics.NewProgressionEvent(GAProgressionStatus.Complete, BoardManager.Instance.boardSetupMethod.ToString(), gameOverReason.ToString(), TurnsTaken);
 	}
 
 	public void NewGame()
@@ -335,7 +335,7 @@ public class GameManager : Singleton<GameManager>
 		animalActor.Reset();
 		hunterActor.Reset();
 
-		GameAnalytics.NewProgressionEvent(GAProgressionStatus.Fail, BoardManager.Instance.boardSetupMethod.ToString(), TurnsTaken);
+		//GameAnalytics.NewProgressionEvent(GAProgressionStatus.Fail, BoardManager.Instance.boardSetupMethod.ToString(), TurnsTaken);
 
 		isGameOver = false;
 		isFastFoward = false;

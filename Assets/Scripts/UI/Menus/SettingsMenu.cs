@@ -49,7 +49,7 @@ public class SettingsMenu : UIMenu
 
     public void OnBoardSetupValueChange(int value)
     {
-        BoardManager.Instance.boardSetupMethod = (BoardSetupMethods)value;
+        //BoardManager.Instance.boardSetupMethod = (BoardSetupMethods)value;
     }
 
 	public void SetBlockedTiles(string value)

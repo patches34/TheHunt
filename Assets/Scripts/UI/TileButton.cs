@@ -60,12 +60,12 @@ public class TileButton : MonoBehaviour
 
     void OnEnable()
     {
-        tile.Passable = true;
+        tile.Reachable = true;
     }
 
     void OnDisable()
     {
-        tile.Passable = false;
+        tile.Reachable = false;
         btn.interactable = true;
 
 		SetAsPathNodeFor(TurnActor.None);
@@ -103,7 +103,7 @@ public class TileButton : MonoBehaviour
 
 		SetIsInteractable(newState != TileState.Food);
 
-		tile.Passable = newState != TileState.Blocked;
+		tile.Reachable = newState != TileState.Blocked;
 	}
 
 	public TileState GetState()

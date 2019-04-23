@@ -5,12 +5,6 @@ using System.Diagnostics;
 using CielaSpike;
 using GameAnalyticsSDK;
 
-public enum BoardSetupMethods
-{
-    BASIC,
-    SPREAD_POINT
-}
-
 public class BoardManager : Singleton<BoardManager>
 {
 	[SerializeField]
@@ -67,8 +61,6 @@ public class BoardManager : Singleton<BoardManager>
 	GameObject tilePrefab;
 
 	Dictionary<Point, TileButton> tiles;
-
-    public BoardSetupMethods boardSetupMethod;
 
 	List<Point> actorPoints = new List<Point>();
 	public List<Point> AcotrPoints
@@ -177,7 +169,7 @@ public class BoardManager : Singleton<BoardManager>
         #region Set neighbours
         foreach (TileButton t in tiles.Values)
 		{
-			t.tile.FindNeighbours(tiles, boardSize, true);
+			t.tile.FindNeighbors(tiles, boardSize);
 		}
 		neighboursTime = timer.ElapsedMilliseconds;
         #endregion
@@ -197,15 +189,8 @@ public class BoardManager : Singleton<BoardManager>
         actorPoints = new List<Point>();
        
 		yield return Ninja.JumpToUnity;
-        switch(boardSetupMethod)
-        {
-      	case BoardSetupMethods.BASIC:
-			this.StartCoroutineAsync(BasicSetup(), out boardSetupTask);
-            break;
-        case BoardSetupMethods.SPREAD_POINT:
-			this.StartCoroutineAsync(SpreadPointMethod(), out boardSetupTask);
-            break;
-        }
+
+        this.StartCoroutineAsync(BasicSetup(), out boardSetupTask);
 
 		yield return StartCoroutine(boardSetupTask.Wait());
 
@@ -254,7 +239,7 @@ public class BoardManager : Singleton<BoardManager>
             randoPoint.X -= (randoPoint.Y / 2);
             randoPoint.Z = -(randoPoint.X + randoPoint.Y);
 
-            if (tiles[randoPoint].tile.Passable)
+            if (tiles[randoPoint].tile.Reachable)
             {
                 if (usedTiles == null)
                 {
@@ -357,8 +342,7 @@ public class BoardManager : Singleton<BoardManager>
     {
         return tiles[location];
     }
-
-    #region Board Setup Methods
+    
 	IEnumerator BasicSetup()
     {
 		#region Reset board
@@ -407,82 +391,6 @@ public class BoardManager : Singleton<BoardManager>
 		actorPoints.Add(GetRandomBoardPointAtY(boardSize.Y / 2));
         #endregion
     }
-
-	IEnumerator SpreadPointMethod()
-    {
-        #region Select spawn points
-        spawnGroups = new Dictionary<int, List<Point>>();
-        List<Point> spawns = new List<Point>();
-        List<int> activeSpawns = new List<int>();
-        for (int i = 0; i < spawnPoints; ++i)
-        {
-            Point spawn = GetRandomBoardPoint(spawns, spawnDistance);
-
-            spawns.Add(spawn);
-
-            spawnGroups.Add(i, new List<Point> { spawn });
-            activeSpawns.Add(i);
-        }
-        #endregion
-
-        #region Spread from spawns
-        //	each spawn group grows until it hits another group
-        int currentSpawnIndex = 0;
-        List<int> doneSpawnGroups = new List<int>();
-        do
-        {
-            if (!doneSpawnGroups.Contains(currentSpawnIndex))
-            {
-                //	Pick random tile from group
-				int tileIndex = GameManager.Instance.rand.Next(spawnGroups[currentSpawnIndex].Count);
-                Point randomTile = spawnGroups[currentSpawnIndex][tileIndex];
-
-                //	Pick random neighbor tile
-                Point neighbour = tiles[randomTile].tile.GetRandomNeighbour();
-
-				if(!spawnGroups.ContainsKey(currentSpawnIndex))
-					continue;
-				
-               	spawnGroups[currentSpawnIndex].Add(neighbour);
-
-                //	Check if hit another spawn group
-                for (int i = 0; i < spawnGroups.Count; ++i)
-                {
-                    if (i == currentSpawnIndex)
-                        continue;
-                    else if (spawnGroups[i].Contains(neighbour))
-                    {
-                        doneSpawnGroups.Add(currentSpawnIndex);
-                    }
-                }
-            }
-
-            //	Move to next spawn group
-            ++currentSpawnIndex;
-            //	Check if have to reset the index counter
-            if (currentSpawnIndex >= activeSpawns.Count)
-            {
-                currentSpawnIndex = 0;
-            }
-        } while (doneSpawnGroups.Count < spawnGroups.Count);
-        #endregion
-
-		#region Activevate Tiles
-		yield return Ninja.JumpToUnity;
-		for(int i = 0; i < spawnPoints; ++i)
-		{
-			foreach(Point tile in spawnGroups[i])
-			{
-				tiles[tile].gameObject.SetActive(true);
-			}
-			yield return null;
-		}
-		yield return Ninja.JumpBack;
-		#endregion
-
-		actorPoints = new List<Point> { spawnGroups[0][0], spawnGroups[1][0], spawnGroups[2][0] };
-    }
-    #endregion
 
 	public void ShowActorPaths(bool isVisible)
 	{
