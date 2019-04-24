@@ -1,6 +1,9 @@
 using System;
 using UnityEngine;
 
+/// <summary>
+/// This struct handles all the work for dealing with a 3d point.
+/// </summary>
 [Serializable]
 public struct Point
 {

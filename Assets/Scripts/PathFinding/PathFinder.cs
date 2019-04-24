@@ -155,7 +155,7 @@ public class PathFinder : MonoBehaviour
 
 			closed.Add(path.LastStep);
 
-			foreach (Tile t in path.LastStep.Neighbours)
+			foreach (Tile t in path.LastStep.ReachableNeighbors)
 			{
 				int d = distance(path.LastStep, t);
 				var newPath = path.AddStep(t, d);
@@ -190,10 +190,10 @@ public class PathFinder : MonoBehaviour
 
 	int estimate(Tile tile, Tile destTile)
 	{
-		int dx = Mathf.Abs(destTile.X - tile.X);
-		int dy = Mathf.Abs(destTile.Y - tile.Y);
-		int z1 = -(tile.X + tile.Y);
-		int z2 = -(destTile.X + destTile.Y);
+		int dx = Mathf.Abs(destTile.Location.X - tile.Location.X);
+		int dy = Mathf.Abs(destTile.Location.Y - tile.Location.Y);
+		int z1 = -(tile.Location.X + tile.Location.Y);
+		int z2 = -(destTile.Location.X + destTile.Location.Y);
 		int dz = Mathf.Abs(z2 - z1);
 
 		return Mathf.Max(dx, dy, dz);

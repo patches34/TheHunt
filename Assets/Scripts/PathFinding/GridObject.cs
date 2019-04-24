@@ -3,21 +3,28 @@ using System;
 [Serializable]
 public abstract class GridObject
 {
-    public Point Location;
-    public int X { get { return Location.X; } }
-    public int Y { get { return Location.Y; } }
+    Point location;
+
+    public Point Location
+    {
+        get
+        {
+            return location;
+        }
+    }
 
     public GridObject(Point location)
     {
-        Location = location;
+        this.location = location;
     }
 
-    public GridObject(int x, int y): this(new Point(x, y))
+    public GridObject(int x, int y)
+        : this(new Point(x, y))
     {
     }
 
     public override string ToString()
     {
-        return string.Format("({0}, {1})", X, Y);
+        return string.Format("({0}, {1})", location.X, location.Y);
     }
 }

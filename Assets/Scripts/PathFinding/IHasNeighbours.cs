@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-public interface IHasNeighbours<N>
+public interface IHasNeighbors<N>
 {
-    IEnumerable<N> Neighbours { get; }
+    IEnumerable<N> ReachableNeighbors { get; }
 }
