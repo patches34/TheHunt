@@ -1207,7 +1207,7 @@ MonoBehaviour:
   playerRetryBtn: {fileID: 1493923721}
   fastForwardBtn: {fileID: 1078950979}
   blockNumberLabel: {fileID: 749065352}
-  BuildVersionStr: 'v_0.5.1 #20'
+  BuildVersionStr: 'v_0.6.1 #21'
 --- !u!1 &749065350
 GameObject:
   m_ObjectHideFlags: 0
