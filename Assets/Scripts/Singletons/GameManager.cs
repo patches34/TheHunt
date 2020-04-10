@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections;
 using CielaSpike;
-using GameAnalyticsSDK;
 
 public enum TurnActor
 {
@@ -229,11 +228,11 @@ public class GameManager : Singleton<GameManager>
 
         if(isFastFoward)
         {
-            GameAnalytics.NewDesignEvent("playerFastFowardStart");
+            //GameAnalytics.NewDesignEvent("playerFastFowardStart");
         }
         else
         {
-            GameAnalytics.NewDesignEvent("playerFastFowardStop");
+            //GameAnalytics.NewDesignEvent("playerFastFowardStop");
         }
 
 		MenuManager.Instance.SetFastForwardBtnState();
@@ -246,7 +245,7 @@ public class GameManager : Singleton<GameManager>
 			ActorWent();
 		}
 
-		GameAnalytics.NewDesignEvent("playerPassed");
+		//GameAnalytics.NewDesignEvent("playerPassed");
 	}
 
 	public void ActorWent()
@@ -317,7 +316,7 @@ public class GameManager : Singleton<GameManager>
 
         if(isFastFoward)
         {
-            GameAnalytics.NewDesignEvent("gameOverFastForward");
+            //GameAnalytics.NewDesignEvent("gameOverFastForward");
         }
 
 		//GameAnalytics.NewProgressionEvent(GAProgressionStatus.Complete, BoardManager.Instance.boardSetupMethod.ToString(), gameOverReason.ToString(), TurnsTaken);
@@ -364,7 +363,7 @@ public class GameManager : Singleton<GameManager>
 		MenuManager.Instance.SetFastForwardBtnState();
         isRunning = true;
 
-        GameAnalytics.NewDesignEvent("playerRetry");
+        //GameAnalytics.NewDesignEvent("playerRetry");
     }
 
 	public void Rebuild()

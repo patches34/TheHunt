@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections;
 using System.Diagnostics;
 using CielaSpike;
-using GameAnalyticsSDK;
 
 public class BoardManager : Singleton<BoardManager>
 {
@@ -177,8 +176,8 @@ public class BoardManager : Singleton<BoardManager>
 		timer.Stop();
 
 		yield return Ninja.JumpToUnity;
-		GameAnalytics.SettingsGA.SetCustomArea(string.Format("X:{0}_Y:{1}", BoardSize.X, BoardSize.Y));
-		GameAnalytics.NewDesignEvent("BoardCreation", (float)System.Math.Round(timer.Elapsed.TotalSeconds, 4));
+		//GameAnalytics.SettingsGA.SetCustomArea(string.Format("X:{0}_Y:{1}", BoardSize.X, BoardSize.Y));
+		//GameAnalytics.NewDesignEvent("BoardCreation", (float)System.Math.Round(timer.Elapsed.TotalSeconds, 4));
     }
 
 	public IEnumerator SetupBoard()
@@ -194,7 +193,7 @@ public class BoardManager : Singleton<BoardManager>
 
 		yield return StartCoroutine(boardSetupTask.Wait());
 
-		GameAnalytics.NewDesignEvent("BoardSetup", (float)System.Math.Round(timer.Elapsed.TotalSeconds, 4));
+		//GameAnalytics.NewDesignEvent("BoardSetup", (float)System.Math.Round(timer.Elapsed.TotalSeconds, 4));
     }
 
     public void Reset()
