@@ -9,7 +9,7 @@ public abstract class UIMenu : MonoBehaviour
 	// Use this for initialization
 	void Awake ()
 	{
-		MenuManager.Instance.AddScreen(this);
+
 	}
 	
 	// Update is called once per frame

@@ -27,8 +27,6 @@ public class MenuManager : Singleton<MenuManager>
 
 	Dictionary<MenuTypes, UIMenu> menus = new Dictionary<MenuTypes, UIMenu>();
 
-	public Text debugLabel;
-
     public List<TileButton> paths;
 
 	[SerializeField]
@@ -68,6 +66,15 @@ public class MenuManager : Singleton<MenuManager>
             ShowMenu(MenuTypes.Info);
             PlayerPrefs.SetInt(k_IS_NEW_PLAYER, 0);
         }
+
+        for(int i = 0; i < transform.childCount; ++i)
+        {
+            UIMenu childScreen = transform.GetChild(i).GetComponent<UIMenu>();
+            if (childScreen != null)
+            {
+                AddScreen(childScreen);
+            }
+        }
 	}
 
 	public string BuildVersionStr;
@@ -76,22 +83,8 @@ public class MenuManager : Singleton<MenuManager>
 	/// Adds a UI screen to the stack and deletes its scene
 	/// </summary>
 	/// <param name="screen">Screen.</param>
-	public void AddScreen(UIMenu screen)
+	void AddScreen(UIMenu screen)
 	{
-		//Store a ref to the screen's go
-		UnityEngine.SceneManagement.Scene rootScene = screen.gameObject.scene;
-
-		//Set the screens transform to the main scene's canvas
-		screen.transform.SetParent(transform);
-		screen.transform.SetAsLastSibling();
-
-		//Make sure the screen is scaled and positioned correctly
-		screen.gameObject.GetComponent<RectTransform>().localScale = Vector3.one;
-		screen.gameObject.GetComponent<RectTransform>().sizeDelta = Vector2.one;
-		screen.gameObject.GetComponent<RectTransform>().anchoredPosition3D = new Vector3(0.5f, 0.5f, 0f);
-		screen.gameObject.GetComponent<RectTransform>().offsetMax = Vector2.zero;
-		screen.gameObject.GetComponent<RectTransform>().offsetMin = Vector2.zero;
-
 		//Hide the screen
 		screen.gameObject.SetActive(false);
 
@@ -104,9 +97,6 @@ public class MenuManager : Singleton<MenuManager>
 		{
 			Debug.LogError("Duplicate screens: " + screen.type);
 		}
-
-		//Remove the scene the screen came from
-		LoadSceneManager.Instance.UnloadScene(rootScene);
 	}
 
 	void Update()
