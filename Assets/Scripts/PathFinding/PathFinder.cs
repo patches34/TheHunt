@@ -223,7 +223,7 @@ public class PathFinder : MonoBehaviour
 
 	void UpdatePathNodes(Path<Tile> newPath)
 	{
-		if(movePath != null)
+		if(movePath != null && movePath.TotalCost > 0)
 		{
 			foreach(Tile t in movePath)
 			{
