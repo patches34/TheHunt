@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
-using CielaSpike;
 
 public enum TurnActor
 {
@@ -40,8 +39,6 @@ public class GameManager : Singleton<GameManager>
 	public PathFinder animalActor, hunterActor;
 
 	public System.Random rand = new System.Random();
-
-	Task createBoardTask, setupBoardTask;
 
 	public GameOverReason gameOverReason;
 
@@ -146,14 +143,12 @@ public class GameManager : Singleton<GameManager>
 		maxPlayerBlocks = PlayerPrefs.GetInt(k_MAX_PLAYER_BLOCKS, maxPlayerBlocks);
 
 		MenuManager.Instance.loadingSpinner.SetActive(true);
-		StartCoroutine(CreateGame());
+		CreateGame();
 	}
 
-	IEnumerator CreateGame()
+	void CreateGame()
 	{
-		this.StartCoroutineAsync(BoardManager.Instance.CreateBoard(), out createBoardTask);
-
-		yield return StartCoroutine(createBoardTask.Wait());
+		BoardManager.Instance.CreateBoard();
 
 		StartGame();
 	}
@@ -168,14 +163,12 @@ public class GameManager : Singleton<GameManager>
 
 		//GameAnalytics.NewProgressionEvent(GAProgressionStatus.Start, BoardManager.Instance.boardSetupMethod.ToString());
 
-		StartCoroutine(SetupBoard());
+		SetupBoard();
 	}
 
-	IEnumerator SetupBoard()
+	void SetupBoard()
 	{
-		this.StartCoroutineAsync(BoardManager.Instance.SetupBoard(), out setupBoardTask);
-
-		yield return StartCoroutine(setupBoardTask.Wait());
+		BoardManager.Instance.SetupBoard();
 
 		List<Point> actorTiles = BoardManager.Instance.AcotrPoints;
 
@@ -324,8 +317,6 @@ public class GameManager : Singleton<GameManager>
 
 	public void NewGame()
 	{
-		CancelTasks();
-
 		BoardManager.Instance.Reset();
 
 		if(foodTile != null)
@@ -368,8 +359,6 @@ public class GameManager : Singleton<GameManager>
 
 	public void Rebuild()
 	{
-		CancelTasks();
-
 		BoardManager.Instance.DestoryBoard();
 
 		if(foodTile != null)
@@ -379,25 +368,6 @@ public class GameManager : Singleton<GameManager>
 		hunterActor.Reset();
 
 		Start();
-	}
-
-	void CancelTasks()
-	{
-		if(createBoardTask.State == TaskState.Running)
-			createBoardTask.Cancel();
-
-		if(setupBoardTask.State == TaskState.Running)
-		{
-			if(BoardManager.Instance.BoardSetupTask != null &&
-				BoardManager.Instance.BoardSetupTask.State == TaskState.Running)
-			{
-				BoardManager.Instance.BoardSetupTask.Cancel();
-			}
-
-			setupBoardTask.Cancel();
-		}
-
-		StopAllCoroutines();
 	}
 
 	public bool IsPlayerTurn()

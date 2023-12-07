@@ -176,12 +176,18 @@ public class MenuManager : Singleton<MenuManager>
 	}
 	public void ShowMenu(MenuTypes type)
 	{
-		menus[type].SetVisible(true);
+		if(menus.ContainsKey(type))
+		{
+            menus[type].SetVisible(true);
+        }
 	}
 
     public void HideMenu(MenuTypes type)
     {
-        menus[type].SetVisible(false);
+		if (menus.ContainsKey(type))
+		{
+			menus[type].SetVisible(false);
+		}
     }
 
 	public void ResizeGameBoard(Vector2 boardSize)

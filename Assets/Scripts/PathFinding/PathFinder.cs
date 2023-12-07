@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using CielaSpike;
 
 public class PathFinder : MonoBehaviour
 {
@@ -109,7 +108,7 @@ public class PathFinder : MonoBehaviour
 		{
 			if(t.Location.Equals(newBlocked))
 			{
-				this.StartCoroutineAsync(BuildPath());
+				BuildPath();
 
 				return;
 			}
@@ -122,11 +121,11 @@ public class PathFinder : MonoBehaviour
 	{
 		isReady = false;
 
-		this.StartCoroutineAsync(BuildPath());
+		BuildPath();
 	}
 
 	#region Find Path
-	IEnumerator BuildPath()
+	void BuildPath()
 	{
 		isReady = false;
 
@@ -146,9 +145,7 @@ public class PathFinder : MonoBehaviour
 			// if we added the destination to the closed list, we've found a path
 			if (path.LastStep.Equals(goalTile))
 			{
-				yield return Ninja.JumpToUnity;
 				UpdatePathNodes(path);
-				yield return Ninja.JumpBack;
 
 				break;
 			}
@@ -220,7 +217,7 @@ public class PathFinder : MonoBehaviour
 		}
 		else
 		{
-			this.StartCoroutineAsync(BuildPath());
+			BuildPath();
 		}
 	}
 

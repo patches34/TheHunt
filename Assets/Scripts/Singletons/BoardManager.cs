@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections;
 using System.Diagnostics;
-using CielaSpike;
 
 public class BoardManager : Singleton<BoardManager>
 {
@@ -70,15 +69,6 @@ public class BoardManager : Singleton<BoardManager>
 		}
   	}
 
-	Task boardSetupTask;
-	public Task BoardSetupTask
-	{
-		get
-		{
-			return boardSetupTask;
-		}
-	}
-
 	[SerializeField]
 	Transform boardTransform;
 
@@ -121,7 +111,7 @@ public class BoardManager : Singleton<BoardManager>
 		showAiPath = System.Convert.ToBoolean(PlayerPrefs.GetInt(k_SHOW_AI_PATH, System.Convert.ToInt32(showAiPath)));
 	}
 
-	public IEnumerator CreateBoard()
+	public void CreateBoard()
 	{
 		Stopwatch timer = new Stopwatch();
 		long boardTime, generateTime, neighboursTime;
@@ -133,7 +123,6 @@ public class BoardManager : Singleton<BoardManager>
 		boardRect.x = ((tileSize + tileSpacing) * boardSize.X - tileSpacing) / 2f;
 		boardRect.y = (tileSize * boardSize.Y) / 2f;
 
-		yield return Ninja.JumpToUnity;
 		MenuManager.Instance.ResizeGameBoard(boardRect);
 		boardTime = timer.ElapsedMilliseconds;
 		#endregion
@@ -161,7 +150,6 @@ public class BoardManager : Singleton<BoardManager>
 			}
 		}
 
-		yield return Ninja.JumpBack;
 		generateTime = timer.ElapsedMilliseconds;
         #endregion
 
@@ -175,23 +163,18 @@ public class BoardManager : Singleton<BoardManager>
 
 		timer.Stop();
 
-		yield return Ninja.JumpToUnity;
 		//GameAnalytics.SettingsGA.SetCustomArea(string.Format("X:{0}_Y:{1}", BoardSize.X, BoardSize.Y));
 		//GameAnalytics.NewDesignEvent("BoardCreation", (float)System.Math.Round(timer.Elapsed.TotalSeconds, 4));
     }
 
-	public IEnumerator SetupBoard()
+	public void SetupBoard()
     {
         Stopwatch timer = new Stopwatch();
         timer.Start();
 
         actorPoints = new List<Point>();
-       
-		yield return Ninja.JumpToUnity;
 
-        this.StartCoroutineAsync(BasicSetup(), out boardSetupTask);
-
-		yield return StartCoroutine(boardSetupTask.Wait());
+        BasicSetup();
 
 		//GameAnalytics.NewDesignEvent("BoardSetup", (float)System.Math.Round(timer.Elapsed.TotalSeconds, 4));
     }
@@ -342,15 +325,13 @@ public class BoardManager : Singleton<BoardManager>
         return tiles[location];
     }
     
-	IEnumerator BasicSetup()
+	void BasicSetup()
     {
 		#region Reset board
-		yield return Ninja.JumpToUnity;
         foreach(TileButton t in tiles.Values)
         {
             t.gameObject.SetActive(true);
         }
-		yield return Ninja.JumpBack;
 		#endregion
 
 		#region Block tiles
@@ -370,7 +351,6 @@ public class BoardManager : Singleton<BoardManager>
 			}
 		}
 
-		yield return Ninja.JumpToUnity;
 		foreach(Point t in blockedPoints)
 		{
 			tiles[t].gameObject.SetActive(false);
