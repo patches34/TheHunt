@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
 using UnityEngine.UI;
@@ -102,6 +102,7 @@ public class MenuManager : Singleton<MenuManager>
 	void Update()
 	{
 		#region Zooming
+#if UNITY_ANDROID
 		if(Input.touchCount >= 2)
 		{
 			// Store both touches.
@@ -121,16 +122,15 @@ public class MenuManager : Singleton<MenuManager>
 
 			SetZoom(deltaMagnitudeDiff, zoomSpeed);
 		}
-
-		#if UNITY_EDITOR
+#else
 		if(Input.mouseScrollDelta.y != 0)
 		{
 			SetZoom(-Input.mouseScrollDelta.y, mouseWheelSpeed);
 		}
-		#endif
-		#endregion
+#endif
+#endregion
 
-		#region Game Buttons Activation Status
+#region Game Buttons Activation Status
 		playerPassBtn.interactable = GameManager.Instance.IsPlayerTurn();
 
 		playerForfeitBtn.interactable = GameManager.Instance.IsGameActive();
@@ -138,7 +138,7 @@ public class MenuManager : Singleton<MenuManager>
 		playerInputBlock.SetActive(!GameManager.Instance.IsPlayerTurn());
 
         playerRetryBtn.interactable = GameManager.Instance.IsGameActive();
-		#endregion
+#endregion
 	}
 
 	void SetZoom(float delta, float zoomSpeed)
