@@ -61,11 +61,7 @@ public class MenuManager : Singleton<MenuManager>
 	{
 		Application.targetFrameRate = 30;
 
-        if (PlayerPrefs.GetInt(k_IS_NEW_PLAYER, -1) < 0)
-        {
-            ShowMenu(MenuTypes.Info);
-            PlayerPrefs.SetInt(k_IS_NEW_PLAYER, 0);
-        }
+
 
         for(int i = 0; i < transform.childCount; ++i)
         {
@@ -75,9 +71,13 @@ public class MenuManager : Singleton<MenuManager>
                 AddScreen(childScreen);
             }
         }
-	}
 
-	public string BuildVersionStr;
+        #if !UNITY_EDITOR
+        ShowMenu(MenuTypes.Info);
+        #endif
+    }
+
+    public string BuildVersionStr;
 
 	/// <summary>
 	/// Adds a UI screen to the stack and deletes its scene
@@ -101,7 +101,7 @@ public class MenuManager : Singleton<MenuManager>
 
 	void Update()
 	{
-		#region Zooming
+#region Zooming
 #if UNITY_ANDROID
 		if(Input.touchCount >= 2)
 		{
