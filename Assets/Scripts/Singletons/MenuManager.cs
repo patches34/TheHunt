@@ -61,8 +61,6 @@ public class MenuManager : Singleton<MenuManager>
 	{
 		Application.targetFrameRate = 30;
 
-
-
         for(int i = 0; i < transform.childCount; ++i)
         {
             UIMenu childScreen = transform.GetChild(i).GetComponent<UIMenu>();
@@ -72,9 +70,9 @@ public class MenuManager : Singleton<MenuManager>
             }
         }
 
-        #if !UNITY_EDITOR
+#if !UNITY_EDITOR
         ShowMenu(MenuTypes.Info);
-        #endif
+#endif
     }
 
     public string BuildVersionStr;
@@ -147,28 +145,37 @@ public class MenuManager : Singleton<MenuManager>
 
 		//	X
 		rectScale.x -= delta * zoomSpeed;
-		if(rectScale.x > zoomMax)
-		{
-			rectScale.x = zoomMax;
-		}
-		else if(rectScale.x < zoomMin)
-		{
-			rectScale.x = zoomMin;
-		}
 
 		//	Y
 		rectScale.y -= delta * zoomSpeed;
-		if(rectScale.y > zoomMax)
-		{
-			rectScale.y = zoomMax;
-		}
-		else if(rectScale.y < zoomMin)
-		{
-			rectScale.y = zoomMin;
-		}
 
-		boardPaddingRect.localScale = rectScale;
+		SetZoom(rectScale);
 	}
+
+	void SetZoom(Vector2 newZoom)
+	{
+        //	X
+        if (newZoom.x > zoomMax)
+        {
+            newZoom.x = zoomMax;
+        }
+        else if (newZoom.x < zoomMin)
+        {
+            newZoom.x = zoomMin;
+        }
+
+        //	Y
+        if (newZoom.y > zoomMax)
+        {
+            newZoom.y = zoomMax;
+        }
+        else if (newZoom.y < zoomMin)
+        {
+            newZoom.y = zoomMin;
+        }
+
+        boardPaddingRect.localScale = newZoom;
+    }
 
 	public void ShowMenu(int type)
 	{
@@ -199,6 +206,8 @@ public class MenuManager : Singleton<MenuManager>
 		boardPaddingRect.offsetMin = -boardSize - boardPadding;
 
 		zoomMin = Mathf.Min(CanvasRect.width / boardPaddingRect.rect.width, CanvasRect.height / boardPaddingRect.rect.height);
+
+		SetZoom(new Vector2(zoomMin, zoomMin));
 	}
 
 	public void SetZoomSpeed(float value)
