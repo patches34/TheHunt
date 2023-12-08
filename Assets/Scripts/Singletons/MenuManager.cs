@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 public enum MenuTypes
 {
@@ -99,36 +100,7 @@ public class MenuManager : Singleton<MenuManager>
 
 	void Update()
 	{
-#region Zooming
-#if UNITY_ANDROID
-		if(Input.touchCount >= 2)
-		{
-			// Store both touches.
-			Touch touchZero = Input.GetTouch(0);
-			Touch touchOne = Input.GetTouch(1);
-
-			// Find the position in the previous frame of each touch.
-			Vector2 touchZeroPrevPos = touchZero.position - touchZero.deltaPosition;
-			Vector2 touchOnePrevPos = touchOne.position - touchOne.deltaPosition;
-
-			// Find the magnitude of the vector (the distance) between the touches in each frame.
-			float prevTouchDeltaMag = (touchZeroPrevPos - touchOnePrevPos).magnitude;
-			float touchDeltaMag = (touchZero.position - touchOne.position).magnitude;
-
-			// Find the difference in the distances between each frame.
-			float deltaMagnitudeDiff = prevTouchDeltaMag - touchDeltaMag;
-
-			SetZoom(deltaMagnitudeDiff, zoomSpeed);
-		}
-#else
-		if(Input.mouseScrollDelta.y != 0)
-		{
-			SetZoom(-Input.mouseScrollDelta.y, mouseWheelSpeed);
-		}
-#endif
-#endregion
-
-#region Game Buttons Activation Status
+		#region Game Buttons Activation Status
 		playerPassBtn.interactable = GameManager.Instance.IsPlayerTurn();
 
 		playerForfeitBtn.interactable = GameManager.Instance.IsGameActive();
@@ -136,9 +108,21 @@ public class MenuManager : Singleton<MenuManager>
 		playerInputBlock.SetActive(!GameManager.Instance.IsPlayerTurn());
 
         playerRetryBtn.interactable = GameManager.Instance.IsGameActive();
-#endregion
+		#endregion
 	}
 
+    #region Zoom Logic
+    public void OnZoom(InputAction.CallbackContext context)
+	{
+		Vector2 zoomScroll = context.ReadValue<Vector2>();
+
+		SetZoom(zoomScroll.y, mouseWheelSpeed);
+	}
+
+	void SetZoom(float newZoom)
+	{
+		SetZoom(new Vector2(newZoom, newZoom));
+	}
 	void SetZoom(float delta, float zoomSpeed)
 	{
 		Vector3 rectScale = boardPaddingRect.localScale;
@@ -151,7 +135,6 @@ public class MenuManager : Singleton<MenuManager>
 
 		SetZoom(rectScale);
 	}
-
 	void SetZoom(Vector2 newZoom)
 	{
         //	X
@@ -176,8 +159,9 @@ public class MenuManager : Singleton<MenuManager>
 
         boardPaddingRect.localScale = newZoom;
     }
+    #endregion
 
-	public void ShowMenu(int type)
+    public void ShowMenu(int type)
 	{
 		ShowMenu((MenuTypes)type);
 	}
@@ -207,7 +191,7 @@ public class MenuManager : Singleton<MenuManager>
 
 		zoomMin = Mathf.Min(CanvasRect.width / boardPaddingRect.rect.width, CanvasRect.height / boardPaddingRect.rect.height);
 
-		SetZoom(new Vector2(zoomMin, zoomMin));
+		SetZoom(zoomMin);
 	}
 
 	public void SetZoomSpeed(float value)
